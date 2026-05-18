@@ -1,0 +1,73 @@
+﻿using _2SemesterOpgave.Models;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace _2SemesterOpgave
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            User user = new User();
+            user.Username = "Mads";
+
+            Notification notification = new Notification();
+            notification.Message = "Du har modtaget en ny besked!";
+
+            notification.ReceiveNotification(notification.Message);
+
+
+            //User user = new User();
+            //user.FirstName = "John";
+            //user.LastName = "Doe";
+            //user.Email = "john.doe@example.com";
+            //user.Password = "password123";
+
+            string[] FirstNames = { "Mark", "Torben", "Claus", "Mathias", "Lone", "Lis", "Mads" };
+            string[] LastNames = { "Andersen", "Jensen", "Hansen", "Pedersen", "Nielsen", "Larsen", "Møller" };
+
+            List<User> listoffall = new List<User>();
+
+            Random random = new Random();
+
+            for (int i = 0; i < 10; i++)
+            {
+                int randomNumber = random.Next(0, FirstNames.Length);
+                int randomNumber2 = random.Next(0, LastNames.Length);
+
+                string tempFirstName = FirstNames[randomNumber];
+                string tempLastName = LastNames[randomNumber2];
+
+                User user1 = new User();
+                user1.FirstName = tempFirstName;
+                user1.LastName = tempLastName;
+                listoffall.Add(user1);
+
+                //Console.WriteLine($"Navn: {tempFirstName} {tempLastName}");
+                //Console.WriteLine(FirstNames.Length);
+                //Console.WriteLine(LastNames.Length);
+
+                //Console.WriteLine($"Tilfældigt tal: {randomNumber}");
+                //Console.WriteLine($"Tilfældigt tal2: {randomNumber2}");
+            }
+
+            for (int i = 0; i < listoffall.Count; i++)
+            {
+                Console.WriteLine(listoffall[i].FirstName + " " + listoffall[i].LastName);
+            }
+        }
+    }
+}
