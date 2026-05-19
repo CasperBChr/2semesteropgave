@@ -5,7 +5,7 @@ using System.Windows.Media;
 using _2SemesterOpgave;
 namespace _2SemesterOpgave.Models
 {
-    public class Article
+    public class Article // Klasse til at repræsentere en artikel, som kan lejes ud på platformen
     {
         public string Title { get; set; }
         public string Description { get; set; }
@@ -29,19 +29,25 @@ namespace _2SemesterOpgave.Models
         public List<SubCategory> Subcategories { get; set; }
 
     }
-    public enum TrueToSize 
-    { 
-      Width, 
-      Height 
+    public enum TrueToSize // Enum til at repræsentere, om en artikel er true to size, mindre eller større end forventet
+    {
+        TrueToSize,
+        Smaller,
+        Larger
     }
-    public enum Condition
+    public enum Size // Enum til at repræsentere størrelsen på en artikel, som kan være relevant for både tøj og sko
+    {
+      Width,
+      Height
+    }
+    public enum Condition // Enum til at repræsentere tilstanden på en artikel, som kan være relevant for både tøj og sko
     {
         New,
         LikeNew,
         Used,
         Worn
     }
-    public enum Season
+    public enum Season // Enum til at repræsentere sæsonen for en artikel, som kan være relevant for både tøj og sko
     {
         Spring,
         Summer,

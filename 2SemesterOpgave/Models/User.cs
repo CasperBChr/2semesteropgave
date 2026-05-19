@@ -4,15 +4,15 @@ using System.Text;
 
 namespace _2SemesterOpgave.Models
 {
-    public class User : IReferrer
+    public class User : IReferrer // Implementerer IReferrer for at kunne modtage notifikationer, når der sker relevante begivenheder, såsom nye beskeder eller lejeaftaler
     {
-        public void ReceiveNotification(string message)
+        public void ReceiveNotification(string message) // Implementering af ReceiveNotification-metoden fra IReferrer, som udskriver notifikationen til konsollen med brugerens navn
         {
-            Console.WriteLine($"Notification for {Username}: {message}");
+            Console.WriteLine($"Notification for {Username}: {message}"); // Udskriver notifikationen til konsollen, inklusive brugerens navn for at gøre det klart, hvem notifikationen er til
         }
 
         //Properties 
-        public string Username { get; set; }
+        public string Username { get; set; } // Property: gemmer brugernavnet som tekst
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -27,7 +27,7 @@ namespace _2SemesterOpgave.Models
         public List<User> Followers { get; set; }
         public List<User> Following { get; set; }
 
-        public User()
+        public User() // Default constructor: initialiserer en ny instans af User-klassen, hvor IsVerified sættes til false, RatingScore sættes til 0, SignupTime sættes til det aktuelle tidspunkt, og Followers og Following sættes til tomme lister
         {
             IsVerified = false;
             RatingScore = 0;
