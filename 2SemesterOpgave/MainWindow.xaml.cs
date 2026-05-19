@@ -9,6 +9,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using _2SemesterOpgave.Data;
+using System.Data.Common;
+using System.Diagnostics;
 
 namespace _2SemesterOpgave
 {
@@ -24,10 +27,32 @@ namespace _2SemesterOpgave
             User user = new User();
             user.Username = "Mads";
 
-            Notification notification = new Notification();
-            notification.Message = "Du har modtaget en ny besked!";
+            string dbpath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "db.db");
+            Database db = new Database($"Data Source={dbpath}");
 
-            notification.ReceiveNotification(notification.Message);
+            db.Open();
+            DbCommand command = db.Connection.CreateCommand();
+            command.CommandText = "SELECT Username FROM User";
+            List<string> args = new List<string>();
+            DbDataReader reader = command.ExecuteReader();
+            
+            while (reader.Read())
+            {
+                args.Add(reader.GetString(0));
+            }
+
+            reader.Close();
+            db.Close();
+
+            for (int i = 0; i < args.Count; i++)
+            {
+                Debug.WriteLine(args[i]);
+            }
+
+            //Notification notification = new Notification();
+            //notification.Message = "Du har modtaget en ny besked!";
+
+            //notification.ReceiveNotification(notification.Message);
 
 
             //User user = new User();
@@ -68,6 +93,16 @@ namespace _2SemesterOpgave
             {
                 Console.WriteLine(listoffall[i].FirstName + " " + listoffall[i].LastName);
             }
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void MenuBtnClick(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

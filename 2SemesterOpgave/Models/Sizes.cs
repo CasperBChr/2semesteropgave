@@ -35,7 +35,7 @@ namespace _2SemesterOpgave.Models
         Smaller,
         Larger
     }
-    public enum Size // Enum til at repræsentere størrelsen på en artikel, som kan være relevant for både tøj og sko
+    public enum Sizes // Enum til at repræsentere størrelsen på en artikel, som kan være relevant for både tøj og sko
     {
       Width,
       Height

@@ -20,9 +20,10 @@ namespace _2SemesterOpgave.Models
         }
         public Category(string name, List<SubCategory> subCategories) // Constructor: initialiserer en ny instans af Category-klassen med et navn og en liste af underkategorier
         {
-        {
-            Name = name;
-            SubCategories = subCategories;
+            {
+                Name = name;
+                SubCategories = subCategories;
+            }
         }
     }
 }

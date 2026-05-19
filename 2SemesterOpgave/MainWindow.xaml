@@ -7,6 +7,38 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Background="AliceBlue">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Button Content="Hjem" Grid.Row="0" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="MenuBtnClick"/>
+            <Button Content="Udforsk" Grid.Row="1" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="MenuBtnClick"/>
+            <Button Content="Kategorier" Grid.Row="2" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="MenuBtnClick"/>
+            <Button Content="Nyheder" Grid.Row="3" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="MenuBtnClick"/>
+            <Button Content="Favoritter" Grid.Row="4" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="MenuBtnClick"/>
+            <Button Content="Mine ordrer" Grid.Row="5" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="MenuBtnClick"/>
+            <Button Content="Min konto" Grid.Row="6" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="MenuBtnClick"/>
+            <Button Content="Beskeder" Grid.Row="7" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="MenuBtnClick"/>
+            <Button Content="Hjælp" Grid.Row="8" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="MenuBtnClick"/>
+        
+
+        </Grid>
 
     </Grid>
 </Window>
