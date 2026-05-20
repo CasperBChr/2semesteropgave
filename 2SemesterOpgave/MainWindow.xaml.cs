@@ -20,10 +20,13 @@ namespace _2SemesterOpgave
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ContentControl _pageControl;
+        private Router _router;
         public MainWindow()
         {
             InitializeComponent();
-
+            _pageControl = PageContentControl;
+            _router = new Router(_pageControl);
             User user = new User();
             user.Username = "Mads";
 
@@ -102,7 +105,52 @@ namespace _2SemesterOpgave
 
         private void MenuBtnClick(object sender, RoutedEventArgs e)
         {
+        
+        }
 
+        private void HomeMenuButtonClick(object sender, RoutedEventArgs e)
+        {
+            _router.NavigateTo(Routes.Home);
+        }
+
+        private void MyOrderButtonClick(object sender, RoutedEventArgs e)
+        {
+            _router.NavigateTo(Routes.MyOrders);
+        }
+
+        private void ExplorerMenuButtonClick(object sender, RoutedEventArgs e)
+        {
+            _router.NavigateTo(Routes.Explore);
+        }
+
+        private void CategoriMenuButtonClick(object sender, RoutedEventArgs e)
+        {
+            _router.NavigateTo(Routes.Categories);
+        }
+
+        private void NewsPageButtonClick(object sender, RoutedEventArgs e)
+        {
+            _router.NavigateTo(Routes.Announcements);
+        }
+
+        private void FavoritPageButtonClick(object sender, RoutedEventArgs e)
+        {
+            _router.NavigateTo(Routes.Favorites);
+        }
+
+        private void MyAccountButtonClick(object sender, RoutedEventArgs e)
+        {
+            _router.NavigateTo(Routes.MyAccount);
+        }
+
+        private void MessagesButtonClick(object sender, RoutedEventArgs e)
+        {
+            _router.NavigateTo(Routes.Messages);
+        }
+
+        private void SupportButtonClick(object sender, RoutedEventArgs e)
+        {
+            _router.NavigateTo(Routes.Support);
         }
     }
 }
