@@ -47,6 +47,12 @@ namespace _2SemesterOpgave
                 case Routes.Support:
                     PageControl.Content = new SupportPage();
                     break;
+                case Routes.Overview:
+                    PageControl.Content = new OverViewPage();
+                    break;
+                case Routes.Article:
+                    PageControl.Content = new ArticlePage();
+                    break;
             }
 
         }
@@ -63,7 +69,9 @@ namespace _2SemesterOpgave
         MyOrders = 5,
         MyAccount = 6,
         Messages = 7,
-        Support = 8
+        Support = 8,
+        Overview = 9,
+        Article = 10,
     }
 
 
