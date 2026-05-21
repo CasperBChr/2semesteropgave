@@ -46,29 +46,30 @@ namespace _2SemesterOpgave.Models
             //Season = season; // Sætter SeasonEnum til den angivne værdi for
 
         }
-    public enum TrueToSizeEnum // Enum til at repræsentere, om en artikel er true to size, mindre eller større end forventet
-    {
-        TrueToSize,
-        Smaller,
-        Larger
-    }
-    public enum Size2 // Enum til at repræsentere størrelsen på en artikel, som kan være relevant for både tøj og sko
-    {
-      Width,
-      Height
-    }
-    public enum ConditionEnum // Enum til at repræsentere tilstanden på en artikel, som kan være relevant for både tøj og sko
-    {
-        New,
-        LikeNew,
-        Used,
-        Worn
-    }
-    public enum SeasonEnum // Enum til at repræsentere sæsonen for en artikel, som kan være relevant for både tøj og sko
-    {
-        Spring,
-        Summer,
-        Autumn,
-        Winter
+        public enum TrueToSizeEnum // Enum til at repræsentere, om en artikel er true to size, mindre eller større end forventet
+        {
+            TrueToSize,
+            Smaller,
+            Larger
+        }
+        public enum Size2 // Enum til at repræsentere størrelsen på en artikel, som kan være relevant for både tøj og sko
+        {
+            Width,
+            Height
+        }
+        public enum ConditionEnum // Enum til at repræsentere tilstanden på en artikel, som kan være relevant for både tøj og sko
+        {
+            New,
+            LikeNew,
+            Used,
+            Worn
+        }
+        public enum SeasonEnum // Enum til at repræsentere sæsonen for en artikel, som kan være relevant for både tøj og sko
+        {
+            Spring,
+            Summer,
+            Autumn,
+            Winter
+        }
     }
 }

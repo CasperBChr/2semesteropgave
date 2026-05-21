@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,10 +20,18 @@ namespace _2SemesterOpgave.Pages
     /// </summary>
     public partial class ExplorePage : UserControl
     {
-        public ExplorePage()
+
+        ObservableCollection<Article> articles;
+
+        public ExplorePage(ObservableCollection<Article> articles)
         {
             InitializeComponent();
-            Article article = new Article("Test Artikel", "Dette er en test artikel", 3500.0f, 150.0f, false, false, false, false);
+            this.articles = articles;
+
+
+            ArticlesItemsControl.ItemsSource = articles;
+
+
         }
     }
 }
