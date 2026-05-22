@@ -1,5 +1,6 @@
 ﻿using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
+using _2SemesterOpgave.Repositories;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
 using System.Data.Common;
@@ -40,6 +41,7 @@ namespace _2SemesterOpgave
         ObservableCollection<ShippingOption> shippingOptions = new ObservableCollection<ShippingOption>();
         ObservableCollection<InsuranceOption> insuranceOptions = new ObservableCollection<InsuranceOption>();
         ObservableCollection<Accesibility> accesibilities = new ObservableCollection<Accesibility>();
+        UserRepository userRepository;
         public MainWindow()
         {
             InitializeComponent();
@@ -49,24 +51,14 @@ namespace _2SemesterOpgave
             string dbpath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "db.db");
             Database db = new Database($"Data Source={dbpath}");
 
-            db.Open();
-            DbCommand command = db.Connection.CreateCommand();
-            command.CommandText = "SELECT Username FROM User";
-            List<string> args = new List<string>();
-            DbDataReader reader = command.ExecuteReader();
-            
-            while (reader.Read())
-            {
-                args.Add(reader.GetString(0));
-            }
+            userRepository = new UserRepository(db);
 
-            reader.Close();
-            db.Close();
+            List<User> allUsers = userRepository.GetAllUsers();
 
-            for (int i = 0; i < args.Count; i++)
-            {
-                Debug.WriteLine(args[i]);
-            }
+            //for (int i = 0; i < args.Count; i++)
+            //{
+            //    Debug.WriteLine(args[i]);
+            //}
 
             //Notification notification = new Notification();
             //notification.Message = "Du har modtaget en ny besked!";
@@ -121,11 +113,11 @@ namespace _2SemesterOpgave
                 Brand brand = new Brand($"Mærke {i + 1}", $"Mærke {i + 1}", $"Mærke {i + 1}");
                 Designer designer = new Designer($"Designer {i + 1}");
                 Collection collection = new Collection($"Kollektion {i + 1},", $"Kollektion {i + 1},", brand, designer, new List<Article>());
-                User user = new User($"Bruger {i + 1}", $"bruger{i + 1}@example.com", $"bruger{i + 1}@example.com");
+                User user = new User($"Bruger {i + 1}", $"bruger{i + 1}@example.com", $"bruger{i + 1}@example.com", i + 2);
                 //Conversation conversation = new Conversation(user, $"Samtale {i + 1}");
 
+                userRepository.AddUser(user);
                 articles.Add(article);
-
                 categories.Add(category);
                 subCategories.Add(subCategory);
                 brands.Add(brand);

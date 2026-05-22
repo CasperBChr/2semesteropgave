@@ -12,6 +12,7 @@ namespace _2SemesterOpgave.Models
         }
 
         //Properties 
+        public int Id { get; set; } // Property: gemmer brugerens unikke ID som et heltal
         public string Username { get; set; } // Property: gemmer brugernavnet som tekst
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -41,11 +42,13 @@ namespace _2SemesterOpgave.Models
         public User(
         string username,
         string email,
-        string password)
+        string password,
+        int id)
         {
             Username = username;
             Email = email;
             Password = password;
+            Id = id;
 
             FirstName = string.Empty;
             LastName = string.Empty;
