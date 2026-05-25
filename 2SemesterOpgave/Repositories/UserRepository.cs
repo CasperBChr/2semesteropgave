@@ -69,7 +69,7 @@ namespace _2SemesterOpgave.Repositories
 
             while (reader.Read())
             {
-                users.Add(new User(reader["Username"].ToString(), reader["Email"].ToString(), reader["Password"].ToString(), Convert.ToInt32(reader["ID"])));
+                users.Add(new User(reader.GetString(reader.GetOrdinal("Username")), reader.GetString(reader.GetOrdinal("Email")), reader.GetString(reader.GetOrdinal("Password")), reader.GetInt32(reader.GetOrdinal("ID"))));
             }
 
             reader.Close();
@@ -90,7 +90,7 @@ namespace _2SemesterOpgave.Repositories
 
            if (reader.Read())
            {
-                User user = new User(reader["Username"].ToString(), reader["Email"].ToString(), reader["Password"].ToString(), Convert.ToInt32(reader["ID"]));
+                User user = new User(reader.GetString(reader.GetOrdinal("Username")), reader.GetString(reader.GetOrdinal("Email")), reader.GetString(reader.GetOrdinal("Password")), reader.GetInt32(reader.GetOrdinal("ID")));
                 reader.Close();
                 _db.Close();
                 return user;
@@ -98,6 +98,7 @@ namespace _2SemesterOpgave.Repositories
 
             reader.Close();
             _db.Close();
+            return null;
             throw new ArgumentException("User not found");
         }
 
@@ -108,21 +109,25 @@ namespace _2SemesterOpgave.Repositories
             command.CommandText = "UPDATE Users SET Username = @Username, Email = @Email, Password = @Password WHERE ID = @ID";
             DbParameter idParam = command.CreateParameter();
             idParam.DbType = DbType.Int32;
+            idParam.ParameterName = "ID";
             idParam.Value = user.Id;
             command.Parameters.Add(idParam);
 
             DbParameter usernameParam = command.CreateParameter();
             usernameParam.DbType = DbType.String;
+            usernameParam.ParameterName = "Username";
             usernameParam.Value = user.FirstName;
             command.Parameters.Add(usernameParam);
 
             DbParameter emailParam = command.CreateParameter();
             emailParam.DbType = DbType.String;
+            emailParam.Value = "Email";
             emailParam.Value = user.Email;
             command.Parameters.Add(emailParam);
 
             DbParameter passwordParam = command.CreateParameter();
             passwordParam.DbType = DbType.String;
+            passwordParam.Value = "Password";
             passwordParam.Value = user.Password;
             command.Parameters.Add(passwordParam);
 

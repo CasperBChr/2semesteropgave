@@ -72,6 +72,10 @@ namespace _2SemesterOpgave
                     PageControl.Content = new ArticlePage();
                     CurrentPage = Routes.Article;
                     break;
+                case Routes.ForYou:
+                    PageControl.Content = new ForYouPage();
+                    CurrentPage = Routes.ForYou;
+                    break;
             }
 
         }
@@ -91,6 +95,7 @@ namespace _2SemesterOpgave
         Support = 8,
         Overview = 9,
         Article = 10,
+        ForYou = 11
     }
 
 

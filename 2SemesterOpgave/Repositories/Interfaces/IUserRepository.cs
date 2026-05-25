@@ -7,7 +7,7 @@ namespace _2SemesterOpgave.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        User GetUserByID(int id);
+        User? GetUserByID(int id);
 
         List<User> GetAllUsers();
 

@@ -11,7 +11,8 @@ namespace _2SemesterOpgave.Data
 
         public Database(string connectionString) // Constructor: initialiserer en ny instans af DbConnection-klassen med en forbindelse til databasen baseret på den angivne connectionString
         {
-            Connection = new SqliteConnection(connectionString); 
+            Connection = new SqliteConnection(connectionString);
+
         }
 
         public void Open()

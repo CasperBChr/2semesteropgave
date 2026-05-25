@@ -5,40 +5,97 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_2SemesterOpgave"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="650" Width="1200">
+    <Window.Resources>
+        <Style x:Key="VerticalMenuButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+
+
+        </Style>
+    </Window.Resources>
     <Grid >
         <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
             <RowDefinition Height="*"/>
-
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" Background="AliceBlue">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-            </Grid.RowDefinitions>
-            <Button Content="Hjem" Grid.Row="0" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="HomeMenuButtonClick"/>
-            <Button Content="Udforsk" Grid.Row="1" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="ExplorerMenuButtonClick"/>
-            <Button Content="Kategorier" Grid.Row="2" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="CategoriMenuButtonClick"/>
-            <Button Content="Nyheder" Grid.Row="3" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="NewsPageButtonClick"/>
-            <Button Content="Favoritter" Grid.Row="4" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="FavoritPageButtonClick"/>
-            <Button Content="Mine ordrer" Grid.Row="5" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="MyOrderButtonClick"/>
-            <Button Content="Min konto" Grid.Row="6" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="MyAccountButtonClick"/>
-            <Button Content="Beskeder" Grid.Row="7" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="MessagesButtonClick"/>
-            <Button Content="Hjælp" Grid.Row="8" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="SupportButtonClick"/>
-        
 
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="300" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <Button Content="RentWear" FontSize="24" FontWeight="Bold" Click="HomeMenuButtonClick" />
+            </StackPanel>
+
+            <Grid Grid.Column="1" HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" MinWidth="200" />
+                    <ColumnDefinition Width="auto" MinWidth="30" />
+                    <ColumnDefinition Width="auto" MinWidth="200" />
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="SearchTextBox" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="LightGray"/>
+
+                <ComboBox x:Name="CategoryComboBox" DisplayMemberPath="Name" Grid.Row="1" Grid.Column="0" />
+                <ComboBox x:Name="SubCategoryComboBox" Grid.Row="1" Grid.Column="2" />
+
+            </Grid>
+            
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2">
+                <Button Margin="10" Padding="20, 10">Notifikationer</Button>
+                <Button Margin="10" Padding="20, 10">Beskeder</Button>
+                <Button Margin="10" Padding="20, 10">Konto</Button>
+            </StackPanel>
+
+            
+            
+            
         </Grid>
-        <ContentControl Grid.Column="1" Grid.Row="0" x:Name="PageContentControl"/>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Background="AliceBlue">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <Button Style="{StaticResource VerticalMenuButton}" Content="Hjem" Grid.Row="0" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="HomeMenuButtonClick"/>
+                <Button Style="{StaticResource VerticalMenuButton}" Content="Udforsk" Grid.Row="1" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="ExplorerMenuButtonClick"/>
+                <Button Style="{StaticResource VerticalMenuButton}" Content="Kategorier" Grid.Row="2" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="CategoriMenuButtonClick"/>
+                <Button Style="{StaticResource VerticalMenuButton}" Content="Nyheder" Grid.Row="3" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="NewsPageButtonClick"/>
+                <Button Style="{StaticResource VerticalMenuButton}" Content="Favoritter" Grid.Row="4" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="FavoritPageButtonClick"/>
+                <Button Style="{StaticResource VerticalMenuButton}" Content="Mine ordrer" Grid.Row="5" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="MyOrderButtonClick"/>
+                <Button Style="{StaticResource VerticalMenuButton}" Content="Min konto" Grid.Row="6" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="MyAccountButtonClick"/>
+                <Button Style="{StaticResource VerticalMenuButton}" Content="Beskeder" Grid.Row="7" HorizontalAlignment="Left" Margin="20,0,0,11" Click="MessagesButtonClick"/>
+                <Button Style="{StaticResource VerticalMenuButton}" Content="Hjælp" Grid.Row="8" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="SupportButtonClick"/>
+                <Button Style="{StaticResource VerticalMenuButton}" Content="For You" Grid.Row="9" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Click="SupportButtonClick"/>
+
+
+            </Grid>
+            <ContentControl Grid.Column="1" Grid.Row="0" x:Name="PageContentControl"/>
+        </Grid>
     </Grid>
 </Window>
