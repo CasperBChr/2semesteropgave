@@ -1,10 +1,8 @@
-﻿using _2SemesterOpgave.Data;
-using _2SemesterOpgave.Models;
-using _2SemesterOpgave.Repositories;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
 using System.Data.Common;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,6 +13,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using _2SemesterOpgave.Data;
+using _2SemesterOpgave.Models;
+using _2SemesterOpgave.Repositories;
+using _2SemesterOpgave.Repositories.Interfaces;
+using _2SemesterOpgave.Services;
 
 namespace _2SemesterOpgave
 {
@@ -26,65 +29,49 @@ namespace _2SemesterOpgave
         private ContentControl _pageControl;
         private Router _router;
 
-        ObservableCollection<Article> articles = new ObservableCollection<Article>();
-        ObservableCollection<Category> categories = new ObservableCollection<Category>();
-        ObservableCollection<SubCategory> subCategories = new ObservableCollection<SubCategory>();
-        ObservableCollection<Brand> brands = new ObservableCollection<Brand>();
-        ObservableCollection<Designer> designers = new ObservableCollection<Designer>();
-        ObservableCollection<Collection> collections = new ObservableCollection<Collection>();
-        ObservableCollection<User> users = new ObservableCollection<User>();
-        ObservableCollection<Conversation> conversations = new ObservableCollection<Conversation>();
-        ObservableCollection<Message> messages = new ObservableCollection<Message>();
-        ObservableCollection<Notification> notifications = new ObservableCollection<Notification>();
-        //ObservableCollection<Wishlist> wishlists = new ObservableCollection<Wishlist>(); // Favoritter
-        ObservableCollection<Rental> rentals = new ObservableCollection<Rental>();
-        ObservableCollection<ShippingOption> shippingOptions = new ObservableCollection<ShippingOption>();
-        ObservableCollection<InsuranceOption> insuranceOptions = new ObservableCollection<InsuranceOption>();
-        ObservableCollection<Accesibility> accesibilities = new ObservableCollection<Accesibility>();
-        UserRepository userRepository;
+        ObservableCollection<Article> _articles = new ObservableCollection<Article>();
+        ObservableCollection<Category> _categories = new ObservableCollection<Category>();
+        ObservableCollection<SubCategory> _subCategories = new ObservableCollection<SubCategory>();
+        ObservableCollection<Brand> _brands = new ObservableCollection<Brand>();
+        ObservableCollection<Designer> _designers = new ObservableCollection<Designer>();
+        ObservableCollection<Collection> _collections = new ObservableCollection<Collection>();
+        ObservableCollection<User> _users = new ObservableCollection<User>();
+        ObservableCollection<Conversation> _conversations = new ObservableCollection<Conversation>();
+        ObservableCollection<Message> _messages = new ObservableCollection<Message>();
+        ObservableCollection<Notification> _notifications = new ObservableCollection<Notification>();
+        //ObservableCollection<Wishlist> _wishlists = new ObservableCollection<Wishlist>(); // Favoritter
+        ObservableCollection<Rental> _rentals = new ObservableCollection<Rental>();
+        ObservableCollection<ShippingOption> _shippingOptions = new ObservableCollection<ShippingOption>();
+        ObservableCollection<InsuranceOption> _insuranceOptions = new ObservableCollection<InsuranceOption>();
+        ObservableCollection<Accesibility> _accesibilities = new ObservableCollection<Accesibility>();
+        IUserRepository _userRepository;
+		CategoryServices _categoryServices;
+        UserServices _userServices;
+		ArticleServices _articleServices;
+		FilterCriteria _filter = new FilterCriteria();
+
+        Database _db;
         public MainWindow()
         {
             InitializeComponent();
-            _pageControl = PageContentControl;
-            _router = new Router(_pageControl, articles, categories);
-
             string dbpath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "db.db");
-            Database db = new Database($"Data Source={dbpath}");
+            _pageControl = PageContentControl;
 
-            userRepository = new UserRepository(db);
 
-            List<User> allUsers = userRepository.GetAllUsers();
-
-            
-            for (int i = 0; i < 10; i++)
-            {
-                Article article = new Article($"Test Artikel {i + 1}", $"Dette er en test artikel {i + 1}", 3500.0f, 150.0f, false, false, false, false);
-                Category category = new Category($"Kategori {i + 1}");
-                SubCategory subCategory = new SubCategory($"Underkategori {i + 1}", category);
-                Brand brand = new Brand($"Mærke {i + 1}", $"Mærke {i + 1}", $"Mærke {i + 1}");
-                Designer designer = new Designer($"Designer {i + 1}");
-                Collection collection = new Collection($"Kollektion {i + 1},", $"Kollektion {i + 1},", brand, designer, new List<Article>());
-                User user = new User($"Bruger {i + 1}", $"bruger{i + 1}@example.com", $"bruger{i + 1}@example.com", i + 2);
-                //Conversation conversation = new Conversation(user, $"Samtale {i + 1}");
-
-                userRepository.AddUser(user);
-                articles.Add(article);
-                categories.Add(category);
-                subCategories.Add(subCategory);
-                brands.Add(brand);
-                designers.Add(designer);
-                collections.Add(collection);
-                users.Add(user);
-                //conversations.Add(conversation);
-
-                CategoryComboBox.ItemsSource = categories;
-
-            }
+            _db = new Database($"Data Source={dbpath}");
+            _userRepository = new UserRepository(_db);
+			_categoryServices = new CategoryServices(_db);
+            _articleServices = new ArticleServices(_db);
+            _userServices = new UserServices(_db);
+			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _filter);
+            _categories = _categoryServices.GetAllCategories();
+            CategoryCombo.ItemsSource = _categories;
+            SubcategoryCombo.ItemsSource = _subCategories;
 
         }
 
-       
-        private void HomeMenuButtonClick(object sender, RoutedEventArgs e)
+
+		private void HomeMenuButtonClick(object sender, RoutedEventArgs e)
         {
             _router.NavigateTo(Routes.Home);
         }
@@ -128,15 +115,42 @@ namespace _2SemesterOpgave
         {
             _router.NavigateTo(Routes.Support);
         }
+		private void ForYouButtonClick(object sender, RoutedEventArgs e)
+		{
+			_router.NavigateTo(Routes.ForYou);
+		}
+		private void NotificationsButtonClick(object sender, RoutedEventArgs e)
+		{
+			_router.NavigateTo(Routes.Notifications);
+		}
 
-        private void CategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            _router.NavigateTo(Routes.Overview);
-        }
+		private void CategoryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			_filter.Category = (Category)CategoryCombo.SelectedItem;
+			_filter.SubCategory = null;
 
-        private void SubCategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+            ComboBox comboBox = (ComboBox)sender;
+            Category chosenCategory = (Category)comboBox.SelectedItem;
+
+            SubcategoryCombo.ItemsSource = chosenCategory.SubCategories;
+
+			_router.SetFilter(_filter);
             _router.NavigateTo(Routes.Overview);
-        }
-    }
+		}
+
+		private void SubcategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			_filter.SubCategory = (SubCategory)SubcategoryCombo.SelectedItem;
+			_router.SetFilter(_filter);
+			_router.NavigateTo(Routes.Overview);
+		}
+
+		private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			_filter.SearchText = ((TextBox)sender).Text;
+			_router.SetFilter(_filter);
+			_router.NavigateTo(Routes.Overview);
+		}
+
+	}
 }

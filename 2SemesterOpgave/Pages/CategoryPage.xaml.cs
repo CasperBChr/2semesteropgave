@@ -12,6 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using _2SemesterOpgave.Models;
 using System.Collections.ObjectModel;
+using _2SemesterOpgave.Services;
 
 namespace _2SemesterOpgave.Pages
 {
@@ -20,13 +21,13 @@ namespace _2SemesterOpgave.Pages
     /// </summary>
     public partial class CategoryPage : UserControl
     {
-        private ObservableCollection<Category> categories;
+        CategoryServices _services;
 
-        public CategoryPage(ObservableCollection<Category> categories)
+        public CategoryPage(CategoryServices categoryService)
         {
             InitializeComponent();
-            this.categories = categories;
-            CategoriesItemsControl.ItemsSource = categories;
+            _services = categoryService;
+            CategoriesItemsControl.ItemsSource = _services.GetAllCategories();
         }
     }
 }

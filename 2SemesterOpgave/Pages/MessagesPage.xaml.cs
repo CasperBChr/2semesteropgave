@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using _2SemesterOpgave.Services;
 
 namespace _2SemesterOpgave.Pages
 {
@@ -18,9 +19,24 @@ namespace _2SemesterOpgave.Pages
     /// </summary>
     public partial class MessagesPage : UserControl
     {
-        public MessagesPage()
+        Router _router;
+        UserServices _userServices;
+
+        public MessagesPage(Router router, UserServices userServices)
         {
             InitializeComponent();
-        }
-    }
+
+            _router = router;
+            _userServices = userServices;
+
+            MessagesItemsControl.ItemsSource = _userServices.Conversations;
+
+		}
+
+		private void MessageButton_Click(object sender, RoutedEventArgs e)
+		{
+            //_userService
+            _router.NavigateTo(Routes.Message);
+		}
+	}
 }

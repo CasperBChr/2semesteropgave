@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:_2SemesterOpgave.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Black">
-        <TextBlock Text="Home" Margin="326,161,-326,-161" />
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="Home" FontSize="50"/>
     </Grid>
 </UserControl>

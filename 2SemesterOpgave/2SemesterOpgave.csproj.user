@@ -20,6 +20,9 @@
     <Compile Update="Pages\HomePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\MessagePage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\MessagesPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -32,7 +35,10 @@
     <Compile Update="Pages\NewsPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\OverViewPage.xaml.cs">
+    <Compile Update="Pages\NotificationsPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\OverviewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\SupportPage.xaml.cs">

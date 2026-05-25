@@ -1,11 +1,12 @@
 ﻿using _2SemesterOpgave.Models;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace _2SemesterOpgave.Services.Interfaces
 {
     public interface IUserService
     {
-        List<User> GetAllUsers();
+        ObservableCollection<User> GetAllUsers();
 
         void CreateUser(User user);
     }

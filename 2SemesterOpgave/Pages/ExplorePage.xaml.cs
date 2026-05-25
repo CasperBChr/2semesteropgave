@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using _2SemesterOpgave.Models;
+using _2SemesterOpgave.Services;
 
 namespace _2SemesterOpgave.Pages
 {
@@ -21,15 +22,15 @@ namespace _2SemesterOpgave.Pages
     public partial class ExplorePage : UserControl
     {
 
-        ObservableCollection<Article> articles;
+        ArticleServices _articleServices;
 
-        public ExplorePage(ObservableCollection<Article> articles)
+        public ExplorePage(ArticleServices articleServices)
         {
             InitializeComponent();
-            this.articles = articles;
+			_articleServices = articleServices;
 
 
-            ArticlesItemsControl.ItemsSource = articles;
+            ArticlesItemsControl.ItemsSource = _articleServices.GetAllArticles();
 
 
         }

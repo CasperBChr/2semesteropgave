@@ -6,7 +6,20 @@
              xmlns:local="clr-namespace:_2SemesterOpgave.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Text="Messages" FontSize="40" />
-    </Grid>
+	<UserControl.Resources>
+		<DataTemplate x:Key="MessageTemplate">
+			<Border BorderBrush="Gray" BorderThickness="1" Margin="5" CornerRadius="5" Height="40" Width="200">
+				<Button Content="" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Click="MessageButton_Click" />
+			</Border>
+		</DataTemplate>
+	</UserControl.Resources>
+	<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+		<ItemsControl x:Name="MessagesItemsControl" ItemTemplate="{StaticResource MessageTemplate}" Margin="10">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"></WrapPanel>
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+		</ItemsControl>
+	</Grid>
 </UserControl>

@@ -9,7 +9,7 @@ namespace _2SemesterOpgave.Repositories.Interfaces
     {
         User? GetUserByID(int id);
 
-        List<User> GetAllUsers();
+        IEnumerable<User> GetAllUsers();
 
         void AddUser(User user);
 

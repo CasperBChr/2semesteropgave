@@ -3,84 +3,104 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Controls;
-using _2SemesterOpgave.Pages;
 using _2SemesterOpgave.Models;
+using _2SemesterOpgave.Pages;
+using _2SemesterOpgave.Services;
 
 namespace _2SemesterOpgave
 {
     public class Router
     {
-        public Routes CurrentPage { get; set; } // Property: gemmer den aktuelle side, som standard er sat til Home
-        public ContentControl PageControl;
+        Routes _currentPage;
+        public Routes CurrentPage { get { return _currentPage; } } // Property: gemmer den aktuelle side, som standard er sat til Home
+        ContentControl _pageControl;
         
-        private ObservableCollection<Article> articles;
-        private ObservableCollection<Category> categories;
-        public Router(ContentControl pageControl, ObservableCollection<Article> articles, ObservableCollection<Category> categories)
-        {
-            CurrentPage = Routes.Home;
-            PageControl = pageControl;
-            this.articles = articles;
-            this.categories = categories;
+        ObservableCollection<Article> _articles;
+        CategoryServices _categoryServices;
+        ArticleServices _articleServices;
+        UserServices _userServices;
+        FilterCriteria _currentFilter;
 
-            PageControl.Content = new HomePage();
+		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, FilterCriteria filterCriteria)
+        {
+			_currentPage = Routes.Home;
+            _pageControl = pageControl;
+            _articles = articles;
+			_categoryServices = categoryServices;
+            _articleServices = articleServices;
+            _currentFilter = filterCriteria;
+            _userServices = userServices;
+            _pageControl.Content = new HomePage();
         }
-        public void NavigateTo(Routes route)
+
+		public void SetFilter(FilterCriteria filter)
+		{
+			_currentFilter = filter;
+		}
+
+		public void NavigateTo(Routes route)
         {
             switch (route)
             {
                 case Routes.Home:
-                    PageControl.Content = new HomePage();
-                    CurrentPage = Routes.Home;
+                    _pageControl.Content = new HomePage();
+					_currentPage = Routes.Home;
                     break;
                 case Routes.Explore:
-                    PageControl.Content = new ExplorePage(articles);
-                    CurrentPage = Routes.Explore;
+                    _pageControl.Content = new ExplorePage(_articleServices);
+					_currentPage = Routes.Explore;
                     break;
                 case Routes.Categories:
-                    PageControl.Content = new CategoryPage(categories);
-                    CurrentPage = Routes.Categories;
+                    _pageControl.Content = new CategoryPage(_categoryServices);
+					_currentPage = Routes.Categories;
                     break;
                 case Routes.Announcements:
-                    PageControl.Content = new NewsPage();
-                    CurrentPage = Routes.Announcements;
+                    _pageControl.Content = new NewsPage();
+					_currentPage = Routes.Announcements;
                     break;
                 case Routes.Favorites:
-                    PageControl.Content = new FavoritPage();
-                    CurrentPage = Routes.Favorites;
+                    _pageControl.Content = new FavoritPage();
+                    _currentPage = Routes.Favorites;
                     break;
                 case Routes.MyOrders:
-                    PageControl.Content = new MyOrdersPage();
-                    CurrentPage = Routes.MyOrders;
+                    _pageControl.Content = new MyOrdersPage();
+                    _currentPage = Routes.MyOrders;
                     break;
                 case Routes.MyAccount:
-                    PageControl.Content = new MyAccountPage();
-                    CurrentPage = Routes.MyAccount;
+                    _pageControl.Content = new MyAccountPage();
+                    _currentPage = Routes.MyAccount;
                     break;
                 case Routes.Messages:
-                    PageControl.Content = new MessagesPage();
-                    CurrentPage = Routes.Messages;
+                    _pageControl.Content = new MessagesPage(this, _userServices);
+                    _currentPage = Routes.Messages;
                     break;
                 case Routes.Support:
-                    PageControl.Content = new SupportPage();
-                    CurrentPage = Routes.Support;
+                    _pageControl.Content = new SupportPage();
+                    _currentPage = Routes.Support;
                     break;
                 case Routes.Overview:
-                    PageControl.Content = new OverViewPage(articles);
-                    CurrentPage = Routes.Overview;
+					_pageControl.Content = new OverviewPage(this, _articleServices, _currentFilter);
+					_currentPage = Routes.Overview;
                     break;
                 case Routes.Article:
-                    PageControl.Content = new ArticlePage();
-                    CurrentPage = Routes.Article;
+                    _pageControl.Content = new ArticlePage();
+                    _currentPage = Routes.Article;
                     break;
                 case Routes.ForYou:
-                    PageControl.Content = new ForYouPage();
-                    CurrentPage = Routes.ForYou;
+                    _pageControl.Content = new ForYouPage();
+                    _currentPage = Routes.ForYou;
                     break;
-            }
-
+				case Routes.Notifications:
+					_pageControl.Content = new NotificationsPage();
+					_currentPage = Routes.Notifications;
+					break;
+				case Routes.Message:
+					_pageControl.Content = new MessagePage(_userServices);
+					_currentPage = Routes.Message;
+					break;
+			}
         }
     }
-}
 
     public enum Routes 
     {
@@ -95,7 +115,11 @@ namespace _2SemesterOpgave
         Support = 8,
         Overview = 9,
         Article = 10,
-        ForYou = 11
+        ForYou = 11,
+        Notifications = 12,
+        Message = 13
     }
+}
+
 
 
