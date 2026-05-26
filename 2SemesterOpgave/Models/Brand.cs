@@ -9,12 +9,13 @@ namespace _2SemesterOpgave.Models
     {
         public string Name { get; set; }    
         public string Description { get; set; }
-        public string LogoPath { get; set; }
+        public string LogoPath { get; set; } // Property
         public Brand(string name, string description, string logopath) // Constructor: initialiserer en ny instans af Brand-klassen med et navn, en beskrivelse og en sti til logoet
         {
             Name = name;
             Description = description;
             LogoPath = logopath;
         }
+
     }
 }

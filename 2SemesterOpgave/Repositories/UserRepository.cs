@@ -19,7 +19,7 @@ namespace _2SemesterOpgave.Repositories
             _db = db;
         }
 
-        public void AddUser(User user)
+        public void CreateUser(User user)
         {
             _db.Open();
             DbCommand command = _db.Connection.CreateCommand();

@@ -11,7 +11,7 @@ namespace _2SemesterOpgave.Repositories.Interfaces
 
         IEnumerable<User> GetAllUsers();
 
-        void AddUser(User user);
+        void CreateUser(User user);
 
         void UpdateUser(User user);
 

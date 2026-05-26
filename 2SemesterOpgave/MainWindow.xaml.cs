@@ -18,6 +18,7 @@ using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories;
 using _2SemesterOpgave.Repositories.Interfaces;
 using _2SemesterOpgave.Services;
+using _2SemesterOpgave.Utils;
 
 namespace _2SemesterOpgave
 {
@@ -50,6 +51,8 @@ namespace _2SemesterOpgave
 		ArticleServices _articleServices;
 		FilterCriteria _filter = new FilterCriteria();
 
+        //FakeConversation _fakeConversation;
+
         Database _db;
         public MainWindow()
         {
@@ -65,9 +68,11 @@ namespace _2SemesterOpgave
             _userServices = new UserServices(_db);
 			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _filter);
             _categories = _categoryServices.GetAllCategories();
+
             CategoryCombo.ItemsSource = _categories;
             SubcategoryCombo.ItemsSource = _subCategories;
 
+            //_fakeConversation = new FakeConversation();
         }
 
 

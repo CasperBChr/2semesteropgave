@@ -1,9 +1,10 @@
-﻿using System.Collections.ObjectModel;
-using _2SemesterOpgave.Data;
+﻿using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories;
 using _2SemesterOpgave.Repositories.Interfaces;
 using _2SemesterOpgave.Services.Interfaces;
+using _2SemesterOpgave.Utils;
+using System.Collections.ObjectModel;
 
 namespace _2SemesterOpgave.Services
 {
@@ -13,13 +14,21 @@ namespace _2SemesterOpgave.Services
 
         public ObservableCollection<Conversation> Conversations;
         public ObservableCollection<User> Users;
+        public FakeConversation FakeConversation;
 
         public UserServices(Database db)
         {
             _userRepository = new UserRepository(db);
             Conversations = new ObservableCollection<Conversation>();
             Users = GetAllUsers();
+            
             Conversations.Add(new Conversation(new List<User> { Users[0], Users[1] }));
+
+            FakeConversation = new FakeConversation();
+            FakeConversation.ContinueConversationBot(Conversations[0], Conversations[0].Participants[1]);
+
+            Conversations[0].Messages.Add(new Message("Heeeeeeeeeey", Conversations[0], Conversations[0].Participants[0], DateTime.Now));
+            Conversations[0].Messages.Add(new Message("Suuup", Conversations[0], Conversations[0].Participants[1], DateTime.Now));
         }
 
 		public ObservableCollection<User> GetAllUsers()
@@ -40,7 +49,7 @@ namespace _2SemesterOpgave.Services
                 throw new Exception("Email is required");
             }
 
-            _userRepository.AddUser(user);
+            _userRepository.CreateUser(user);
         }
     }
 }

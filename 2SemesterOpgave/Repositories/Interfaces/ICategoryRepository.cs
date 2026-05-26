@@ -11,7 +11,7 @@ namespace _2SemesterOpgave.Repositories.Interfaces
 
 		IEnumerable<Category> GetAllCategories();
 
-		//void AddCategory(User user);
+		//void CreateCategory(User user);
 
 		//void UpdateCategory(User user);
 

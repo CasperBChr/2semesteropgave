@@ -115,9 +115,8 @@
 
 
 			<Grid Grid.Column="0" Grid.Row="1"  Background="AliceBlue">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="40"/>
-					<RowDefinition Height="40"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
 					<RowDefinition Height="40"/>
 					<RowDefinition Height="40"/>
 					<RowDefinition Height="40"/>
@@ -130,16 +129,16 @@
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
 				</Grid.ColumnDefinitions>
-				<Button Style="{StaticResource VerticalMenuButton}" Content="Hjem" Grid.Row="0" Grid.Column="0" Click="HomeMenuButtonClick"/>
-				<Button Style="{StaticResource VerticalMenuButton}" Content="Udforsk" Grid.Row="1" Grid.Column="0" Click="ExplorerMenuButtonClick"/>
-				<Button Style="{StaticResource VerticalMenuButton}" Content="Kategorier" Grid.Row="2" Grid.Column="0" Click="CategoriMenuButtonClick"/>
-				<Button Style="{StaticResource VerticalMenuButton}" Content="Nyheder" Grid.Row="3" Grid.Column="0"  Click="NewsPageButtonClick"/>
-				<Button Style="{StaticResource VerticalMenuButton}" Content="Favoritter" Grid.Row="4" Grid.Column="0" Click="FavoritPageButtonClick"/>
-				<Button Style="{StaticResource VerticalMenuButton}" Content="Mine ordrer" Grid.Row="5" Grid.Column="0"  Click="MyOrderButtonClick"/>
-				<Button Style="{StaticResource VerticalMenuButton}" Content="Min konto" Grid.Row="6" Grid.Column="0" Click="MyAccountButtonClick"/>
-				<Button Style="{StaticResource VerticalMenuButton}" Content="Beskeder" Grid.Row="7" Grid.Column="0" Click="MessagesButtonClick"/>
-				<Button Style="{StaticResource VerticalMenuButton}" Content="Hjælp" Grid.Row="8" Grid.Column="0" Click="SupportButtonClick"/>
-				<Button Style="{StaticResource VerticalMenuButton}" Content="For You" Grid.Row="9" Grid.Column="0" Click="ForYouButtonClick"/>
+				<!--<Button Style="{StaticResource VerticalMenuButton}" Content="Hjem" Grid.Row="0" Grid.Column="0" Click="HomeMenuButtonClick"/-->
+				<Button Style="{StaticResource VerticalMenuButton}" Content="Udforsk" Grid.Row="0" Grid.Column="0" Click="ExplorerMenuButtonClick"/>
+				<Button Style="{StaticResource VerticalMenuButton}" Content="Kategorier" Grid.Row="1" Grid.Column="0" Click="CategoriMenuButtonClick"/>
+				<Button Style="{StaticResource VerticalMenuButton}" Content="Nyheder" Grid.Row="2" Grid.Column="0"  Click="NewsPageButtonClick"/>
+				<Button Style="{StaticResource VerticalMenuButton}" Content="Favoritter" Grid.Row="3" Grid.Column="0" Click="FavoritPageButtonClick"/>
+				<Button Style="{StaticResource VerticalMenuButton}" Content="Mine ordrer" Grid.Row="4" Grid.Column="0"  Click="MyOrderButtonClick"/>
+				<Button Style="{StaticResource VerticalMenuButton}" Content="Min konto" Grid.Row="5" Grid.Column="0" Click="MyAccountButtonClick"/>
+				<Button Style="{StaticResource VerticalMenuButton}" Content="Beskeder" Grid.Row="6" Grid.Column="0" Click="MessagesButtonClick"/>
+				<Button Style="{StaticResource VerticalMenuButton}" Content="Hjælp" Grid.Row="7" Grid.Column="0" Click="SupportButtonClick"/>
+				<Button Style="{StaticResource VerticalMenuButton}" Content="For You" Grid.Row="8" Grid.Column="0" Click="ForYouButtonClick"/>
 
 			</Grid>
 			<ContentControl Grid.Column="1" Grid.Row="0" x:Name="PageContentControl"/>
