@@ -15,13 +15,15 @@ namespace _2SemesterOpgave.Services
         public ObservableCollection<Conversation> Conversations;
         public ObservableCollection<User> Users;
         public FakeConversation FakeConversation;
+        public User CurrentUser;
 
         public UserServices(Database db)
         {
             _userRepository = new UserRepository(db);
             Conversations = new ObservableCollection<Conversation>();
             Users = GetAllUsers();
-            
+            CurrentUser = Users[0];
+
             Conversations.Add(new Conversation(new List<User> { Users[0], Users[1] }));
 
             FakeConversation = new FakeConversation();
