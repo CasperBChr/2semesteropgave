@@ -30,9 +30,20 @@ namespace _2SemesterOpgave.Services
 			return uiArticles;
 		}
 
+        public ObservableCollection<Article> GetNewestArticles()
+        {
+            IEnumerable<Article> articles = _articleRepository.GetNewestArticles();
+            ObservableCollection<Article> uiArticles = new ObservableCollection<Article>();
+            foreach (Article article in articles)
+            {
+                uiArticles.Add(article);
+            }
+            return uiArticles;
+        }
 
 
-		public ObservableCollection<Article> GetFilteredArticles(FilterCriteria filter)
+
+        public ObservableCollection<Article> GetFilteredArticles(FilterCriteria filter)
 		{
 			IEnumerable<Article> articles = _articleRepository.GetFilteredArticles(filter);
 			ObservableCollection<Article> uiArticles = new ObservableCollection<Article>();

@@ -38,7 +38,27 @@ namespace _2SemesterOpgave.Repositories
 		}
 
 
-		public IEnumerable<Article> GetFilteredArticles(FilterCriteria filter)
+        public IEnumerable<Article> GetNewestArticles()
+        {
+            _db.Open();
+            DbCommand command = _db.Connection.CreateCommand();
+            command.CommandText = "SELECT * FROM Articles ORDER BY created_at DESC LIMIT 10";
+            List<Article> articles = new List<Article>();
+            DbDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), originalPrice: 20000.0f, dailyPrice: 150.0f, true, true, true, true));
+                //users.Add(new User(username: reader["Username"].ToString(), email: reader["Email"].ToString(), password: reader["Password"].ToString(), id: Convert.ToInt32(reader["ID"])));
+            }
+
+            reader.Close();
+            _db.Close();
+            return articles;
+        }
+
+
+        public IEnumerable<Article> GetFilteredArticles(FilterCriteria filter)
 		{
 			_db.Open();
 			DbCommand command = _db.Connection.CreateCommand();

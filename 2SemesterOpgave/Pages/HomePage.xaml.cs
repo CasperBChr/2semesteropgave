@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _2SemesterOpgave.Services;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -18,9 +19,17 @@ namespace _2SemesterOpgave.Pages
     /// </summary>
     public partial class HomePage : UserControl
     {
-        public HomePage()
+        ArticleServices _articleServices;
+
+        public HomePage(ArticleServices articleServices)
         {
             InitializeComponent();
+
+            _articleServices = articleServices;
+
+            ArticlesItemsControl.ItemsSource = _articleServices.GetNewestArticles();
         }
+
+
     }
 }
