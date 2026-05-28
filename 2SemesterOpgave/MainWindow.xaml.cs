@@ -76,55 +76,55 @@ namespace _2SemesterOpgave
         }
 
 
-		private void HomeMenuButtonClick(object sender, RoutedEventArgs e)
+		private void HomeMenuButton_Click(object sender, RoutedEventArgs e)
         {
             _router.NavigateTo(Routes.Home);
         }
 
-        private void MyOrderButtonClick(object sender, RoutedEventArgs e)
+        private void MyOrderButton_Click(object sender, RoutedEventArgs e)
         {
             _router.NavigateTo(Routes.MyOrders);
         }
 
-        private void ExplorerMenuButtonClick(object sender, RoutedEventArgs e)
+        private void ExplorerMenuButton_Click(object sender, RoutedEventArgs e)
         {
             _router.NavigateTo(Routes.Explore);
         }
 
-        private void CategoriMenuButtonClick(object sender, RoutedEventArgs e)
+        private void CategoriMenuButton_Click(object sender, RoutedEventArgs e)
         {
             _router.NavigateTo(Routes.Categories);
         }
 
-        private void NewsPageButtonClick(object sender, RoutedEventArgs e)
+        private void NewsPageButton_Click(object sender, RoutedEventArgs e)
         {
             _router.NavigateTo(Routes.Announcements);
         }
 
-        private void FavoritPageButtonClick(object sender, RoutedEventArgs e)
+        private void FavoritPageButton_Click(object sender, RoutedEventArgs e)
         {
             _router.NavigateTo(Routes.Favorites);
         }
 
-        private void MyAccountButtonClick(object sender, RoutedEventArgs e)
+        private void MyAccountButton_Click(object sender, RoutedEventArgs e)
         {
             _router.NavigateTo(Routes.MyAccount);
         }
 
-        private void MessagesButtonClick(object sender, RoutedEventArgs e)
+        private void MessagesButton_Click(object sender, RoutedEventArgs e)
         {
             _router.NavigateTo(Routes.Messages);
         }
 
-        private void SupportButtonClick(object sender, RoutedEventArgs e)
+        private void SupportButton_Click(object sender, RoutedEventArgs e)
         {
             _router.NavigateTo(Routes.Support);
         }
-		private void ForYouButtonClick(object sender, RoutedEventArgs e)
+		private void ForYouButton_Click(object sender, RoutedEventArgs e)
 		{
 			_router.NavigateTo(Routes.ForYou);
 		}
-		private void NotificationsButtonClick(object sender, RoutedEventArgs e)
+		private void NotificationsButton_Click(object sender, RoutedEventArgs e)
 		{
 			_router.NavigateTo(Routes.Notifications);
 		}

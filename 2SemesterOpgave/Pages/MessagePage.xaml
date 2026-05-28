@@ -6,64 +6,86 @@
              xmlns:local="clr-namespace:_2SemesterOpgave.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <DataTemplate x:Key="MessageTemplate">
-            <Border BorderBrush="Gray" BorderThickness="1" Margin="5" CornerRadius="5" Height="Auto" Width="Auto">
-                <Grid Background="HotPink">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+	<UserControl.Resources>
+		<DataTemplate x:Key="UserParticipantTemplate">
+			<Border BorderBrush="Gray" BorderThickness="1" Margin="5" CornerRadius="5" Height="40" Width="200">
+				<Button Content="{Binding Username}" Cursor="Hand" FontWeight="Bold" FontSize="14" Background="LightGreen" BorderBrush="Transparent" BorderThickness="0" Click="UserButton_Click"/>
+			</Border>
+		</DataTemplate>
+		<DataTemplate x:Key="MessageTemplate">
+			<Border x:Name="Bubble" BorderBrush="Gray" BorderThickness="1" Margin="5" CornerRadius="5" Height="Auto" Background="{Binding Background}" HorizontalAlignment="{Binding Alignment}">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0" Margin="10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="MessageSender" Grid.Column="0" Text="{Binding Sender.Username}" FontWeight="Bold" FontSize="14"/>
-                        <TextBlock x:Name="MessageTimeDate" Grid.Column="1" Text="{Binding Timestamp, StringFormat='HH:mm'}" FontWeight="Bold" FontSize="14" />
-                    </Grid>
-                    <TextBlock Grid.Row="1" Margin="10" x:Name="MessageText" Text="{Binding Text}" FontWeight="Bold" FontSize="14"/>
-                </Grid>
-            </Border>
-        </DataTemplate>
+					<Grid Grid.Row="0" Margin="10">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						<TextBlock x:Name="MessageSender" Grid.Column="0" Text="{Binding SenderName}" FontWeight="Bold" FontSize="14"/>
+						<TextBlock x:Name="MessageTimeDate" Grid.Column="1" Text="{Binding Timestamp, StringFormat='HH:mm'}" HorizontalAlignment="Right" FontWeight="Bold" FontSize="14" />
+					</Grid>
+					<TextBlock Grid.Row="1" Margin="10" x:Name="MessageText" Text="{Binding Text}" FontWeight="Bold" FontSize="14"/>
+				</Grid>
+			</Border>
+		</DataTemplate>
     </UserControl.Resources>
 
     <Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="100" />
+			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
-            <RowDefinition Height="100" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="50"/>
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="50"/>
 		</Grid.ColumnDefinitions>
-        
-        <ListBox x:Name="ListBoxMessageParticipants" DisplayMemberPath="Username" Grid.Row="0" Grid.Column="1"/>
 
-        <ScrollViewer Grid.Row="1" Grid.Column="1">
-            <ItemsControl  x:Name="MessageItemsControl" ItemTemplate="{StaticResource MessageTemplate}" Margin="10">
+		<Border Grid.Row="0" Grid.Column="1" BorderBrush="LightGray" CornerRadius="10" Margin="20" BorderThickness="1" MaxWidth="800">
+			<StackPanel Orientation="Vertical">
+				<Border>
+					<TextBlock Text="Samtale med" Margin="20, 10, 0, 0" FontSize="16" />
+				</Border>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+					<ItemsControl x:Name="ConversationParticipantsItemsControl" ItemsSource="{Binding OtherParticipants}" ItemTemplate="{StaticResource UserParticipantTemplate}" Margin="10">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"></WrapPanel>
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+					</ItemsControl>
+				</StackPanel>
+			</StackPanel>
+        </Border>
+
+		<ScrollViewer Grid.Row="1" Grid.Column="1">
+			<ItemsControl MaxWidth="800" x:Name="MessageItemsControl" ItemTemplate="{StaticResource MessageTemplate}" Margin="0">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Vertical" HorizontalAlignment="Center"></WrapPanel>
+                        <StackPanel Orientation="Vertical"></StackPanel>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
         </ScrollViewer>
 
-        <Border Grid.Row="2" Grid.Column="1" BorderBrush="Black" BorderThickness="1" CornerRadius="5">
+        <Border MaxWidth="800" Grid.Row="2" Grid.Column="1" BorderBrush="Black" BorderThickness="1" CornerRadius="10" Padding="10" Margin="0, 20">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBox x:Name="MessageTextBox" Grid.Column="0" />
-                <Button Click="SendButton_Click" Content="Send" Grid.Column="1" />
+                <TextBox x:Name="MessageTextBox" BorderThickness="0" FontSize="16" Grid.Column="0" Padding="10" VerticalAlignment="Center"/>
+				<Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" CornerRadius="10" Margin="10, 0" Cursor="Hand">
+					<Button Click="SendButton_Click" BorderBrush="Transparent" BorderThickness="0" Padding="20, 10" FontSize="20" Background="Transparent" Content="⬆️" />
+				</Border>
             </Grid>
         </Border>
 	</Grid>

@@ -16,7 +16,7 @@ namespace _2SemesterOpgave.Services
         public ObservableCollection<User> Users;
         public FakeConversation FakeConversation;
         public User CurrentUser;
-
+        public User? TargetUser;
         public UserServices(Database db)
         {
             _userRepository = new UserRepository(db);
@@ -29,8 +29,8 @@ namespace _2SemesterOpgave.Services
             FakeConversation = new FakeConversation();
             FakeConversation.ContinueConversationBot(Conversations[0], Conversations[0].Participants[1]);
 
-            Conversations[0].Messages.Add(new Message("Heeeeeeeeeey", Conversations[0], Conversations[0].Participants[0], DateTime.Now));
             Conversations[0].Messages.Add(new Message("Suuup", Conversations[0], Conversations[0].Participants[1], DateTime.Now));
+            Conversations[0].Messages.Add(new Message("Heeeeeeeeeey", Conversations[0], Conversations[0].Participants[0], DateTime.Now));
         }
 
 		public ObservableCollection<User> GetAllUsers()
@@ -53,5 +53,12 @@ namespace _2SemesterOpgave.Services
 
             _userRepository.CreateUser(user);
         }
+
+        public Message CreateMessage(string text, Conversation conversation, User sender)
+        {
+            return new Message(text, conversation, sender, DateTime.Now);
+        }
+
+
     }
 }

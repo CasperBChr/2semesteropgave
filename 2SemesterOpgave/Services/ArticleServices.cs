@@ -12,7 +12,7 @@ namespace _2SemesterOpgave.Services
 	public class ArticleServices
 	{
 		ArticleRepository _articleRepository;
-		public Article SelectedArticle { get; set; }
+		public Article? SelectedArticle { get; set; }
 
 		public ArticleServices(Database db) 
 		{

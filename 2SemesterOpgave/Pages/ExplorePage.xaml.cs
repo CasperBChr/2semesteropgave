@@ -23,16 +23,22 @@ namespace _2SemesterOpgave.Pages
     {
 
         ArticleServices _articleServices;
+        Router _router;
 
-        public ExplorePage(ArticleServices articleServices)
+        public ExplorePage(Router router, ArticleServices articleServices)
         {
             InitializeComponent();
 			_articleServices = articleServices;
 
-
+            _router = router;
             ArticlesItemsControl.ItemsSource = _articleServices.GetAllArticles();
 
 
         }
-    }
+
+		private void ArticleButton_Click(object sender, RoutedEventArgs e)
+		{	
+            _router.NavigateTo(Routes.Article);
+		}
+	}
 }
