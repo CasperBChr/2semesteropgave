@@ -1,8 +1,7 @@
-﻿using _2SemesterOpgave.Models;
-using _2SemesterOpgave.Services;
-using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,41 +13,89 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using _2SemesterOpgave.Models;
+using _2SemesterOpgave.Services;
+using _2SemesterOpgave.Services.Interfaces;
+using _2SemesterOpgave.Utils.Messages;
+using _2SemesterOpgave.ViewModels;
+using Microsoft.VisualBasic;
 
 namespace _2SemesterOpgave.Pages
 {
-    /// <summary>
-    /// Interaction logic for MessagePage.xaml
-    /// </summary>
-    public partial class MessagePage : UserControl
-    {
-        UserServices _userServices;
-        Conversation _conversation;
+	/// <summary>
+	/// Interaction logic for MessagePage.xaml
+	/// </summary>
+	public partial class MessagePage : UserControl
+	{
+		UserServices _userServices;
 
-        public MessagePage(UserServices userServices)
-        {
-            InitializeComponent();
-            _userServices = userServices;
-            ListBoxMessageParticipants.ItemsSource = _userServices.Conversations[0].Participants;
+		IMessageService _messageService;
 
-            _conversation = _userServices.Conversations[0];
+		Conversation _conversation;
 
-            MessageItemsControl.ItemsSource = _conversation.Messages;
+		ConversationViewModel _conversationViewModel;
+
+		Router _router;
+
+		public MessagePage(Router router, UserServices userServices)
+		{
+			InitializeComponent();
+
+			_router = router;
+
+			_userServices = userServices;
+
+			_messageService = new MessageService();
+
+			_conversation = _userServices.Conversations[0];
+
+			_conversationViewModel = new ConversationViewModel(
+				_conversation,
+				_userServices.CurrentUser
+			);
+
+			DataContext = _conversationViewModel;
+
+			_userServices.FakeConversation.OnNewMessage += (_conversation) =>
+			{
+				Dispatcher.Invoke(() =>
+				{
+					_messageService.SendMessage(_conversation, _conversation.Participants[1], _userServices.FakeConversation.RandomMessageText());
+				});
+			};
+
+			MessageItemsControl.ItemsSource = _conversationViewModel.Messages;
+			Debug.Write(MessageItemsControl.ItemsSource);
+		}
+
+		private void SendButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (string.IsNullOrWhiteSpace(MessageTextBox.Text))
+			{
+				return;
+			}
+
+			_messageService.SendMessage(
+				_conversation,
+				_userServices.CurrentUser,
+				MessageTextBox.Text
+			);
+
+			MessageTextBox.Text = string.Empty;
+		}
 
 
-            _userServices.FakeConversation.OnNewMessage += (conversation) =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    conversation.Messages.Add(new Message(_userServices.FakeConversation.RandomMessageText(), conversation, conversation.Participants[0], DateTime.Now));
-                });
-            };
-        }
+		private void UserButton_Click(object sender, RoutedEventArgs e)
+		{
+			Button button = (Button)sender;
 
-        private void SendButton_Click(object sender, RoutedEventArgs e)
-        {
-            _conversation.Messages.Add(new Message(MessageTextBox.Text, _conversation, _conversation.Participants[1], DateTime.Now));
-            MessageTextBox.Text = "";
-        }
-    }
+
+			User user = (User)button.DataContext;
+
+			_userServices.TargetUser = user;
+			_router.NavigateTo(Routes.UserProfile);
+
+		}
+	}
+
 }

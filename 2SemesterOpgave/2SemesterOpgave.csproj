@@ -10,10 +10,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Asset_1.png" />
+    <None Remove="Assets\UserIconAsset.png" />
     <None Remove="Data\db.db" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets\Asset_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\UserIconAsset.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\db.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

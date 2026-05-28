@@ -44,5 +44,8 @@
     <Compile Update="Pages\SupportPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\UserPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

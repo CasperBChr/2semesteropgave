@@ -47,7 +47,7 @@ namespace _2SemesterOpgave
 					_currentPage = Routes.Home;
                     break;
                 case Routes.Explore:
-                    _pageControl.Content = new ExplorePage(_articleServices);
+                    _pageControl.Content = new ExplorePage(this, _articleServices);
 					_currentPage = Routes.Explore;
                     break;
                 case Routes.Categories:
@@ -95,8 +95,12 @@ namespace _2SemesterOpgave
 					_currentPage = Routes.Notifications;
 					break;
 				case Routes.Message:
-					_pageControl.Content = new MessagePage(_userServices);
+					_pageControl.Content = new MessagePage(this, _userServices);
 					_currentPage = Routes.Message;
+					break;
+				case Routes.UserProfile:
+					_pageControl.Content = new UserPage(_userServices);
+					_currentPage = Routes.UserProfile;
 					break;
 			}
         }
@@ -117,7 +121,8 @@ namespace _2SemesterOpgave
         Article = 10,
         ForYou = 11,
         Notifications = 12,
-        Message = 13
+        Message = 13,
+        UserProfile = 14
     }
 }
 
