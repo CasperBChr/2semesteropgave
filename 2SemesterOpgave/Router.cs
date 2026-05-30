@@ -38,9 +38,9 @@ namespace _2SemesterOpgave
 			_currentFilter = filter;
 		}
 
-		public void NavigateTo(Routes route)
-        {
-            switch (route)
+		public void NavigateTo(Routes route, Article article = null)
+		{
+			switch (route)
             {
                 case Routes.Home:
                     _pageControl.Content = new HomePage(_articleServices);
@@ -83,11 +83,16 @@ namespace _2SemesterOpgave
 					_currentPage = Routes.Overview;
                     break;
                 case Routes.Article:
-                    _pageControl.Content = new ArticlePage();
+                    _pageControl.Content = new ArticlePage(this);
+                    if (article != null)
+                    {
+                        //DataContext til at binde data til UI-elementer.
+                        ((ArticlePage)_pageControl.Content).SetArticle(article);
+                    }
                     _currentPage = Routes.Article;
                     break;
                 case Routes.ForYou:
-                    _pageControl.Content = new ForYouPage();
+                    _pageControl.Content = new ForYouPage(this, _userServices, _articleServices, _categoryServices);
                     _currentPage = Routes.ForYou;
                     break;
 				case Routes.Notifications:

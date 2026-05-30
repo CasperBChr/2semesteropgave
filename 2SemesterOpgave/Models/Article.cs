@@ -9,12 +9,12 @@ namespace _2SemesterOpgave.Models
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        //public Size size { get; set; }
+        public Size Size { get; set; }
         //public Collection collection { get; set; }
         public float OriginalPrice { get; set; }
         public float DailyPrice { get; set; }
-        //public Brand brand { get; set; }
-        //public Color Color { get; set; }
+        public Brand Brand { get; set; }
+        public Color Color { get; set; }
         //public Acessibility acessibility { get; set; }
         //public DateTime CreationTime { get; set; }
         public bool IsRented { get; set; }
@@ -25,27 +25,71 @@ namespace _2SemesterOpgave.Models
         //public ConditionEnum Condition { get; set; }
         //public SeasonEnum Season { get; set; }
         //public List<ShippingOption> ShippingOptions { get; set; }
-        //public List<Category> categories { get; set; }
-        //public List<SubCategory> Subcategories { get; set; }
+        public List<Category> categories { get; set; }
+        public List<SubCategory> Subcategories { get; set; }
+        public User Owner { get; set; }
 
-        public Article(string title, string description, float originalPrice, float dailyPrice, bool isRented, bool isSmoked, bool isAnimal, bool isClean) // Constructor: initialiserer en ny instans af Article-klassen med de angivne parametre
+        //Constructor: initialiserer en ny instans af Article-klassen med de angivne parametre
+        public Article(string title, string description, List<Category> category, List<SubCategory> subcategory, Size size, float dailyPrice, Color color, Brand brand, bool isRented, float originalPrice, bool isSmoked, bool isAnimal, bool isClean, User owner) 
         {
             Title = title; // Sætter Title til det angivne titel, når en ny Article oprettes
             Description = description; // Sætter Description til den angivne beskrivelse, når en ny Article oprettes
-            //this.size = size; // Sætter size til den angivne størrelse, når en ny Article oprettes
-            OriginalPrice = originalPrice; // Sætter OriginalPrice til den angivne oprindelige pris, når en ny Article oprettes
+            categories = category; // Sætter categories til den angivne liste af kategorier, når en ny Article oprettes
+            Subcategories = subcategory; // Sætter Subcategories til den angivne liste af underkategorier, når en ny Article oprettes
+            Size = size; // Sætter size til den angivne størrelse, når en ny Article oprettes        
             DailyPrice = dailyPrice; // Sætter DailyPrice til den angivne daglige pris, når en ny Article oprettes
-            //Color = color; // Sætter Color til den angivne farve, når en ny Article oprettes
-            //CreationTime = creationTime; // Sætter CreationTime til det angivne oprettelsestidspunkt, når en ny Article oprettes
+            Color = color; // Sætter Color til den angivne farve, når en ny Article oprettes
+            Brand = brand; // Sætter Brand til den angivne mærke, når en ny Article oprettes
             IsRented = isRented; // Sætter IsRented til den angivne værdi for at indikere om artiklen er udlejet eller ej
+            //CreationTime = creationTime; // Sætter CreationTime til det angivne oprettelsestidspunkt, når en ny Article oprettes
+            OriginalPrice = originalPrice; // Sætter OriginalPrice til den angivne oprindelige pris, når en ny Article oprettes
             IsSmoked = isSmoked; // Sætter IsSmoked til den angivne værdi for at indikere om artiklen er røget eller ej
             IsAnimal = isAnimal; // Sætter IsAnimal til den angivne værdi for at indikere om artiklen har været i kontakt med dyr eller ej
             IsClean = isClean; // Sætter IsClean til den angivne værdi for at indikere om artiklen er ren eller ej
+            Owner = owner;
             //TrueToSize = trueToSize; // Sætter TrueToSizeEnum til den angivne værdi for at indikere om artiklen er true to size, mindre eller større end forventet
             //Condition = condition; // Sætter ConditionEnum til den angivne værdi for at indikere tilstanden på artiklen
             //Season = season; // Sætter SeasonEnum til den angivne værdi for
 
         }
+
+        public Article(string title, string description, float originalPrice, float dailyPrice, bool isRented, bool isSmoked, bool isAnimal, bool isClean)
+        {
+            Title = title;
+            Description = description;
+            OriginalPrice = originalPrice;
+            DailyPrice = dailyPrice;
+            IsRented = isRented;
+            IsSmoked = isSmoked;
+            IsAnimal = isAnimal;
+            IsClean = isClean;
+        }
+
+        //public Article(string title, string description, int category, int subcategory, int size, float originalPrice, float dailyPrice, int color, int brand, bool isRented, bool isSmoked, bool isAnimal, bool isClean, User owner)
+        //{
+        //    Title = title;
+        //    Description = description;
+        //    OriginalPrice = originalPrice;
+        //    DailyPrice = dailyPrice;
+        //    IsRented = isRented;
+        //    IsSmoked = isSmoked;
+        //    IsAnimal = isAnimal;
+        //    IsClean = isClean;
+        //    Owner = owner;
+        //}
+
+        public Article(string title, string description, int category, int subcategory, int size, float originalPrice, float dailyPrice, int color, int brand, bool isRented, bool isSmoked, bool isAnimal, bool isClean, int owner)
+        {
+            Title = title;
+            Description = description;
+            OriginalPrice = originalPrice;
+            DailyPrice = dailyPrice;
+            IsRented = isRented;
+            IsSmoked = isSmoked;
+            IsAnimal = isAnimal;
+            IsClean = isClean;
+        }
+
         public enum TrueToSizeEnum // Enum til at repræsentere, om en artikel er true to size, mindre eller større end forventet
         {
             TrueToSize,

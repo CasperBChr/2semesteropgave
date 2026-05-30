@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace _2SemesterOpgave.Algoritme
+{
+    //Kodet af Camilla
+    public class ContentBasedAlgorithm
+    {
+        //Beregner Cosine Similarity mellem brugerens præferencer og elementets profil
+        public static double CosineSimilarity(UserProfile user, ItemProfile item)
+        {
+            //Field for skalarproduktet for Cosine Similarity
+            double dotProduct = 0.0;
+
+            //Field for længden af både brugerprofilen og elementprofilen
+            double userMagnitude = 0.0;
+            double itemMagnitude = 0.0;
+
+            //Beregner skalarproduktet og længderne for Cosine Similarity
+            foreach (var feature in item.Features)
+            {
+                string key = feature.Key;
+                double itemValue = feature.Value;
+                double userValue = user.Preferences.ContainsKey(key) ? user.Preferences[key] : 0.0;
+
+                //Beregner skalarproduktet
+                dotProduct += userValue * itemValue;
+
+                //Beregner længden for itemprofilen
+                itemMagnitude += Math.Pow(itemValue, 2);
+            }
+
+            //Beregner længden for brugerprofilen
+            foreach (var userPref in user.Preferences)
+            {
+                userMagnitude += Math.Pow(userPref.Value, 2);
+            }
+
+            //Undgår division med nul
+            if (userMagnitude == 0 || itemMagnitude == 0) return 0.0;
+
+            //Returnerer resultatet for Cosine Similarity
+            return dotProduct / (Math.Sqrt(userMagnitude) * Math.Sqrt(itemMagnitude));
+        }
+
+        //Finder de bedste anbefalinger for en bruger baseret på Cosine Similarity
+        public static List<(ItemProfile Item, double Score)> GetRecommendations(UserProfile user, List<ItemProfile> catalog, int topN = 3)
+        {
+            //Liste til at gemme anbefalinger og deres match-score
+            var recommendations = new List<(ItemProfile Item, double Score)>();
+
+            //Beregner match-score for hvert element i kataloget og tilføjer det til anbefalingslisten
+            foreach (var item in catalog)
+            {
+                //Beregner Cosine Similarity mellem brugerprofilen og elementprofilen
+                double score = CosineSimilarity(user, item);
+                recommendations.Add((item, score));
+            }
+
+            //Returnerer de top 3 anbefalinger sorteret efter match-score i faldende rækkefølge
+            return recommendations.OrderByDescending(r => r.Score).Take(topN).ToList();
+        }
+
+    }
+}

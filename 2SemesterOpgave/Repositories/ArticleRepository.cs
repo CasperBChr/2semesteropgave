@@ -28,7 +28,7 @@ namespace _2SemesterOpgave.Repositories
 
 			while (reader.Read())
 			{
-				articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), originalPrice: 20000.0f, dailyPrice: 150.0f, true, true, true, true));
+				articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), category: reader.GetOrdinal("category"), subcategory: reader.GetOrdinal("subcategory"), size: reader.GetOrdinal("size"), originalPrice: 20000.0f, dailyPrice: 150.0f, color: reader.GetOrdinal("color"), brand: reader.GetOrdinal("brand"), isRented: true, isSmoked: true, isAnimal: true, isClean: true, owner: reader.GetOrdinal("owner_id")));
 				//users.Add(new User(username: reader["Username"].ToString(), email: reader["Email"].ToString(), password: reader["Password"].ToString(), id: Convert.ToInt32(reader["ID"])));
 			}
 
@@ -48,7 +48,7 @@ namespace _2SemesterOpgave.Repositories
 
             while (reader.Read())
             {
-                articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), originalPrice: 20000.0f, dailyPrice: 150.0f, true, true, true, true));
+                articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), originalPrice: 20000.0f, dailyPrice: 150.0f, isRented: true, isSmoked: true, isAnimal: true, isClean: true));
                 //users.Add(new User(username: reader["Username"].ToString(), email: reader["Email"].ToString(), password: reader["Password"].ToString(), id: Convert.ToInt32(reader["ID"])));
             }
 
@@ -116,7 +116,7 @@ namespace _2SemesterOpgave.Repositories
 
 			while (reader.Read())
 			{
-				articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), originalPrice: 20000.0f, dailyPrice: 150.0f, true, true, true, true));
+				articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), originalPrice: 20000.0f, dailyPrice: 150.0f, isRented: true, isSmoked: true, isAnimal: true, isClean: true));
 				//users.Add(new User(username: reader["Username"].ToString(), email: reader["Email"].ToString(), password: reader["Password"].ToString(), id: Convert.ToInt32(reader["ID"])));
 			}
 
