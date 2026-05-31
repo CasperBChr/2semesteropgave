@@ -116,9 +116,9 @@ namespace _2SemesterOpgave
             _router.NavigateTo(Routes.Messages);
         }
 
-        private void SupportButton_Click(object sender, RoutedEventArgs e)
+        private void CreateArticleButton_Click(object sender, RoutedEventArgs e)
         {
-            _router.NavigateTo(Routes.Support);
+            _router.NavigateTo(Routes.CreateArticle);
         }
 		private void ForYouButton_Click(object sender, RoutedEventArgs e)
 		{

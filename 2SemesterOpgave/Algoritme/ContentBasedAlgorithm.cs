@@ -45,7 +45,7 @@ namespace _2SemesterOpgave.Algoritme
         }
 
         //Finder de bedste anbefalinger for en bruger baseret på Cosine Similarity
-        public static List<(ItemProfile Item, double Score)> GetRecommendations(UserProfile user, List<ItemProfile> catalog, int topN = 3)
+        public static List<(ItemProfile Item, double Score)> GetRecommendations(UserProfile user, List<ItemProfile> catalog, int topN = 10)
         {
             //Liste til at gemme anbefalinger og deres match-score
             var recommendations = new List<(ItemProfile Item, double Score)>();
