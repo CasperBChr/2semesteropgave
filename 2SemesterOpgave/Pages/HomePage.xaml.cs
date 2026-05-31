@@ -1,4 +1,5 @@
-﻿using _2SemesterOpgave.Services;
+﻿using _2SemesterOpgave.Models;
+using _2SemesterOpgave.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,16 +21,25 @@ namespace _2SemesterOpgave.Pages
     public partial class HomePage : UserControl
     {
         ArticleServices _articleServices;
+        Router _router;
 
-        public HomePage(ArticleServices articleServices)
+        public HomePage(Router router, ArticleServices articleServices)
         {
             InitializeComponent();
 
+            _router = router;
             _articleServices = articleServices;
 
             ArticlesItemsControl.ItemsSource = _articleServices.GetNewestArticles();
         }
 
+		private void ArticlePageButton_Click(object sender, RoutedEventArgs e)
+		{
+            _router.NavigateTo(Routes.Article);
 
-    }
+            Button button = (Button)sender;
+
+            _articleServices.SelectedArticle = (Article)button.DataContext;
+		}
+	}
 }
