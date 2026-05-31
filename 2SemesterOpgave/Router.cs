@@ -83,7 +83,7 @@ namespace _2SemesterOpgave
 					_currentPage = Routes.Overview;
                     break;
                 case Routes.Article:
-                    _pageControl.Content = new ArticlePage(this);
+                    _pageControl.Content = new ArticlePage(this, _articleServices, _categoryServices);
                     if (article != null)
                     {
                         //DataContext til at binde data til UI-elementer.

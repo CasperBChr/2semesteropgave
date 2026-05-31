@@ -14,7 +14,7 @@ namespace _2SemesterOpgave.Models
         public float OriginalPrice { get; set; }
         public float DailyPrice { get; set; }
         public Brand Brand { get; set; }
-        public Color Color { get; set; }
+        public string Color { get; set; }
         //public Acessibility acessibility { get; set; }
         //public DateTime CreationTime { get; set; }
         public bool IsRented { get; set; }
@@ -25,16 +25,16 @@ namespace _2SemesterOpgave.Models
         //public ConditionEnum Condition { get; set; }
         //public SeasonEnum Season { get; set; }
         //public List<ShippingOption> ShippingOptions { get; set; }
-        public List<Category> categories { get; set; }
-        public List<SubCategory> Subcategories { get; set; }
+        public IEnumerable<Category> Categories { get; set; }
+        public IEnumerable<SubCategory> Subcategories { get; set; }
         public User Owner { get; set; }
 
         //Constructor: initialiserer en ny instans af Article-klassen med de angivne parametre
-        public Article(string title, string description, List<Category> category, List<SubCategory> subcategory, Size size, float dailyPrice, Color color, Brand brand, bool isRented, float originalPrice, bool isSmoked, bool isAnimal, bool isClean, User owner) 
+        public Article(string title, string description, IEnumerable<Category> category, IEnumerable<SubCategory> subcategory, Size size, float dailyPrice, string color, Brand brand, bool isRented, float originalPrice, bool isSmoked, bool isAnimal, bool isClean, User owner) 
         {
             Title = title; // Sætter Title til det angivne titel, når en ny Article oprettes
             Description = description; // Sætter Description til den angivne beskrivelse, når en ny Article oprettes
-            categories = category; // Sætter categories til den angivne liste af kategorier, når en ny Article oprettes
+            Categories = category; // Sætter categories til den angivne liste af kategorier, når en ny Article oprettes
             Subcategories = subcategory; // Sætter Subcategories til den angivne liste af underkategorier, når en ny Article oprettes
             Size = size; // Sætter size til den angivne størrelse, når en ny Article oprettes        
             DailyPrice = dailyPrice; // Sætter DailyPrice til den angivne daglige pris, når en ny Article oprettes

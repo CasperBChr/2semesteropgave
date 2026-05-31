@@ -34,32 +34,32 @@
                 <RowDefinition Height="Auto" />
                
             </Grid.RowDefinitions>
-            <TextBlock x:Name="TitleTextBox" FontSize="40" Grid.Row="0" Text="{Binding title}"><LineBreak/></TextBlock>
-            <TextBlock x:Name="DescriptionTextBox" FontSize="40" Grid.Row="1" Text="{Binding description}"/>
+            <TextBlock x:Name="TitleTextBox" FontSize="40" Grid.Row="0" Text="{Binding Title}"><LineBreak/></TextBlock>
+            <TextBlock x:Name="DescriptionTextBox" FontSize="40" Grid.Row="1" Text="{Binding Description}"/>
             <StackPanel Grid.Row="2">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="Kategori:" FontSize="15" />
-                    <TextBlock x:Name="categoryTextBlock" FontSize="15" Text="{Binding category}"/>
+                    <TextBlock Text="Kategori: " FontSize="15" />
+                    <ListBox x:Name="categoryTextBlock" FontSize="15" ItemsSource="{Binding Categories}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="Under kategori:" FontSize="15" />
-                    <TextBlock x:Name="subcategoryTextBlock" FontSize="15" Text="{Binding subcategory}"/>
+                    <TextBlock Text="Under kategori: " FontSize="15" />
+                    <ListBox x:Name="subcategoryTextBlock" FontSize="15" ItemsSource="{Binding Subcategories}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="Størrelse:" FontSize="15" />
-                    <TextBlock x:Name="sizeTextBlock" FontSize="15" Text="{Binding size}"/>
+                    <TextBlock Text="Størrelse: " FontSize="15" />
+                    <TextBlock x:Name="sizeTextBlock" FontSize="15" Text="{Binding Size.ClothingUSSize}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="Pris:" FontSize="15" />
-                    <TextBlock x:Name="priceTextBlock" FontSize="15" Text="{Binding dailyPrice}"/>
+                    <TextBlock Text="Pris: " FontSize="15" />
+                    <TextBlock x:Name="priceTextBlock" FontSize="15" Text="{Binding DailyPrice}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="Farve:" FontSize="15" />
-                    <TextBlock x:Name="colorTextBlock" FontSize="15" Text="{Binding color}"/>
+                    <TextBlock Text="Farve: " FontSize="15" />
+                    <TextBlock x:Name="colorTextBlock" FontSize="15" Text="{Binding Color}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="Brand:" FontSize="15" />
-                    <TextBlock x:Name="brandTextBlock" FontSize="15" Text="{Binding brand}"/>
+                    <TextBlock Text="Brand: " FontSize="15" />
+                    <TextBlock x:Name="brandTextBlock" FontSize="15" Text="{Binding Brand.Name}"/>
                 </StackPanel>
             </StackPanel>
             <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
