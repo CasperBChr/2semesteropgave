@@ -20,17 +20,34 @@ namespace _2SemesterOpgave.Pages
     /// </summary>
     public partial class HomePage : UserControl
     {
+<<<<<<< Updated upstream
         ArticleServices _articleServices;
         Router _router;
 
+<<<<<<< Updated upstream
         public HomePage(Router router, ArticleServices articleServices)
         {
             InitializeComponent();
 
             _router = router;
+=======
+=======
+        ArticleServices _articelServices;
+>>>>>>> Stashed changes
+        public HomePage(ArticleServices articleServices)
+        {
+            InitializeComponent();
+
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
             _articleServices = articleServices;
 
             ArticlesItemsControl.ItemsSource = _articleServices.GetNewestArticles();
+=======
+            _articelServices = articleServices;
+
+            ArticlesItemsControl.ItemsSource = _articelServices.GetNewestArticles();
+>>>>>>> Stashed changes
         }
 
 		private void ArticlePageButton_Click(object sender, RoutedEventArgs e)

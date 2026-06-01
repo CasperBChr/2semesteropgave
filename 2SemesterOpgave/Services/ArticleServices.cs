@@ -14,9 +14,9 @@ namespace _2SemesterOpgave.Services
 		ArticleRepository _articleRepository;
 		public Article? SelectedArticle { get; set; }
 
-		public ArticleServices(Database db) 
+		public ArticleServices(Database db, BrandServices brandServices) 
 		{
-			_articleRepository = new ArticleRepository(db);
+			_articleRepository = new ArticleRepository(db, brandServices);
 		}
 
 		public ObservableCollection<Article> GetAllArticles()

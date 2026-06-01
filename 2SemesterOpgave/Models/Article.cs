@@ -14,7 +14,11 @@ namespace _2SemesterOpgave.Models
         public float OriginalPrice { get; set; }
         public float DailyPrice { get; set; }
         public Brand Brand { get; set; }
+<<<<<<< Updated upstream
         public string Color { get; set; }
+=======
+        //public Color Color { get; set; }
+>>>>>>> Stashed changes
         //public Acessibility acessibility { get; set; }
         //public DateTime CreationTime { get; set; }
         public bool IsRented { get; set; }
@@ -29,6 +33,7 @@ namespace _2SemesterOpgave.Models
         public IEnumerable<SubCategory> Subcategories { get; set; }
         public User Owner { get; set; }
 
+<<<<<<< Updated upstream
         //Constructor: initialiserer en ny instans af Article-klassen med de angivne parametre
         public Article(string title, string description, IEnumerable<Category> category, IEnumerable<SubCategory> subcategory, Size size, float dailyPrice, string color, Brand brand, bool isRented, float originalPrice, bool isSmoked, bool isAnimal, bool isClean, User owner) 
         {
@@ -37,6 +42,15 @@ namespace _2SemesterOpgave.Models
             Categories = category; // Sætter categories til den angivne liste af kategorier, når en ny Article oprettes
             Subcategories = subcategory; // Sætter Subcategories til den angivne liste af underkategorier, når en ny Article oprettes
             Size = size; // Sætter size til den angivne størrelse, når en ny Article oprettes        
+=======
+        public Article(string title, string description, Brand brand, float originalPrice, float dailyPrice, bool isRented, bool isSmoked, bool isAnimal, bool isClean) // Constructor: initialiserer en ny instans af Article-klassen med de angivne parametre
+        {
+            Title = title; // Sætter Title til det angivne titel, når en ny Article oprettes
+            Description = description; // Sætter Description til den angivne beskrivelse, når en ny Article oprettes
+            Brand = brand; // Sætter Brand til den angivne brand, når en ny Article oprettes
+            //this.size = size; // Sætter size til den angivne størrelse, når en ny Article oprettes
+            OriginalPrice = originalPrice; // Sætter OriginalPrice til den angivne oprindelige pris, når en ny Article oprettes
+>>>>>>> Stashed changes
             DailyPrice = dailyPrice; // Sætter DailyPrice til den angivne daglige pris, når en ny Article oprettes
             Color = color; // Sætter Color til den angivne farve, når en ny Article oprettes
             Brand = brand; // Sætter Brand til den angivne mærke, når en ny Article oprettes

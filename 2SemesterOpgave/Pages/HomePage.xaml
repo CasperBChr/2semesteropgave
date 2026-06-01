@@ -9,17 +9,29 @@
     <UserControl.Resources>
         <DataTemplate x:Key="ArticleTemplate">
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5">
+<<<<<<< Updated upstream
                 <StackPanel Orientation="Vertical" Margin="5">
                     <Image Source="{Binding ImageUrl}" Width="100" Height="100" Margin="5"/>
+<<<<<<< Updated upstream
                     <Button x:Name="ArticlePageButton" Click="ArticlePageButton_Click" >
+=======
+=======
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <!--<Image Source="{Binding ImageUrl}" Width="100" Height="100" Margin="5"/>-->
+>>>>>>> Stashed changes
+                    <Button>
+>>>>>>> Stashed changes
                         <StackPanel Orientation="Vertical" Margin="5">
                             <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="14"/>
                             <TextBlock Text="{Binding Description}" TextWrapping="Wrap" MaxWidth="400"/>
-
+<<<<<<< Updated upstream
+                            <TextBlock Text="{Binding Brand.Name}" FontWeight="Bold" FontSize="12"/>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Price: "/>
                                 <TextBlock Text="{Binding DailyPrice}" />
                             </StackPanel>
+=======
+>>>>>>> Stashed changes
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -28,6 +40,7 @@
     </UserControl.Resources>
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.RowDefinitions>
+<<<<<<< Updated upstream
             <RowDefinition Height="100" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -44,6 +57,17 @@
         
         <!--<ListBox Grid.Row="1" DisplayMemberPath="Title" x:Name="ListBoxArticles">
                
+=======
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Home" FontSize="50"/>
+
+        <ItemsControl Grid.Row="1" x:Name="ArticlesItemsControl" ItemTemplate="{StaticResource ArticleTemplate}" Margin="10"/>
+
+        <!--<ListBox Grid.Row="1" DisplayMemberPath="Title" x:Name="ListBoxArticles">
+>>>>>>> Stashed changes
             
         </ListBox>-->
     </Grid>

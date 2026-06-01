@@ -50,6 +50,7 @@ namespace _2SemesterOpgave
         UserServices _userServices;
 		ArticleServices _articleServices;
 		FilterCriteria _filter = new FilterCriteria();
+        BrandServices _brandServices;
 
         //FakeConversation _fakeConversation;
 
@@ -64,7 +65,8 @@ namespace _2SemesterOpgave
             _db = new Database($"Data Source={dbpath}");
             _userRepository = new UserRepository(_db);
 			_categoryServices = new CategoryServices(_db);
-            _articleServices = new ArticleServices(_db);
+            _brandServices = new BrandServices(_db);
+            _articleServices = new ArticleServices(_db, _brandServices);
             _userServices = new UserServices(_db);
 			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _filter);
             _categories = _categoryServices.GetAllCategories();
