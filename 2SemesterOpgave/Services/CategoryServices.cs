@@ -13,9 +13,9 @@ namespace _2SemesterOpgave.Services
 	{
 		ICategoryRepository _categoryRepository;
 
-		public CategoryServices(Database db) 
+		public CategoryServices(CategoryRepository categoryRepository) 
 		{
-			_categoryRepository = new CategoryRepository(db);
+			_categoryRepository = categoryRepository;
 		}
 
 		public ObservableCollection<Category> GetAllCategories() 

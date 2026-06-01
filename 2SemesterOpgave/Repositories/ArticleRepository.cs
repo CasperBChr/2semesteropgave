@@ -7,6 +7,7 @@ using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories.Interfaces;
 using _2SemesterOpgave;
+using _2SemesterOpgave.Services;
 
 namespace _2SemesterOpgave.Repositories
 {
@@ -22,53 +23,52 @@ namespace _2SemesterOpgave.Repositories
 
 		public IEnumerable<Article> GetAllArticles() 
 		{
-			_db.Open();
-			DbCommand command = _db.Connection.CreateCommand();
-			command.CommandText = "SELECT * FROM Articles";
-			List<Article> articles = new List<Article>();
-			DbDataReader reader = command.ExecuteReader();
-
-			while (reader.Read())
+			try 
 			{
-<<<<<<< Updated upstream
-				articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), category: reader.GetOrdinal("category"), subcategory: reader.GetOrdinal("subcategory"), size: reader.GetOrdinal("size"), originalPrice: 20000.0f, dailyPrice: 150.0f, color: reader.GetOrdinal("color"), brand: reader.GetOrdinal("brand"), isRented: true, isSmoked: true, isAnimal: true, isClean: true, owner: reader.GetOrdinal("owner_id")));
-=======
-				articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), brand: _brandlist[0],originalPrice: 20000.0f, dailyPrice: 150.0f, true, true, true, true));
->>>>>>> Stashed changes
-				//users.Add(new User(username: reader["Username"].ToString(), email: reader["Email"].ToString(), password: reader["Password"].ToString(), id: Convert.ToInt32(reader["ID"])));
-			}
+				_db.Open();
+				using DbCommand command = _db.Connection.CreateCommand();
+				command.CommandText = "SELECT * FROM Articles";
+				List<Article> articles = new List<Article>();
+				using DbDataReader reader = command.ExecuteReader();
 
-			reader.Close();
-			_db.Close();
-			return articles;
+				while (reader.Read())
+				{
+					articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), category: reader.GetOrdinal("category"), subcategory: reader.GetOrdinal("subcategory"), size: reader.GetOrdinal("size"), originalPrice: 20000.0f, dailyPrice: 150.0f, color: reader.GetOrdinal("color"), brand: reader.GetOrdinal("brand"), isRented: true, isSmoked: true, isAnimal: true, isClean: true, owner: reader.GetOrdinal("owner_id")));
+					//users.Add(new User(username: reader["Username"].ToString(), email: reader["Email"].ToString(), password: reader["Password"].ToString(), id: Convert.ToInt32(reader["ID"])));
+				}
+				reader.Close();
+				return articles;
+			}
+			finally
+			{
+				_db.Close();
+			}
 		}
 
 
         public IEnumerable<Article> GetNewestArticles()
         {
-            _db.Open();
-            DbCommand command = _db.Connection.CreateCommand();
-            command.CommandText = "SELECT * FROM Articles ORDER BY created_at DESC LIMIT 10";
-            List<Article> articles = new List<Article>();
-            DbDataReader reader = command.ExecuteReader();
+			try 
+			{
+				_db.Open();
+				using DbCommand command = _db.Connection.CreateCommand();
+				command.CommandText = "SELECT * FROM Articles ORDER BY created_at DESC LIMIT 10";
+				List<Article> articles = new List<Article>();
+				using DbDataReader reader = command.ExecuteReader();
 
-            while (reader.Read())
-            {
-<<<<<<< Updated upstream
-                articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), originalPrice: 20000.0f, dailyPrice: 150.0f, isRented: true, isSmoked: true, isAnimal: true, isClean: true));
-=======
-<<<<<<< Updated upstream
-                articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), brand: _brandlist[0],originalPrice: 20000.0f, dailyPrice: 150.0f, true, true, true, true));
-=======
-                articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), originalPrice: 20000.0f, dailyPrice: 150.0f, true, true, true, true));
->>>>>>> Stashed changes
->>>>>>> Stashed changes
-                //users.Add(new User(username: reader["Username"].ToString(), email: reader["Email"].ToString(), password: reader["Password"].ToString(), id: Convert.ToInt32(reader["ID"])));
-            }
+				while (reader.Read())
+				{
+					articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), originalPrice: 20000.0f, dailyPrice: 150.0f, isRented: true, isSmoked: true, isAnimal: true, isClean: true));
+					//users.Add(new User(username: reader["Username"].ToString(), email: reader["Email"].ToString(), password: reader["Password"].ToString(), id: Convert.ToInt32(reader["ID"])));
+				}
 
-            reader.Close();
-            _db.Close();
-            return articles;
+				reader.Close();
+				return articles;
+			}
+			finally 
+			{
+				_db.Close();
+			}
         }
 
 

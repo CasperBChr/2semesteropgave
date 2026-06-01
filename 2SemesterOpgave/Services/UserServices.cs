@@ -17,9 +17,9 @@ namespace _2SemesterOpgave.Services
         public FakeConversation FakeConversation;
         public User CurrentUser;
         public User? TargetUser;
-        public UserServices(Database db)
+        public UserServices(UserRepository userRepository)
         {
-            _userRepository = new UserRepository(db);
+            _userRepository = userRepository;
             Conversations = new ObservableCollection<Conversation>();
             Users = GetAllUsers();
             CurrentUser = Users[0];

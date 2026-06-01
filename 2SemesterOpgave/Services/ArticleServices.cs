@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Common;
 using System.Text;
 using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
@@ -12,12 +13,29 @@ namespace _2SemesterOpgave.Services
 	public class ArticleServices
 	{
 		ArticleRepository _articleRepository;
+		BrandServices _brandServices;
 		public Article? SelectedArticle { get; set; }
 
-		public ArticleServices(Database db, BrandServices brandServices) 
+		public ArticleServices(ArticleRepository articleRepository, BrandServices brandService) 
 		{
-			_articleRepository = new ArticleRepository(db, brandServices);
+			_articleRepository = articleRepository;
+			_brandServices = brandService;
 		}
+
+		Article MapArticle(DbDataReader reader)
+		{
+			return new Article(
+				title: reader.GetString(reader.GetOrdinal("name")),
+				description: reader.GetString(reader.GetOrdinal("description")),
+				dailyPrice: reader.GetFloat(reader.GetOrdinal("daily_price")),
+				originalPrice: reader.GetFloat(reader.GetOrdinal("original_price")),
+				isRented: reader.GetBoolean(reader.GetOrdinal("is_rented")),
+				isSmoked: reader.GetBoolean(reader.GetOrdinal("is_smoked")),
+				isAnimal: reader.GetBoolean(reader.GetOrdinal("is_animal")),
+				isClean: reader.GetBoolean(reader.GetOrdinal("is_clean"))
+			);
+		}
+
 
 		public ObservableCollection<Article> GetAllArticles()
 		{
