@@ -67,7 +67,7 @@ namespace _2SemesterOpgave
                     _currentPage = Routes.MyOrders;
                     break;
                 case Routes.MyAccount:
-                    _pageControl.Content = new MyAccountPage();
+                    _pageControl.Content = new MyAccountPage(_userServices);
                     _currentPage = Routes.MyAccount;
                     break;
                 case Routes.Messages:

@@ -6,7 +6,74 @@
              xmlns:local="clr-namespace:_2SemesterOpgave.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Text="My Account" FontSize="40" />
-    </Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Min konto" FontSize="32" FontWeight="SemiBold" />
+
+            <Grid Grid.Row="1" Margin="0,16,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="260" />
+                    <ColumnDefinition Width="24" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Vertical">
+                    <Border Width="220" Height="220" CornerRadius="110" ClipToBounds="True" Background="#FFEFEFEF">
+                        <Image Source="{Binding ProfilePicture}" Stretch="UniformToFill" />
+                    </Border>
+
+                    <TextBlock Text="{Binding Username}" FontSize="20" FontWeight="SemiBold" Margin="0,12,0,4" />
+                    <TextBlock Text="{Binding FirstName}" />
+                    <TextBlock Text="{Binding LastName}" Margin="0,0,0,8" />
+
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <!-- Gul stjerne + rating med 1 decimal (f.eks. 5.0, 4.7, 2.3) -->
+                        <TextBlock Text="★" Foreground="Gold" FontSize="16" Margin="0,0,6,0" />
+                        <TextBlock Text="Rating:" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding RatingScore, StringFormat={}{0:0.0}}" Margin="6,0,0,0" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                        <TextBlock Text="Følgere:" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding FollowersCount}" Margin="6,0,0,0" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                        <TextBlock Text="Følger:" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding FollowingCount}" Margin="6,0,0,0" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Vertical">
+                    <TextBlock Text="Brugernavn" FontWeight="SemiBold" />
+                    <TextBox Text="{Binding Username}" Margin="0,4,0,12" />
+
+                    <TextBlock Text="Fornavn" FontWeight="SemiBold" />
+                    <TextBox Text="{Binding FirstName}" Margin="0,4,0,12" />
+
+                    <TextBlock Text="Efternavn" FontWeight="SemiBold" />
+                    <TextBox Text="{Binding LastName}" Margin="0,4,0,12" />
+
+                    <TextBlock Text="Email" FontWeight="SemiBold" />
+                    <TextBox Text="{Binding Email}" Margin="0,4,0,12" />
+
+                    <TextBlock Text="Telefon" FontWeight="SemiBold" />
+                    <TextBox Text="{Binding PhoneNumber}" Margin="0,4,0,12" />
+
+                    <TextBlock Text="By" FontWeight="SemiBold" />
+                    <TextBox Text="{Binding City}" Margin="0,4,0,12" />
+
+                    <TextBlock Text="Beskrivelse" FontWeight="SemiBold" />
+                    <TextBox Text="{Binding Description}" Margin="0,4,0,12" Height="80" TextWrapping="Wrap" AcceptsReturn="True" />
+
+                    <Button Content="Gem" Width="120" Height="32" HorizontalAlignment="Left" Click="SaveButton_Click" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

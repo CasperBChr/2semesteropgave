@@ -28,6 +28,10 @@ namespace _2SemesterOpgave.Models
         public List<User> Followers { get; set; }
         public List<User> Following { get; set; }
 
+        // Antal følgere/følger, som kommer direkte fra databasen
+        public int FollowersCount { get; set; }
+        public int FollowingCount { get; set; }
+
         public User() // Default constructor: initialiserer en ny instans af User-klassen, hvor IsVerified sættes til false, RatingScore sættes til 0, SignupTime sættes til det aktuelle tidspunkt, og Followers og Following sættes til tomme lister
         {
             IsVerified = false;
@@ -36,6 +40,11 @@ namespace _2SemesterOpgave.Models
 
             Followers = new List<User>();
             Following = new List<User>();
+
+
+            // Standardværdier for tællere, hvis de ikke findes i databasen
+            FollowersCount = 0;
+            FollowingCount = 0;
         }
 
         //Contructor 
@@ -61,6 +70,12 @@ namespace _2SemesterOpgave.Models
             Description = string.Empty;
 
             SignupTime = DateTime.Now;
+
+            Followers = new List<User>();
+            Following = new List<User>();
+
+            FollowersCount = 0;
+            FollowingCount = 0;
         }
     }
 }

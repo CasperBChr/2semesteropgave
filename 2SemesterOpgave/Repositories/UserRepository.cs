@@ -19,6 +19,36 @@ namespace _2SemesterOpgave.Repositories
             _db = db;
         }
 
+        // Mapper en database-række til et User-objekt, så alle felter kommer med fra db.
+        private static User MapUser(DbDataReader reader)
+        {
+            User user = new User();
+
+            user.Id = reader.GetInt32(reader.GetOrdinal("ID"));
+            user.Username = reader["Username"]?.ToString() ?? string.Empty;
+            user.FirstName = reader["FirstName"]?.ToString() ?? string.Empty;
+            user.LastName = reader["LastName"]?.ToString() ?? string.Empty;
+            user.Email = reader["Email"]?.ToString() ?? string.Empty;
+            user.Password = reader["Password"]?.ToString() ?? string.Empty;
+            user.City = reader["City"]?.ToString() ?? string.Empty;
+            user.ProfilePicture = reader["ProfilePicture"]?.ToString() ?? string.Empty;
+            user.PhoneNumber = reader["PhoneNumber"]?.ToString() ?? string.Empty;
+            user.Description = reader["Description"]?.ToString() ?? string.Empty;
+
+            user.IsVerified = !reader.IsDBNull(reader.GetOrdinal("IsVerified")) && Convert.ToInt32(reader["IsVerified"]) == 1;
+            user.RatingScore = reader.IsDBNull(reader.GetOrdinal("RatingScore")) ? 0 : Convert.ToSingle(reader["RatingScore"]);
+
+            if (!reader.IsDBNull(reader.GetOrdinal("SignupTime")))
+            {
+                user.SignupTime = Convert.ToDateTime(reader["SignupTime"]);
+            }
+
+            user.FollowersCount = reader.IsDBNull(reader.GetOrdinal("Followers")) ? 0 : Convert.ToInt32(reader["Followers"]);
+            user.FollowingCount = reader.IsDBNull(reader.GetOrdinal("Following")) ? 0 : Convert.ToInt32(reader["Following"]);
+
+            return user;
+        }
+
         public void CreateUser(User user)
         {
             _db.Open();
@@ -71,8 +101,7 @@ namespace _2SemesterOpgave.Repositories
 
             while (reader.Read())
             {
-                users.Add(new User(username: reader.GetString(reader.GetOrdinal("Username")), email: reader.GetString(reader.GetOrdinal("Email")), password: reader.GetString(reader.GetOrdinal("Password")), id: reader.GetInt32(reader.GetOrdinal("ID"))));
-                //users.Add(new User(username: reader["Username"].ToString(), email: reader["Email"].ToString(), password: reader["Password"].ToString(), id: Convert.ToInt32(reader["ID"])));
+                users.Add(MapUser(reader));
             }
 
             reader.Close();
@@ -94,7 +123,7 @@ namespace _2SemesterOpgave.Repositories
 
            if (reader.Read())
            {
-                User user = new User(reader["Username"].ToString(), reader["Email"].ToString(), reader["Password"].ToString(), Convert.ToInt32(reader["ID"]));
+                User user = MapUser(reader);
                 reader.Close();
                 _db.Close();
                 return user;
@@ -109,7 +138,11 @@ namespace _2SemesterOpgave.Repositories
         {
             _db.Open();
             DbCommand command = _db.Connection.CreateCommand();
-            command.CommandText = "UPDATE Users SET Username = @Username, Email = @Email, Password = @Password WHERE ID = @ID";
+            command.CommandText =
+                "UPDATE Users SET Username = @Username, FirstName = @FirstName, LastName = @LastName, Email = @Email, Password = @Password, " +
+                "City = @City, ProfilePicture = @ProfilePicture, PhoneNumber = @PhoneNumber, Description = @Description, " +
+                "IsVerified = @IsVerified, RatingScore = @RatingScore, Followers = @Followers, Following = @Following WHERE ID = @ID";
+
             DbParameter idParam = command.CreateParameter();
             idParam.DbType = DbType.Int32;
             idParam.Value = user.Id;
@@ -122,6 +155,18 @@ namespace _2SemesterOpgave.Repositories
 			usernameParam.ParameterName = "@Username";
 			command.Parameters.Add(usernameParam);
 
+            DbParameter firstNameParam = command.CreateParameter();
+            firstNameParam.DbType = DbType.String;
+            firstNameParam.Value = user.FirstName;
+            firstNameParam.ParameterName = "@FirstName";
+            command.Parameters.Add(firstNameParam);
+
+            DbParameter lastNameParam = command.CreateParameter();
+            lastNameParam.DbType = DbType.String;
+            lastNameParam.Value = user.LastName;
+            lastNameParam.ParameterName = "@LastName";
+            command.Parameters.Add(lastNameParam);
+
             DbParameter emailParam = command.CreateParameter();
             emailParam.DbType = DbType.String;
             emailParam.Value = user.Email;
@@ -133,6 +178,54 @@ namespace _2SemesterOpgave.Repositories
             passwordParam.Value = user.Password;
 			passwordParam.ParameterName = "@Password";
 			command.Parameters.Add(passwordParam);
+
+            DbParameter cityParam = command.CreateParameter();
+            cityParam.DbType = DbType.String;
+            cityParam.Value = user.City;
+            cityParam.ParameterName = "@City";
+            command.Parameters.Add(cityParam);
+
+            DbParameter profilePictureParam = command.CreateParameter();
+            profilePictureParam.DbType = DbType.String;
+            profilePictureParam.Value = user.ProfilePicture;
+            profilePictureParam.ParameterName = "@ProfilePicture";
+            command.Parameters.Add(profilePictureParam);
+
+            DbParameter phoneNumberParam = command.CreateParameter();
+            phoneNumberParam.DbType = DbType.String;
+            phoneNumberParam.Value = user.PhoneNumber;
+            phoneNumberParam.ParameterName = "@PhoneNumber";
+            command.Parameters.Add(phoneNumberParam);
+
+            DbParameter descriptionParam = command.CreateParameter();
+            descriptionParam.DbType = DbType.String;
+            descriptionParam.Value = user.Description;
+            descriptionParam.ParameterName = "@Description";
+            command.Parameters.Add(descriptionParam);
+
+            DbParameter isVerifiedParam = command.CreateParameter();
+            isVerifiedParam.DbType = DbType.Int32;
+            isVerifiedParam.Value = user.IsVerified ? 1 : 0;
+            isVerifiedParam.ParameterName = "@IsVerified";
+            command.Parameters.Add(isVerifiedParam);
+
+            DbParameter ratingScoreParam = command.CreateParameter();
+            ratingScoreParam.DbType = DbType.Single;
+            ratingScoreParam.Value = user.RatingScore;
+            ratingScoreParam.ParameterName = "@RatingScore";
+            command.Parameters.Add(ratingScoreParam);
+
+            DbParameter followersParam = command.CreateParameter();
+            followersParam.DbType = DbType.Int32;
+            followersParam.Value = user.FollowersCount;
+            followersParam.ParameterName = "@Followers";
+            command.Parameters.Add(followersParam);
+
+            DbParameter followingParam = command.CreateParameter();
+            followingParam.DbType = DbType.Int32;
+            followingParam.Value = user.FollowingCount;
+            followingParam.ParameterName = "@Following";
+            command.Parameters.Add(followingParam);
 
             command.ExecuteNonQuery();
             _db.Close();
