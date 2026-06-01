@@ -1,4 +1,6 @@
-﻿using System;
+﻿using _2SemesterOpgave.Services;
+using _2SemesterOpgave.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -13,14 +15,19 @@ using System.Windows.Shapes;
 
 namespace _2SemesterOpgave.Pages
 {
-    /// <summary>
-    /// Interaction logic for RentPage.xaml
-    /// </summary>
-    public partial class RentPage : Page
+    //Kodet af Camilla
+    public partial class RentPage : UserControl
     {
-        public RentPage()
+        private Router _router;
+        private Models.Article _currentArticle;
+        private ArticleServices _articleServices;
+        private UserServices _userServices;
+        public RentPage(Router router, ArticleServices articleServices, UserServices userServices)
         {
             InitializeComponent();
+            _router = router;
+            _articleServices = articleServices;
+            _userServices = userServices;
         }
     }
 }

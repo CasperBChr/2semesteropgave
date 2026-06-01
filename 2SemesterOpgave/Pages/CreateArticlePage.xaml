@@ -1,14 +1,74 @@
-﻿<Page x:Class="_2SemesterOpgave.Pages.CreateArticlePage"
+﻿<UserControl x:Class="_2SemesterOpgave.Pages.CreateArticlePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:_2SemesterOpgave.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="CreateArticlePage">
+      d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Image HorizontalAlignment="Center"  Margin="10,10,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                    <TextBlock Text="Tilføj titel: " FontSize="30" />
+                <TextBox x:Name="CreateTitleTextBox" FontSize="30" Margin="0,0,0,0" Width="200" BorderBrush="Transparent" BorderThickness="0"/>
+                </StackPanel>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <TextBlock Text="Tilføj beskrivelse: " FontSize="20" />
+                <TextBox x:Name="CreateDescriptionTextBox" FontSize="20" Margin="0,0,0,0" Width="200" BorderBrush="Transparent" BorderThickness="0"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Row="2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Kategori: " FontSize="15" />
+                    <ListBox x:Name="CreateCategoryTextBlock" FontSize="15" ItemsSource="{Binding Categories}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Under kategori: " FontSize="15" />
+                    <ListBox x:Name="CreateSubcategoryTextBlock" FontSize="15" ItemsSource="{Binding Subcategories}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Størrelse: " FontSize="15" />
+                    <ListBox x:Name="CreateSizeTextBlock" FontSize="15" ItemsSource="{Binding Sizes}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Pris: " FontSize="15" />
+                    <TextBox x:Name="CreatePriceTextBlock" FontSize="15"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Farve: " FontSize="15" />
+                    <TextBox x:Name="CreateColorTextBlock" FontSize="15"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Brand: " FontSize="15" />
+                    <ListBox x:Name="CreateBrandTextBlock" FontSize="15" ItemsSource="{Binding Brands}"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+
+                <Button x:Name="SaveButton" Content="Opret" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="20" Padding="20,10" Click="SaveButton_Click"/>
+                <Button x:Name="DismissButton" Content="Annuller" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="20" Padding="20,10" Click="DismissButton_Click"/>
+
+            </StackPanel>
+        </Grid>
     </Grid>
-</Page>
+</UserControl>

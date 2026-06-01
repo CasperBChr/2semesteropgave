@@ -220,11 +220,11 @@
 				<Button Style="{StaticResource VerticalMenuButton}" Content="Nyheder" Grid.Row="2" Grid.Column="0"  Click="NewsPageButton_Click"/>
 				<Button Style="{StaticResource VerticalMenuButton}" Content="Favoritter" Grid.Row="3" Grid.Column="0" Click="FavoritPageButton_Click"/>
 				<Button Style="{StaticResource VerticalMenuButton}" Content="Beskeder" Grid.Row="4" Grid.Column="0" Click="MessagesButton_Click"/>
-				<Button Style="{StaticResource VerticalMenuButton}" Content="+ Udlej" Grid.Row="5" Grid.Column="0" Click="SupportButton_Click"/>
+				<Button Style="{StaticResource VerticalMenuButton}" Content="+ Udlej" Grid.Row="5" Grid.Column="0" Click="CreateArticleButton_Click"/>
 				<Button Style="{StaticResource VerticalMenuButton}" Content="For You" Grid.Row="6" Grid.Column="0" Click="ForYouButton_Click"/>
 				<Button Style="{StaticResource VerticalMenuButton}" Content="Mine ordrer" Grid.Row="7" Grid.Column="0"  Click="MyOrderButton_Click"/>
 				<Button Style="{StaticResource VerticalMenuButton}" Content="Min konto" Grid.Row="8" Grid.Column="0" Click="MyAccountButton_Click"/>
-				<Button Style="{StaticResource VerticalMenuButton}" Content="❔ Hjælp" Grid.Row="9" Grid.Column="0" Click="SupportButton_Click"/>
+				<Button Style="{StaticResource VerticalMenuButton}" Content="❔ Hjælp" Grid.Row="9" Grid.Column="0" Click="CreateArticleButton_Click"/>
 
 			</Grid>
 			<ContentControl Grid.Column="1" Grid.Row="0" x:Name="PageContentControl"/>

@@ -107,7 +107,15 @@ namespace _2SemesterOpgave
 					_pageControl.Content = new UserPage(_userServices);
 					_currentPage = Routes.UserProfile;
 					break;
-			}
+                case Routes.CreateArticle:
+                    _pageControl.Content = new CreateArticlePage(this, _articleServices, _categoryServices);              
+                    _currentPage = Routes.CreateArticle;
+                    break;
+                case Routes.Rent:
+                    _pageControl.Content = new RentPage(this, _articleServices, _userServices);              
+                    _currentPage = Routes.Rent;
+                    break;
+            }
         }
     }
 
@@ -127,7 +135,9 @@ namespace _2SemesterOpgave
         ForYou = 11,
         Notifications = 12,
         Message = 13,
-        UserProfile = 14
+        UserProfile = 14,
+        CreateArticle = 15,
+        Rent = 16
     }
 }
 
