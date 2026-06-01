@@ -6,7 +6,79 @@
              xmlns:local="clr-namespace:_2SemesterOpgave.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Text="My Orders" FontSize="40" />
-    </Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Background="#F7F9FC">
+            <StackPanel Margin="24">
+                <!-- Header -->
+                <Border Background="White" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="12" Padding="20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Text="MINE ORDRE" Foreground="#3B5BFF" FontWeight="SemiBold" />
+                            <TextBlock Text="Lejeaftaler" FontSize="28" FontWeight="SemiBold" Margin="0,4,0,0" />
+                        </StackPanel>
+
+                        <Border Grid.Column="1" Width="36" Height="36" CornerRadius="8" Background="#EEF2FF" VerticalAlignment="Top">
+                            <TextBlock Text="👜" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Orders -->
+                <ItemsControl ItemsSource="{Binding Rentals}" Margin="0,16,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="White" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="12" Padding="16" Margin="0,0,0,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="110" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="140" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Billede placeholder -->
+                                    <Border Width="96" Height="96" CornerRadius="8" Background="#F3F4F6" VerticalAlignment="Top">
+                                        <TextBlock Text="Billede" Foreground="#9CA3AF" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+
+                                    <!-- Info -->
+                                    <StackPanel Grid.Column="1" Margin="12,0,12,0">
+                                        <Border Background="#E8FFF1" BorderBrush="#B7F0CE" BorderThickness="1" CornerRadius="12" Padding="6,2" HorizontalAlignment="Left">
+                                            <TextBlock Text="Bekræftet" Foreground="#1F7A4D" FontWeight="SemiBold" FontSize="12" />
+                                        </Border>
+
+                                        <TextBlock Text="{Binding Article.Title}" FontWeight="SemiBold" FontSize="16" Margin="0,8,0,2" />
+                                        <TextBlock>
+                                            <Run Text="{Binding Article.Brand.Name}" />
+                                            <Run Text=" · " />
+                                            <Run Text="{Binding Rentee.Username}" />
+                                        </TextBlock>
+
+                                        <TextBlock Margin="0,4,0,0">
+                                            <Run Text="{Binding StartDate, StringFormat={}{0:dd. MMM yyyy}}" />
+                                            <Run Text=" - " />
+                                            <Run Text="{Binding EndDate, StringFormat={}{0:dd. MMM yyyy}}" />
+                                        </TextBlock>
+
+                                        <TextBlock Text="{Binding TotalPrice, StringFormat={}{0:0} kr.}" FontWeight="SemiBold" Margin="0,4,0,0" />
+                                    </StackPanel>
+
+                                    <!-- Actions -->
+                                    <StackPanel Grid.Column="2" HorizontalAlignment="Right">
+                                        <Button Content="Se artikel" Width="120" Height="32" Margin="0,0,0,6" />
+                                        <Button Content="Annullér" Width="120" Height="32" Margin="0,0,0,6" Foreground="#C0392B" />
+                                        <Button Content="Vurdér" Width="120" Height="32" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

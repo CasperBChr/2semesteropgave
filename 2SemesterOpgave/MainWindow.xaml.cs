@@ -83,8 +83,8 @@ namespace _2SemesterOpgave
 			_articleServices = new ArticleServices(_articleRepository, _brandServices);
 			_userServices = new UserServices(_userRepository);
 
-			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _filter);
-			_categories = _categoryServices.GetAllCategories();
+            _router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentals, _filter);
+            _categories = _categoryServices.GetAllCategories();
 
 			CategoryCombo.ItemsSource = _categories;
 			SubcategoryCombo.ItemsSource = _subCategories;
