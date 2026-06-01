@@ -139,6 +139,5 @@ namespace _2SemesterOpgave.Repositories
 			_db.Close();
 			return articles;
 		}
-
 	}
 }

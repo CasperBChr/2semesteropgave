@@ -32,7 +32,6 @@ namespace _2SemesterOpgave.Pages
             _categoryServices = categoryServices;
             this.DataContext = article;
             _currentArticle = article;
-
         }
 
         //DataContext for at binde Article-objektet til ArticlePage
@@ -47,12 +46,14 @@ namespace _2SemesterOpgave.Pages
         {
             if (_currentArticle?.Owner != null && _router != null)
             {
-                _router.NavigateTo(Routes.Message);
-
+                _router.NavigateTo(Routes.Message, _currentArticle); 
             }
         }
 
-       
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            _router.NavigateTo(Routes.Rent);
+        }
     }
 
 }

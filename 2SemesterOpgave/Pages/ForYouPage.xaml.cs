@@ -60,6 +60,14 @@ namespace _2SemesterOpgave.Pages
           
             PrintRecommendations(newUser, catalog);
         }
+        private void ForYouArticlePageButton_Click(object sender, RoutedEventArgs e)
+        {
+            Router.NavigateTo(Routes.Article);
+
+            Button button = (Button)sender;
+
+            ArticleServices.SelectedArticle = (Article)button.DataContext;
+        }
 
         static void PrintRecommendations(UserProfile user, List<ItemProfile> catalog)
         {
@@ -74,5 +82,6 @@ namespace _2SemesterOpgave.Pages
             }
 
         }
+        
     }
 }
