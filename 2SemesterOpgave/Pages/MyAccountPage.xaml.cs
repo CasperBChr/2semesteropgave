@@ -35,10 +35,11 @@ namespace _2SemesterOpgave.Pages
             _userServices = userServices;
 
             // Vælger specifikt brugeren med id = 1.
-            CurrentUser = userServices?.Users?.FirstOrDefault(u => u.Id == 1) ?? new User();  // Ændrer 1 til 2 for at vise en anden bruger
+            //CurrentUser = userServices?.Users?.FirstOrDefault(u => u.Id == 1) ?? new User();  // Ændrer 1 til 2 for at vise en anden bruger
+            CurrentUser = _userServices.GetUserById(_userServices.CurrentUser.Id) ?? new User();
 
-            // Binder UI til den valgte bruger
-            DataContext = CurrentUser;
+			// Binder UI til den valgte bruger
+			DataContext = CurrentUser;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)

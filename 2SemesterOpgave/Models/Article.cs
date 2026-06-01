@@ -14,11 +14,10 @@ namespace _2SemesterOpgave.Models
         public float OriginalPrice { get; set; }
         public float DailyPrice { get; set; }
         public Brand Brand { get; set; }
-<<<<<<< Updated upstream
         public string Color { get; set; }
-=======
+
         //public Color Color { get; set; }
->>>>>>> Stashed changes
+
         //public Acessibility acessibility { get; set; }
         //public DateTime CreationTime { get; set; }
         public bool IsRented { get; set; }
@@ -33,16 +32,16 @@ namespace _2SemesterOpgave.Models
         public IEnumerable<SubCategory> Subcategories { get; set; }
         public User Owner { get; set; }
 
-<<<<<<< Updated upstream
         //Constructor: initialiserer en ny instans af Article-klassen med de angivne parametre
-        public Article(string title, string description, IEnumerable<Category> category, IEnumerable<SubCategory> subcategory, Size size, float dailyPrice, string color, Brand brand, bool isRented, float originalPrice, bool isSmoked, bool isAnimal, bool isClean, User owner) 
+        public Article(string title, string description, IEnumerable<Category> category, IEnumerable<SubCategory> subcategory, Size size, float dailyPrice, string color, Brand brand, bool isRented, float originalPrice, bool isSmoked, bool isAnimal, bool isClean, User owner)
         {
             Title = title; // Sætter Title til det angivne titel, når en ny Article oprettes
             Description = description; // Sætter Description til den angivne beskrivelse, når en ny Article oprettes
             Categories = category; // Sætter categories til den angivne liste af kategorier, når en ny Article oprettes
             Subcategories = subcategory; // Sætter Subcategories til den angivne liste af underkategorier, når en ny Article oprettes
             Size = size; // Sætter size til den angivne størrelse, når en ny Article oprettes        
-=======
+
+        }
         public Article(string title, string description, Brand brand, float originalPrice, float dailyPrice, bool isRented, bool isSmoked, bool isAnimal, bool isClean) // Constructor: initialiserer en ny instans af Article-klassen med de angivne parametre
         {
             Title = title; // Sætter Title til det angivne titel, når en ny Article oprettes
@@ -50,9 +49,9 @@ namespace _2SemesterOpgave.Models
             Brand = brand; // Sætter Brand til den angivne brand, når en ny Article oprettes
             //this.size = size; // Sætter size til den angivne størrelse, når en ny Article oprettes
             OriginalPrice = originalPrice; // Sætter OriginalPrice til den angivne oprindelige pris, når en ny Article oprettes
->>>>>>> Stashed changes
+
             DailyPrice = dailyPrice; // Sætter DailyPrice til den angivne daglige pris, når en ny Article oprettes
-            Color = color; // Sætter Color til den angivne farve, når en ny Article oprettes
+            Color = "Black"; // Sætter Color til den angivne farve, når en ny Article oprettes
             Brand = brand; // Sætter Brand til den angivne mærke, når en ny Article oprettes
             IsRented = isRented; // Sætter IsRented til den angivne værdi for at indikere om artiklen er udlejet eller ej
             //CreationTime = creationTime; // Sætter CreationTime til det angivne oprettelsestidspunkt, når en ny Article oprettes
@@ -60,7 +59,7 @@ namespace _2SemesterOpgave.Models
             IsSmoked = isSmoked; // Sætter IsSmoked til den angivne værdi for at indikere om artiklen er røget eller ej
             IsAnimal = isAnimal; // Sætter IsAnimal til den angivne værdi for at indikere om artiklen har været i kontakt med dyr eller ej
             IsClean = isClean; // Sætter IsClean til den angivne værdi for at indikere om artiklen er ren eller ej
-            Owner = owner;
+            Owner = new User();
             //TrueToSize = trueToSize; // Sætter TrueToSizeEnum til den angivne værdi for at indikere om artiklen er true to size, mindre eller større end forventet
             //Condition = condition; // Sætter ConditionEnum til den angivne værdi for at indikere tilstanden på artiklen
             //Season = season; // Sætter SeasonEnum til den angivne værdi for

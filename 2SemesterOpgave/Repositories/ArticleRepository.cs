@@ -130,11 +130,8 @@ namespace _2SemesterOpgave.Repositories
 
 			while (reader.Read())
 			{
-<<<<<<< Updated upstream
 				articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), originalPrice: 20000.0f, dailyPrice: 150.0f, isRented: true, isSmoked: true, isAnimal: true, isClean: true));
-=======
 				articles.Add(new Article(title: reader.GetString(reader.GetOrdinal("name")), description: reader.GetString(reader.GetOrdinal("description")), brand: _brandlist[0], originalPrice: 20000.0f, dailyPrice: 150.0f, true, true, true, true));
->>>>>>> Stashed changes
 				//users.Add(new User(username: reader["Username"].ToString(), email: reader["Email"].ToString(), password: reader["Password"].ToString(), id: Convert.ToInt32(reader["ID"])));
 			}
 

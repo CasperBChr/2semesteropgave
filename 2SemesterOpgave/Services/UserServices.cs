@@ -10,7 +10,7 @@ namespace _2SemesterOpgave.Services
 {
     public class UserServices : IUserService
     {
-        IUserRepository _userRepository;
+        UserRepository _userRepository;
 
         public ObservableCollection<Conversation> Conversations;
         public ObservableCollection<User> Users;
@@ -29,6 +29,8 @@ namespace _2SemesterOpgave.Services
             FakeConversation = new FakeConversation();
             FakeConversation.ContinueConversationBot(Conversations[0], Conversations[0].Participants[1]);
 
+            this.AddFollower(Users[0], Users[1]);
+
             Conversations[0].Messages.Add(new Message("Suuup", Conversations[0], Conversations[0].Participants[1], DateTime.Now));
             Conversations[0].Messages.Add(new Message("Heeeeeeeeeey", Conversations[0], Conversations[0].Participants[0], DateTime.Now));
         }
@@ -43,6 +45,31 @@ namespace _2SemesterOpgave.Services
 			}
 			return uiUsers;
 		}
+
+        public void AddFollower(User follower, User following)
+        {
+			if (follower.Id == following.Id) 
+            {
+                return;
+            }
+
+			if (_userRepository.IsFollowing(follower.Id, following.Id)) 
+            {
+                return;
+            }
+
+			_userRepository.AddFollower(follower, following);
+        }
+
+        public void RemoveFollower(User follower, User following) 
+        {
+			_userRepository.RemoveFollower(follower, following);
+		}
+
+        public User? GetUserById(int id) 
+        {
+            return _userRepository.GetUserByID(id);
+        }
 
 		public void CreateUser(User user)
         {

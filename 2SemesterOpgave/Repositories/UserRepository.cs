@@ -12,7 +12,7 @@ namespace _2SemesterOpgave.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private Database _db;
+        private static Database _db;
 
         public UserRepository(Database db)
         { 
@@ -43,10 +43,16 @@ namespace _2SemesterOpgave.Repositories
                 user.SignupTime = Convert.ToDateTime(reader["SignupTime"]);
             }
 
-            user.FollowersCount = reader.IsDBNull(reader.GetOrdinal("Followers")) ? 0 : Convert.ToInt32(reader["Followers"]);
-            user.FollowingCount = reader.IsDBNull(reader.GetOrdinal("Following")) ? 0 : Convert.ToInt32(reader["Following"]);
+			user.FollowersCount = reader.IsDBNull(reader.GetOrdinal("FollowersCount")) ? 0 : Convert.ToInt32(reader["FollowersCount"]);
 
-            return user;
+			user.FollowingCount = reader.IsDBNull(reader.GetOrdinal("FollowingCount")) ? 0 : Convert.ToInt32(reader["FollowingCount"]);
+
+
+
+
+			//user.FollowersCount = reader.IsDBNull(reader.GetOrdinal("Followers")) ? 0 : Convert.ToInt32(reader["Followers"]);
+			//         user.FollowingCount = reader.IsDBNull(reader.GetOrdinal("Following")) ? 0 : Convert.ToInt32(reader["Following"]);
+			return user;
         }
 
         public void CreateUser(User user)
@@ -95,8 +101,8 @@ namespace _2SemesterOpgave.Repositories
         {
             _db.Open();
             DbCommand command = _db.Connection.CreateCommand();
-            command.CommandText = "SELECT * FROM Users";
-            List<User> users = new List<User>();
+			command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u";
+			List<User> users = new List<User>();
             DbDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
@@ -109,39 +115,184 @@ namespace _2SemesterOpgave.Repositories
             return users;
         }
 
-        public User? GetUserByID(int id)
+		public User? GetUserByID(int id)
+		{
+			_db.Open();
+
+			try
+			{
+				DbCommand command = _db.Connection.CreateCommand();
+
+				command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f  WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f  WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.ID = @ID";
+
+				DbParameter parameter = command.CreateParameter();
+				parameter.DbType = DbType.Int32;
+				parameter.ParameterName = "@ID";
+				parameter.Value = id;
+				command.Parameters.Add(parameter);
+
+				DbDataReader reader = command.ExecuteReader();
+
+				if (reader.Read())
+				{
+					User user = MapUser(reader);
+					reader.Close();
+					return user;
+				}
+
+				reader.Close();
+				return null;
+			}
+			finally
+			{
+				_db.Close();
+			}
+		}
+
+		public static int GetUserFollowerCount(int id) 
         {
-            _db.Open();
-            DbCommand command = _db.Connection.CreateCommand();
-            command.CommandText = "SELECT * FROM Users WHERE ID = @ID";
-            DbParameter parameter = command.CreateParameter();
-            parameter.DbType = DbType.Int32;
-            parameter.ParameterName = "@ID";
-            parameter.Value = id;
-            command.Parameters.Add(parameter);
-            DbDataReader reader = command.ExecuteReader();
+            try 
+            {
+                _db.Open();
 
-           if (reader.Read())
-           {
-                User user = MapUser(reader);
-                reader.Close();
-                _db.Close();
-                return user;
+                DbCommand command = _db.Connection.CreateCommand();
+                command.CommandText = "SELECT COUNT(*) FROM Followers WHERE following_id = @UserId";
+                DbParameter parameter = command.CreateParameter();
+                parameter.DbType = DbType.Int32;
+				parameter.ParameterName = "UserId";
+				parameter.Value = id;
+				command.Parameters.Add(parameter);
+				int count = Convert.ToInt32(command.ExecuteScalar());
+                return count;
+			}
+			finally 
+            { 
+                _db.Close(); 
             }
+		}
+		
+		public static int GetUserFollowingCount(int userId)
+		{
+			try
+			{
+				_db.Open();
 
-            reader.Close();
-            _db.Close();
-            throw new ArgumentException("User not found");
-        }
+			    DbCommand command = _db.Connection.CreateCommand();
+			    command.CommandText = "SELECT COUNT(*) FROM Followers WHERE follower_id = @UserId";
 
-        public void UpdateUser(User user)
+			    DbParameter parameter = command.CreateParameter();
+			    parameter.DbType = DbType.Int32;
+			    parameter.ParameterName = "@UserId";
+			    parameter.Value = userId;
+			    command.Parameters.Add(parameter);
+
+			    int count = Convert.ToInt32(command.ExecuteScalar());
+
+			    return count;   
+			}
+			finally
+			{
+				_db.Close();
+			}
+
+		}
+
+		public void AddFollower(User follower, User following)
+		{
+			_db.Open();
+
+			try
+			{
+				DbCommand command = _db.Connection.CreateCommand();
+
+				command.CommandText = @"INSERT INTO Followers (follower_id, following_id) VALUES (@FollowerId, @FollowingId)";
+
+				DbParameter followerParam = command.CreateParameter();
+				followerParam.ParameterName = "@FollowerId";
+				followerParam.DbType = DbType.Int32;
+				followerParam.Value = follower.Id;
+				command.Parameters.Add(followerParam);
+
+				DbParameter followingParam = command.CreateParameter();
+				followingParam.ParameterName = "@FollowingId";
+				followingParam.DbType = DbType.Int32;
+				followingParam.Value = following.Id;
+				command.Parameters.Add(followingParam);
+
+				command.ExecuteNonQuery();
+			}
+			finally
+			{
+				_db.Close();
+			}
+		}
+
+		public void RemoveFollower(User follower, User following)
+		{
+			_db.Open();
+
+			try
+			{
+				DbCommand command = _db.Connection.CreateCommand();
+
+				command.CommandText = "DELETE FROM Followers WHERE follower_id = @FollowerId AND following_id = @FollowingId";
+
+				DbParameter followerParam = command.CreateParameter();
+				followerParam.ParameterName = "@FollowerId";
+				followerParam.DbType = DbType.Int32;
+				followerParam.Value = follower.Id;
+				command.Parameters.Add(followerParam);
+
+				DbParameter followingParam = command.CreateParameter();
+				followingParam.ParameterName = "@FollowingId";
+				followingParam.DbType = DbType.Int32;
+				followingParam.Value = following.Id;
+				command.Parameters.Add(followingParam);
+
+				command.ExecuteNonQuery();
+			}
+			finally
+			{
+				_db.Close();
+			}
+		}
+
+		public bool IsFollowing(int followerId, int followingId)
+		{
+			try
+			{
+			    _db.Open();
+				DbCommand command = _db.Connection.CreateCommand();
+
+				command.CommandText = "SELECT COUNT(*) FROM Followers WHERE follower_id = @FollowerId AND following_id = @FollowingId";
+
+				DbParameter followerParam = command.CreateParameter();
+				followerParam.ParameterName = "@FollowerId";
+				followerParam.Value = followerId;
+				command.Parameters.Add(followerParam);
+
+				DbParameter followingParam = command.CreateParameter();
+				followingParam.ParameterName = "@FollowingId";
+				followingParam.Value = followingId;
+				command.Parameters.Add(followingParam);
+
+				int count = Convert.ToInt32(command.ExecuteScalar());
+				return count > 0;
+			}
+			finally
+			{
+				_db.Close();
+			}
+		}
+
+		public void UpdateUser(User user)
         {
             _db.Open();
             DbCommand command = _db.Connection.CreateCommand();
             command.CommandText =
                 "UPDATE Users SET Username = @Username, FirstName = @FirstName, LastName = @LastName, Email = @Email, Password = @Password, " +
                 "City = @City, ProfilePicture = @ProfilePicture, PhoneNumber = @PhoneNumber, Description = @Description, " +
-                "IsVerified = @IsVerified, RatingScore = @RatingScore, Followers = @Followers, Following = @Following WHERE ID = @ID";
+                "IsVerified = @IsVerified, RatingScore = @RatingScore WHERE ID = @ID";
 
             DbParameter idParam = command.CreateParameter();
             idParam.DbType = DbType.Int32;
@@ -214,18 +365,6 @@ namespace _2SemesterOpgave.Repositories
             ratingScoreParam.Value = user.RatingScore;
             ratingScoreParam.ParameterName = "@RatingScore";
             command.Parameters.Add(ratingScoreParam);
-
-            DbParameter followersParam = command.CreateParameter();
-            followersParam.DbType = DbType.Int32;
-            followersParam.Value = user.FollowersCount;
-            followersParam.ParameterName = "@Followers";
-            command.Parameters.Add(followersParam);
-
-            DbParameter followingParam = command.CreateParameter();
-            followingParam.DbType = DbType.Int32;
-            followingParam.Value = user.FollowingCount;
-            followingParam.ParameterName = "@Following";
-            command.Parameters.Add(followingParam);
 
             command.ExecuteNonQuery();
             _db.Close();
