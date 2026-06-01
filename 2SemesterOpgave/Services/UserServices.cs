@@ -54,6 +54,12 @@ namespace _2SemesterOpgave.Services
             _userRepository.CreateUser(user);
         }
 
+        // Gem funktion til MyAccount siden, så den kan opdatere både i databasen og i UI'et
+        public void UpdateUser(User user)
+        {
+            _userRepository.UpdateUser(user);
+        }
+
         public Message CreateMessage(string text, Conversation conversation, User sender)
         {
             return new Message(text, conversation, sender, DateTime.Now);
