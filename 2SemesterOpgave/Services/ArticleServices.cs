@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Common;
 using System.Text;
+using _2SemesterOpgave.Algoritme;
 using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories;
@@ -137,6 +138,20 @@ namespace _2SemesterOpgave.Services
 			if (dto.OwnerId.HasValue)
 			{
 				article.Owner = _userServices.GetById(dto.OwnerId.Value);
+			}
+
+			// SKAL BRUGES TIL CONTENT BASES ALGORITHM, FOR AT ALLE FÅR DET PÅ!
+			if (article.Category != null)
+			{
+				article.ItemProfile = new ItemProfile
+				{
+					ArticleID = article.Id,
+					Article = article,
+					Features = new Dictionary<string, double>
+					{
+						{ article.Category.Name, 1.0 }
+					}
+				};
 			}
 
 			return article;

@@ -29,7 +29,11 @@ namespace _2SemesterOpgave.Algoritme
         //Funktion som opdaterer brugerprofilen, når de kigger på et element
         public void UpdateUserProfileView(ItemProfile viewedItem, double learningRate = 0.1)
         {
-            foreach (var feature in viewedItem.Features)
+            if (viewedItem == null)
+            {
+                return;
+            }
+			foreach (var feature in viewedItem.Features)
             {
                 //Opdaterer brugerens præferencer baseret på det sete element
                 if (Preferences.ContainsKey(feature.Key))
