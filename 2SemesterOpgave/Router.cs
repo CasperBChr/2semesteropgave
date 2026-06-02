@@ -47,7 +47,7 @@ namespace _2SemesterOpgave
 					_currentPage = Routes.Home;
                     break;
                 case Routes.Explore:
-                    _pageControl.Content = new ExplorePage(this, _articleServices);
+                    _pageControl.Content = new ExplorePage(this, _articleServices, _userServices);
 					_currentPage = Routes.Explore;
                     break;
                 case Routes.Categories:

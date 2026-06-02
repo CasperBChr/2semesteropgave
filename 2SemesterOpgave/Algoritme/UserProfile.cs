@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _2SemesterOpgave.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +9,7 @@ namespace _2SemesterOpgave.Algoritme
     {
         //Kodet af Camilla
         public string UserID { get; set; }
+        public User? User { get; set; }
         
         //Dictionary der gemmer brugerens præferencer for forskellige features
         public Dictionary<string, double> Preferences { get; set; }

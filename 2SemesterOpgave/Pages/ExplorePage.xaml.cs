@@ -24,23 +24,24 @@ namespace _2SemesterOpgave.Pages
 
         ArticleServices _articleServices;
         Router _router;
+        UserServices _userServices;
 
-        public ExplorePage(Router router, ArticleServices articleServices)
+        public ExplorePage(Router router, ArticleServices articleServices, UserServices userServices)
         {
             InitializeComponent();
 			_articleServices = articleServices;
+			_userServices = userServices;
 
             _router = router;
             ArticlesItemsControl.ItemsSource = _articleServices.GetAllArticles();
-
-
         }
 
 		private void ArticlePageButton_Click(object sender, RoutedEventArgs e)
 		{
 			Button button = (Button)sender;
 			_articleServices.SelectedArticle = (Article)button.DataContext;
-			_router.NavigateTo(Routes.Article);
+            _userServices.UserProfile.UpdateUserProfileView(_articleServices.SelectedArticle.ItemProfile);
+            _router.NavigateTo(Routes.Article);
 		}
 	}
 }

@@ -44,8 +44,8 @@ namespace _2SemesterOpgave.Algoritme
             return dotProduct / (Math.Sqrt(userMagnitude) * Math.Sqrt(itemMagnitude));
         }
 
-        //Finder de bedste 10 anbefalinger for en bruger baseret på Cosine Similarity og sorterer dem i faldende rækkefølge
-        public static List<(ItemProfile Item, double Score)> GetRecommendations(UserProfile user, List<ItemProfile> catalog, int topN = 10)
+        //Finder de bedste 5 anbefalinger for en bruger baseret på Cosine Similarity og sorterer dem i faldende rækkefølge
+        public static List<(ItemProfile Item, double Score)> GetRecommendations(UserProfile user, List<ItemProfile> catalog, int topN = 5)
         {
             //Liste til at gemme anbefalinger og deres match-score
             var recommendations = new List<(ItemProfile Item, double Score)>();
@@ -58,7 +58,7 @@ namespace _2SemesterOpgave.Algoritme
                 recommendations.Add((item, score));
             }
 
-            //Returnerer de top 3 anbefalinger sorteret efter match-score i faldende rækkefølge
+            //Returnerer de top 5 anbefalinger sorteret efter match-score i faldende rækkefølge
             return recommendations.OrderByDescending(r => r.Score).Take(topN).ToList();
         }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using _2SemesterOpgave.Algoritme;
 using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories;
@@ -18,6 +19,7 @@ namespace _2SemesterOpgave.Services
         public FakeConversation FakeConversation;
         public User CurrentUser;
         public User? TargetUser;
+		public UserProfile UserProfile;
 		Dictionary<int, User> _cache = new Dictionary<int, User>();
 		//public UserServices(UserRepository userRepository)
 		//      {
