@@ -40,15 +40,15 @@
             <StackPanel Grid.Row="2">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock Text="Kategori: " FontSize="15" />
-                    <ListBox x:Name="CategoryTextBlock" FontSize="15" ItemsSource="{Binding Categories}"/>
+					<TextBlock x:Name="CategoryTextBlock" FontSize="15" Text="{Binding Category.Name}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock Text="Under kategori: " FontSize="15" />
-                    <ListBox x:Name="SubcategoryTextBlock" FontSize="15" ItemsSource="{Binding Subcategories}"/>
+					<TextBlock x:Name="SubcategoryTextBlock" FontSize="15" Text="{Binding SubCategory.Name}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock Text="Størrelse: " FontSize="15" />
-                    <TextBlock x:Name="SizeTextBlock" FontSize="15" Text="{Binding Size.ClothingUSSize}"/>
+                    <TextBlock x:Name="SizeTextBlock" FontSize="15" Text="{Binding Size.Name}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock Text="Pris: " FontSize="15" />

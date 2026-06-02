@@ -30,15 +30,31 @@ namespace _2SemesterOpgave.Repositories
 			{
 				int categoryId = reader.GetInt32(reader.GetOrdinal("CategoryId"));
 
+				//if (!categories.ContainsKey(categoryId))
+				//{
+				//	categories[categoryId] = new Category(reader.GetString(reader.GetOrdinal("CategoryName")));
+				//}
+
 				if (!categories.ContainsKey(categoryId))
 				{
-					categories[categoryId] = new Category(reader.GetString(reader.GetOrdinal("CategoryName")));
+					categories[categoryId] = new Category
+					{
+						Id = categoryId,
+						Name = reader.GetString(reader.GetOrdinal("CategoryName"))
+					};
 				}
 
-				if (!reader.IsDBNull(reader.GetOrdinal("SubId")))
+				categories[categoryId].SubCategories.Add(new SubCategory
 				{
-					categories[categoryId].SubCategories.Add(new SubCategory(reader.GetString(reader.GetOrdinal("SubName")), categories[categoryId]));
-				}
+					Id = reader.GetInt32(reader.GetOrdinal("SubId")),
+					Name = reader.GetString(reader.GetOrdinal("SubName")),
+					Category = categories[categoryId]
+				});
+
+				//if (!reader.IsDBNull(reader.GetOrdinal("SubId")))
+				//{
+				//	categories[categoryId].SubCategories.Add(new SubCategory(reader.GetString(reader.GetOrdinal("SubName")), categories[categoryId]));
+				//}
 			}
 
 			reader.Close();

@@ -2,6 +2,7 @@
 using _2SemesterOpgave.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,24 +20,25 @@ namespace _2SemesterOpgave.Pages
     public partial class ArticlePage : UserControl
     {
         private Router _router;
-        private Models.Article _currentArticle;
+        private Article _currentArticle;
         private ArticleServices _articleServices;
         private CategoryServices _categoryServices; 
         //Constructor der tager en Router som parameter for at kunne navigere til andre sider
         public ArticlePage(Router router, ArticleServices articleServices, CategoryServices categoryServices)
         {
-            Article article = new Article("Ganni", "Beskrivelse af Ganni-artiklen", new List<Category>(), new List<SubCategory>(), new Models.Size(36), 100.60f, "Hvid", new Brand("Ganni", "Ganni Brand", "Logo"), false, 10000f, false, false, true, new User("John Doe", "john@example.com", "hej", 6));
+            
+            //Article article = new Article("Ganni", "Beskrivelse af Ganni-artiklen", new List<Category>(), new List<SubCategory>(), new Models.Size(36), 100.60f, "Hvid", new Brand("Ganni", "Ganni Brand", "Logo"), false, 10000f, false, false, true, new User("John Doe", "john@example.com", "hej", 6));
             InitializeComponent();
             _router = router;
             _articleServices = articleServices;
             _categoryServices = categoryServices;
-            this.DataContext = article;
-            _currentArticle = article;
+            this.DataContext = _articleServices.SelectedArticle;
+			_currentArticle = _articleServices.SelectedArticle;
 
-        }
+		}
 
         //DataContext for at binde Article-objektet til ArticlePage
-        public void SetArticle(Models.Article article)
+        public void SetArticle(Article article)
         {
             this.DataContext = article;
             _currentArticle = article;

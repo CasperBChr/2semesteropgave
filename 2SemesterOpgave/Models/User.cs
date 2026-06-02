@@ -24,7 +24,8 @@ namespace _2SemesterOpgave.Models
         public string Description { get; set; }
         public bool IsVerified { get; set; }
         public float RatingScore { get; set; }
-        public DateTime SignupTime { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public List<User> Followers { get; set; }
         public List<User> Following { get; set; }
 
@@ -36,7 +37,8 @@ namespace _2SemesterOpgave.Models
         {
             IsVerified = false;
             RatingScore = 0;
-            SignupTime = DateTime.Now;
+            CreatedAt = DateTime.Now;
+            UpdatedAt = DateTime.Now;
 
             Followers = new List<User>();
             Following = new List<User>();
@@ -69,7 +71,7 @@ namespace _2SemesterOpgave.Models
             City = string.Empty;
             Description = string.Empty;
 
-            SignupTime = DateTime.Now;
+            CreatedAt = DateTime.Now;
 
             Followers = new List<User>();
             Following = new List<User>();

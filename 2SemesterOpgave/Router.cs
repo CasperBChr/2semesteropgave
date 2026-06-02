@@ -38,7 +38,7 @@ namespace _2SemesterOpgave
 			_currentFilter = filter;
 		}
 
-		public void NavigateTo(Routes route, Article article = null)
+		public void NavigateTo(Routes route)
 		{
 			switch (route)
             {
@@ -84,11 +84,6 @@ namespace _2SemesterOpgave
                     break;
                 case Routes.Article:
                     _pageControl.Content = new ArticlePage(this, _articleServices, _categoryServices);
-                    if (article != null)
-                    {
-                        //DataContext til at binde data til UI-elementer.
-                        ((ArticlePage)_pageControl.Content).SetArticle(article);
-                    }
                     _currentPage = Routes.Article;
                     break;
                 case Routes.ForYou:

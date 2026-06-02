@@ -36,9 +36,11 @@ namespace _2SemesterOpgave.Pages
 
         }
 
-		private void ArticleButton_Click(object sender, RoutedEventArgs e)
-		{	
-            _router.NavigateTo(Routes.Article);
+		private void ArticlePageButton_Click(object sender, RoutedEventArgs e)
+		{
+			Button button = (Button)sender;
+			_articleServices.SelectedArticle = (Article)button.DataContext;
+			_router.NavigateTo(Routes.Article);
 		}
 	}
 }

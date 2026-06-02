@@ -6,11 +6,12 @@ using System.Reflection.Metadata;
 using System.Text;
 using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
+using _2SemesterOpgave.Repositories.DTO;
 using _2SemesterOpgave.Repositories.Interfaces;
 
 namespace _2SemesterOpgave.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository
     {
         private static Database _db;
 
@@ -40,7 +41,7 @@ namespace _2SemesterOpgave.Repositories
 
             if (!reader.IsDBNull(reader.GetOrdinal("SignupTime")))
             {
-                user.SignupTime = Convert.ToDateTime(reader["SignupTime"]);
+                user.CreatedAt = Convert.ToDateTime(reader["SignupTime"]);
             }
 
 			user.FollowersCount = reader.IsDBNull(reader.GetOrdinal("FollowersCount")) ? 0 : Convert.ToInt32(reader["FollowersCount"]);
@@ -97,25 +98,53 @@ namespace _2SemesterOpgave.Repositories
             _db.Close();
         }
 
-        public IEnumerable<User> GetAllUsers()
-        {
-            _db.Open();
-            DbCommand command = _db.Connection.CreateCommand();
-			command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u";
-			List<User> users = new List<User>();
-            DbDataReader reader = command.ExecuteReader();
+		public IEnumerable<UserDTO> GetAllUsers()
+		{
+			List<UserDTO> users = new();
 
-            while (reader.Read())
-            {
-                users.Add(MapUser(reader));
-            }
+			_db.Open();
 
-            reader.Close();
-            _db.Close();
-            return users;
-        }
+			try
+			{
+				DbCommand command = _db.Connection.CreateCommand();
 
-		public User? GetUserByID(int id)
+				command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u";
+
+				using DbDataReader reader = command.ExecuteReader();
+
+				while (reader.Read())
+				{
+					users.Add(CreateDTO(reader));
+				}
+
+				return users;
+			}
+			finally
+			{
+				_db.Close();
+			}
+		}
+
+		//     public IEnumerable<User> GetAllUsers()
+		//     {
+		//         _db.Open();
+		//         DbCommand command = _db.Connection.CreateCommand();
+		//command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u";
+		//List<User> users = new List<User>();
+		//         DbDataReader reader = command.ExecuteReader();
+
+		//         while (reader.Read())
+		//         {
+		//             users.Add(MapUser(reader));
+		//         }
+
+		//         reader.Close();
+		//         _db.Close();
+		//         return users;
+		//     }
+
+
+		public UserDTO? GetUserByID(int id)
 		{
 			_db.Open();
 
@@ -123,24 +152,20 @@ namespace _2SemesterOpgave.Repositories
 			{
 				DbCommand command = _db.Connection.CreateCommand();
 
-				command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f  WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f  WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.ID = @ID";
+				command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.ID = @ID";
 
 				DbParameter parameter = command.CreateParameter();
 				parameter.DbType = DbType.Int32;
-				parameter.ParameterName = "@ID";
 				parameter.Value = id;
+				parameter.ParameterName = "@ID";
 				command.Parameters.Add(parameter);
 
-				DbDataReader reader = command.ExecuteReader();
+				using DbDataReader reader = command.ExecuteReader();
 
 				if (reader.Read())
 				{
-					User user = MapUser(reader);
-					reader.Close();
-					return user;
+					return CreateDTO(reader);
 				}
-
-				reader.Close();
 				return null;
 			}
 			finally
@@ -148,6 +173,40 @@ namespace _2SemesterOpgave.Repositories
 				_db.Close();
 			}
 		}
+
+		//public User? GetUserByID(int id)
+		//{
+		//	_db.Open();
+
+		//	try
+		//	{
+		//		DbCommand command = _db.Connection.CreateCommand();
+
+		//		command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f  WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f  WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.ID = @ID";
+
+		//		DbParameter parameter = command.CreateParameter();
+		//		parameter.DbType = DbType.Int32;
+		//		parameter.ParameterName = "@ID";
+		//		parameter.Value = id;
+		//		command.Parameters.Add(parameter);
+
+		//		DbDataReader reader = command.ExecuteReader();
+
+		//		if (reader.Read())
+		//		{
+		//			User user = MapUser(reader);
+		//			reader.Close();
+		//			return user;
+		//		}
+
+		//		reader.Close();
+		//		return null;
+		//	}
+		//	finally
+		//	{
+		//		_db.Close();
+		//	}
+		//}
 
 		public static int GetUserFollowerCount(int id) 
         {
@@ -369,5 +428,56 @@ namespace _2SemesterOpgave.Repositories
             command.ExecuteNonQuery();
             _db.Close();
         }
-    }
+
+		UserDTO CreateDTO(DbDataReader reader)
+		{
+			int id = reader.GetOrdinal("ID");
+			int username = reader.GetOrdinal("Username");
+			int firstName = reader.GetOrdinal("FirstName");
+			int lastName = reader.GetOrdinal("LastName");
+			int email = reader.GetOrdinal("Email");
+			int password = reader.GetOrdinal("Password");
+			int city = reader.GetOrdinal("City");
+			int profile = reader.GetOrdinal("ProfilePicture");
+			int phone = reader.GetOrdinal("PhoneNumber");
+			int description = reader.GetOrdinal("Description");
+			int verified = reader.GetOrdinal("IsVerified");
+			int rating = reader.GetOrdinal("RatingScore");
+			int createdAt = reader.GetOrdinal("created_at");
+			int updatedAt = reader.GetOrdinal("updated_at");
+			int followers = reader.GetOrdinal("FollowersCount");
+			int following = reader.GetOrdinal("FollowingCount");
+
+			return new UserDTO
+			{
+				Id = reader.GetInt32(id),
+
+				Username = reader.GetString(username),
+				FirstName = reader.GetString(firstName),
+				LastName = reader.GetString(lastName),
+
+				Email = reader.GetString(email),
+				Password = reader.GetString(password),
+
+				City = reader.GetString(city),
+				ProfilePicture = reader.GetString(profile),
+				PhoneNumber = reader.GetString(phone),
+				Description = reader.GetString(description),
+
+				IsVerified = !reader.IsDBNull(verified) && Convert.ToInt32(reader.GetValue(verified)) == 1,
+				RatingScore = reader.IsDBNull(rating) ? 0 : Convert.ToSingle(reader.GetValue(rating)),
+
+				CreatedAt = reader.IsDBNull(createdAt)
+					? DateTime.MinValue
+					: Convert.ToDateTime(reader.GetValue(createdAt)),
+
+				UpdatedAt = reader.IsDBNull(updatedAt)
+					? DateTime.MinValue
+					: Convert.ToDateTime(reader.GetValue(updatedAt)),
+
+				FollowersCount = reader.IsDBNull(followers) ? 0 : Convert.ToInt32(reader.GetValue(followers)),
+				FollowingCount = reader.IsDBNull(following) ? 0 : Convert.ToInt32(reader.GetValue(following))
+			};
+		}
+	}
 }

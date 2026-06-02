@@ -51,13 +51,21 @@ namespace _2SemesterOpgave
 		ArticleRepository _articleRepository;
 		CategoryRepository _categoryRepository;
 		BrandRepository _brandRepository;
+		CollectionRepository _collectionRepository;
+		ColorRepository _colorRepository;
+		SizeRepository _sizeRepository;
+		DesignerRepository _designerRepository;
 
-		CategoryServices _categoryServices;
 		UserServices _userServices;
 		ArticleServices _articleServices;
-		FilterCriteria _filter = new FilterCriteria();
+		CategoryServices _categoryServices;
 		BrandServices _brandServices;
+		CollectionServices _collectionServices;
+		ColorServices _colorServices;
+		SizeServices _sizeServices;
+		DesignerServices _designerServices;
 
+		FilterCriteria _filter = new FilterCriteria();
 
 		Database _db;
 
@@ -73,18 +81,27 @@ namespace _2SemesterOpgave
 
 
 			_userRepository = new UserRepository(_db);
-
 			_categoryRepository = new CategoryRepository(_db);
 			_brandRepository = new BrandRepository(_db);
+			_collectionRepository = new CollectionRepository(_db);
+			_colorRepository = new ColorRepository(_db);
+			_sizeRepository = new SizeRepository(_db);
+			_articleRepository = new ArticleRepository(_db);
+			_designerRepository = new DesignerRepository(_db);
+			
+
 
 			_categoryServices = new CategoryServices(_categoryRepository);
 			_brandServices = new BrandServices(_brandRepository);
-			_articleRepository = new ArticleRepository(_db, _brandServices);
-			_articleServices = new ArticleServices(_articleRepository, _brandServices);
 			_userServices = new UserServices(_userRepository);
+			_designerServices = new DesignerServices(_designerRepository);
+			_collectionServices = new CollectionServices(_collectionRepository, _brandServices, _designerServices);
+			_colorServices = new ColorServices(_colorRepository);
+			_sizeServices = new SizeServices(_sizeRepository);
+			_articleServices = new ArticleServices(_articleRepository, _userServices, _brandServices, _categoryServices, _collectionServices, _colorServices, _sizeServices);
 
 			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _filter);
-			_categories = _categoryServices.GetAllCategories();
+			_categories = new ObservableCollection<Category>(_categoryServices.GetAllCategories());
 
 			CategoryCombo.ItemsSource = _categories;
 			SubcategoryCombo.ItemsSource = _subCategories;
