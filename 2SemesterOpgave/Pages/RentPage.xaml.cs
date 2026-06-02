@@ -29,5 +29,27 @@ namespace _2SemesterOpgave.Pages
             _articleServices = articleServices;
             _userServices = userServices;
         }
+        //Knap til at bekræfte leje af en artikel, og navigere derefter tilbage til oversigten
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Tillykke! Din leje er bekræftet.", "Bekræft leje", MessageBoxButton.OK);
+
+            //Navigerer tilbage til oversigten
+            if (result == MessageBoxResult.OK)
+            {
+                _router.NavigateTo(Routes.Overview);
+            }
+        }
+        //Knap til at annuller leje og navigerer derefter tilbage til oversigten
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Er du sikker på, at du vil annullere lejen?", "Anuller leje", MessageBoxButton.YesNo);
+
+            //Navigerer tilbage til oversigten
+            if (result == MessageBoxResult.Yes)
+            {
+                _router.NavigateTo(Routes.Overview);
+            }
+        }
     }
 }

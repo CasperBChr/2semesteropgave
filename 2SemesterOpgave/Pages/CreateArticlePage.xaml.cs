@@ -48,6 +48,7 @@ namespace _2SemesterOpgave.Pages
             string userInput = CreatePriceTextBlock.Text;
             CreatePriceTextBlock.Text = "New Value";  
         }
+        //Metode til at sætte en farve på en artikel som oprettes
         public void CreateColorTextBlock_TextChanged(object sender, TextChangedEventArgs e)
         {
             string userInput = CreateColorTextBlock.Text;
@@ -61,7 +62,8 @@ namespace _2SemesterOpgave.Pages
 
         private void DismissButton_Click(object sender, RoutedEventArgs e)
         {
-
-        }
+            //Gemmer ikke den oprettede artikel og navigerer tilbage til oversigten
+            _router.NavigateTo(Routes.Overview);
+        }   
     }
 }
