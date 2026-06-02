@@ -100,7 +100,7 @@ namespace _2SemesterOpgave
 			_sizeServices = new SizeServices(_sizeRepository);
 			_articleServices = new ArticleServices(_articleRepository, _userServices, _brandServices, _categoryServices, _collectionServices, _colorServices, _sizeServices);
 
-			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _filter);
+			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentals, _filter);
 			_categories = new ObservableCollection<Category>(_categoryServices.GetAllCategories());
 
 			CategoryCombo.ItemsSource = _categories;

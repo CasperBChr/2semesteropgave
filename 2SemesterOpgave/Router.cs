@@ -65,7 +65,7 @@ namespace _2SemesterOpgave
                     _currentPage = Routes.Favorites;
                     break;
                 case Routes.MyOrders:
-                    _pageControl.Content = new MyOrdersPage(_userServices, _rentals);
+                    _pageControl.Content = new MyOrdersPage(_userServices, _articleServices, _rentals);
                     _currentPage = Routes.MyOrders;
                     break;
                 case Routes.MyAccount:

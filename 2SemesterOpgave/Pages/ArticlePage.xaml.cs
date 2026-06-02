@@ -49,7 +49,7 @@ namespace _2SemesterOpgave.Pages
         {
             if (_currentArticle?.Owner != null && _router != null)
             {
-                _router.NavigateTo(Routes.Message, _currentArticle); 
+                _router.NavigateTo(Routes.Message);
             }
         }
 
