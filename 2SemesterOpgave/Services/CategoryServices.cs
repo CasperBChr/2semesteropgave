@@ -45,6 +45,10 @@ namespace _2SemesterOpgave.Services
 		{
 			return _categoryLookup.Values;
 		}
+		public IEnumerable<SubCategory> GetAllSubCategories()
+		{
+			return _subCategoryLookup.Values;
+		}
 
 		public Category? GetCategoryById(int id)
 		{

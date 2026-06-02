@@ -20,9 +20,11 @@ namespace _2SemesterOpgave
         CategoryServices _categoryServices;
         ArticleServices _articleServices;
         UserServices _userServices;
+        SizeServices _sizeServices; 
         FilterCriteria _currentFilter;
+        BrandServices _brandServices;  
 
-		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, ObservableCollection<Rental> rentals, FilterCriteria filterCriteria)
+        public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, ObservableCollection<Rental> rentals, FilterCriteria filterCriteria, SizeServices sizeServices, BrandServices brandServices)
         {
 			_currentPage = Routes.Home;
             _pageControl = pageControl;
@@ -32,6 +34,8 @@ namespace _2SemesterOpgave
             _articleServices = articleServices;
             _currentFilter = filterCriteria;
             _userServices = userServices;
+            _sizeServices = sizeServices;
+            _brandServices = brandServices;
             _pageControl.Content = new HomePage(this, _articleServices);
         }
 
@@ -105,7 +109,7 @@ namespace _2SemesterOpgave
 					_currentPage = Routes.UserProfile;
 					break;
                 case Routes.CreateArticle:
-                    _pageControl.Content = new CreateArticlePage(this, _articleServices, _categoryServices);              
+                    _pageControl.Content = new CreateArticlePage(this, _articleServices, _categoryServices, _sizeServices, _brandServices);              
                     _currentPage = Routes.CreateArticle;
                     break;
                 case Routes.Rent:
