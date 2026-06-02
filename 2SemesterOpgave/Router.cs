@@ -16,16 +16,18 @@ namespace _2SemesterOpgave
         ContentControl _pageControl;
         
         ObservableCollection<Article> _articles;
+        ObservableCollection<Rental> _rentals;
         CategoryServices _categoryServices;
         ArticleServices _articleServices;
         UserServices _userServices;
         FilterCriteria _currentFilter;
 
-		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, FilterCriteria filterCriteria)
+		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, ObservableCollection<Rental> rentals, FilterCriteria filterCriteria)
         {
 			_currentPage = Routes.Home;
             _pageControl = pageControl;
             _articles = articles;
+            _rentals = rentals;
 			_categoryServices = categoryServices;
             _articleServices = articleServices;
             _currentFilter = filterCriteria;
@@ -63,7 +65,7 @@ namespace _2SemesterOpgave
                     _currentPage = Routes.Favorites;
                     break;
                 case Routes.MyOrders:
-                    _pageControl.Content = new MyOrdersPage();
+                    _pageControl.Content = new MyOrdersPage(_userServices, _rentals);
                     _currentPage = Routes.MyOrders;
                     break;
                 case Routes.MyAccount:
