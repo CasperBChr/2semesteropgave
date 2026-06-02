@@ -29,6 +29,7 @@ namespace _2SemesterOpgave.Pages
             _router = router;
             _articleServices = articleServices;
             _categoryServices = categoryServices;
+            CreateCategoryCombobox.ItemsSource = _categoryServices.GetAllCategories();
         }
         //Metode til at sætte en titel på en artikel som oprettes
         public void CreateTitleTextBox_TextChanged(object sender, TextChangedEventArgs e)
