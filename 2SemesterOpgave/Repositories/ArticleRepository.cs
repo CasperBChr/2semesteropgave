@@ -14,7 +14,8 @@ using System.Text;
 
 namespace _2SemesterOpgave.Repositories
 {
-	public class ArticleRepository
+    
+    public class ArticleRepository
 	{
 		Database _db;
 		public ArticleRepository(Database db)

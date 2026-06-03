@@ -20,6 +20,9 @@
     <Compile Update="Pages\CreateArticlePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\EditArticlePage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\ExplorePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
