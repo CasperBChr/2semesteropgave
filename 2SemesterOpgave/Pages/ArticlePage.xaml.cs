@@ -45,6 +45,11 @@ namespace _2SemesterOpgave.Pages
             _currentArticle = article;
         }
 
+        public void OwnerTextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+           
+        }
+
         //Funktion der navigerer til chat med ejer af artiklen
         private void ContactButton_Click(object sender, RoutedEventArgs e)
         {
