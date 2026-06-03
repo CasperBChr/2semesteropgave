@@ -126,7 +126,7 @@
 
 			<!--<TextBlock Text="RentWear" Grid.Column="0" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Foreground="#222"/>-->
 			<Button Style="{StaticResource VerticalMenuButton}" FontSize="16" FontWeight="Bold" Foreground="#222" Grid.Row="0" Grid.Column="0" Click="HomeMenuButton_Click">
-				<Image Source="/Assets/Asset_1.png" />
+				<Image Source="/Assets/Asset_1.png" Height="50" Width="83" />
 			</Button>
 
 

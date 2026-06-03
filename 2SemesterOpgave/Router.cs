@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Pages;
@@ -14,6 +11,7 @@ namespace _2SemesterOpgave
         Routes _currentPage;
         public Routes CurrentPage { get { return _currentPage; } } // Property: gemmer den aktuelle side, som standard er sat til Home
         ContentControl _pageControl;
+        Category _selectedCategory;
 
         ObservableCollection<Article> _articles;
         ObservableCollection<Rental> _rentals;
@@ -26,17 +24,18 @@ namespace _2SemesterOpgave
         SizeServices _sizeServices; 
         FilterCriteria _currentFilter;
         BrandServices _brandServices;
-        Category _selectedCategory;
         ColorServices _colorServices;
+        ReviewServices _reviewServices;
 
-		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, RentalServices rentalServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices, SizeServices sizeServices, BrandServices brandServices, FilterCriteria filterCriteria, ColorServices colorServices)
+		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, RentalServices rentalServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices, SizeServices sizeServices, BrandServices brandServices, FilterCriteria filterCriteria, ColorServices colorServices, ReviewServices reviewServices)
         {
-			_currentPage = Routes.Home;
+            _currentPage = Routes.Home;
             _pageControl = pageControl;
             _articles = articles;
 			_categoryServices = categoryServices;
+            _categoryServices = categoryServices;
             _articleServices = articleServices;
-            _currentFilter = filterCriteria;
+            _reviewServices = reviewServices;
             _userServices = userServices;
             _colorServices = colorServices;
             _sizeServices = sizeServices;
@@ -44,13 +43,15 @@ namespace _2SemesterOpgave
             _shippingOptionServices = shippingOptionServices;
             _insuranceOptionServices = insuranceOptionServices;
             _rentalServices = rentalServices;
-            _pageControl.Content = new HomePage(this, _articleServices, _userServices, _categoryServices);
+            _currentFilter = filterCriteria;
+
+            _rentals = _rentalServices.GetAll();
         }
 
-		public void SetFilter(FilterCriteria filter)
-		{
-			_currentFilter = filter;
-		}
+        public void SetFilter(FilterCriteria filter)
+        {
+            _currentFilter = filter;
+        }
 
 		public void SetSelectedCategory(Category category)
 		{
@@ -75,18 +76,18 @@ namespace _2SemesterOpgave
 					break;
                 case Routes.Announcements:
                     _pageControl.Content = new NewsPage();
-					_currentPage = Routes.Announcements;
+                    _currentPage = Routes.Announcements;
                     break;
                 case Routes.Favorites:
                     _pageControl.Content = new FavoritPage();
                     _currentPage = Routes.Favorites;
                     break;
                 case Routes.MyOrders:
-                    _pageControl.Content = new MyOrdersPage(_userServices, _articleServices, _rentalServices);
+                    _pageControl.Content = new MyOrdersPage(this, _userServices, _reviewServices, _rentalServices);
                     _currentPage = Routes.MyOrders;
                     break;
                 case Routes.MyAccount:
-                    _pageControl.Content = new MyAccountPage(_userServices);
+                    _pageControl.Content = new MyAccountPage(this, _userServices);
                     _currentPage = Routes.MyAccount;
                     break;
                 case Routes.Messages:
@@ -98,8 +99,8 @@ namespace _2SemesterOpgave
                     _currentPage = Routes.Support;
                     break;
                 case Routes.Overview:
-					_pageControl.Content = new OverviewPage(this, _articleServices, _currentFilter);
-					_currentPage = Routes.Overview;
+                    _pageControl.Content = new OverviewPage(this, _articleServices, _currentFilter);
+                    _currentPage = Routes.Overview;
                     break;
                 case Routes.Article:
                     _pageControl.Content = new ArticlePage(this, _articleServices, _categoryServices);
@@ -118,7 +119,7 @@ namespace _2SemesterOpgave
 					_currentPage = Routes.Message;
 					break;
 				case Routes.UserProfile:
-					_pageControl.Content = new UserPage(_userServices, _articleServices, this);
+					_pageControl.Content = new UserPage(_userServices, _articleServices, this, _reviewServices);
 					_currentPage = Routes.UserProfile;
 					break;
                 case Routes.CreateArticle:
@@ -133,11 +134,15 @@ namespace _2SemesterOpgave
                     _pageControl.Content = new ArticleSortByCategory(_selectedCategory, _articleServices, _categoryServices, this, _userServices);
                     _currentPage = Routes.ArticleSortByCategory;
                     break;
+                case Routes.Reviews:
+                    _pageControl.Content = new ReviewsPage(_reviewServices, _userServices);
+                    _currentPage = Routes.Reviews;
+                    break;
             }
         }
     }
 
-    public enum Routes 
+    public enum Routes
     {
         Home = 0,
         Explore = 1,
@@ -156,9 +161,7 @@ namespace _2SemesterOpgave
         UserProfile = 14,
         CreateArticle = 15,
         Rent = 16,
-        ArticleSortByCategory = 17
+        Reviews = 17,
+        ArticleSortByCategory = 18
     }
 }
-
-
-

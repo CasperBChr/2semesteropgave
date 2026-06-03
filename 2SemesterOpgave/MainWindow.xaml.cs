@@ -34,18 +34,6 @@ namespace _2SemesterOpgave
 		ObservableCollection<Article> _articles = new ObservableCollection<Article>();
 		ObservableCollection<Category> _categories = new ObservableCollection<Category>();
 		ObservableCollection<SubCategory> _subCategories = new ObservableCollection<SubCategory>();
-		ObservableCollection<Brand> _brands = new ObservableCollection<Brand>();
-		ObservableCollection<Designer> _designers = new ObservableCollection<Designer>();
-		ObservableCollection<Collection> _collections = new ObservableCollection<Collection>();
-		ObservableCollection<User> _users = new ObservableCollection<User>();
-		ObservableCollection<Conversation> _conversations = new ObservableCollection<Conversation>();
-		ObservableCollection<Message> _messages = new ObservableCollection<Message>();
-		ObservableCollection<Notification> _notifications = new ObservableCollection<Notification>();
-		//ObservableCollection<Wishlist> _wishlists = new ObservableCollection<Wishlist>(); // Favoritter
-		ObservableCollection<Rental> _rentals = new ObservableCollection<Rental>();
-		ObservableCollection<ShippingOption> _shippingOptions = new ObservableCollection<ShippingOption>();
-		ObservableCollection<InsuranceOption> _insuranceOptions = new ObservableCollection<InsuranceOption>();
-		ObservableCollection<Accesibility> _accesibilities = new ObservableCollection<Accesibility>();
 
 
 		//UserRepository _userRepository;
@@ -71,6 +59,7 @@ namespace _2SemesterOpgave
 		RentalServices _rentalServices;
 		ShippingOptionServices _shippingOptionServices;
 		InsuranceOptionServices _insuranceOptionServices;
+		ReviewServices _reviewServices;
 
 		FilterCriteria _filter = new FilterCriteria();
 
@@ -109,8 +98,12 @@ namespace _2SemesterOpgave
 			_shippingOptionServices = new ShippingOptionServices(_shippingOptionRepository);
 			_insuranceOptionServices = new InsuranceOptionServices(_insuranceOptionRepository);
 			_rentalServices = new RentalServices(_rentalRepository, _userServices, _articleServices, _shippingOptionServices, _insuranceOptionServices);
+			
+			
+			// Services der får _db ??
+			_reviewServices = new ReviewServices(_db);
 
-			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentalServices, _shippingOptionServices, _insuranceOptionServices, _sizeServices, _brandServices, _filter, _colorServices);
+			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentalServices, _shippingOptionServices, _insuranceOptionServices, _sizeServices, _brandServices, _filter, _colorServices, _reviewServices);
 			_categories = new ObservableCollection<Category>(_categoryServices.GetAllCategories());
 
 			CategoryCombo.ItemsSource = _categories;
@@ -216,33 +209,40 @@ namespace _2SemesterOpgave
 			_router.NavigateTo(Routes.Notifications);
 		}
 
-		private void CategoryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			_filter.Category = (Category)CategoryCombo.SelectedItem;
-			_filter.SubCategory = null;
+        private void CategoryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CategoryCombo.SelectedItem == null)
+            {
+                return;
+            }
 
-			ComboBox comboBox = (ComboBox)sender;
-			Category chosenCategory = (Category)comboBox.SelectedItem;
+            _filter.Category = (Category)CategoryCombo.SelectedItem;
+            _filter.SubCategory = null;
 
-			SubcategoryCombo.ItemsSource = chosenCategory.SubCategories;
+            Category chosenCategory = (Category)CategoryCombo.SelectedItem;
+            SubcategoryCombo.ItemsSource = chosenCategory.SubCategories;
 
-			_router.SetFilter(_filter);
-			_router.NavigateTo(Routes.Overview);
-		}
+            _router.NavigateTo(Routes.Overview);
+        }
 
-		private void SubcategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			_filter.SubCategory = (SubCategory)SubcategoryCombo.SelectedItem;
-			_router.SetFilter(_filter);
-			_router.NavigateTo(Routes.Overview);
-		}
+        private void SubcategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SubcategoryCombo.SelectedItem == null)
+            {
+                return;
+            }
 
-		private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			_filter.SearchText = ((TextBox)sender).Text;
-			_router.SetFilter(_filter);
-			_router.NavigateTo(Routes.Overview);
-		}
+            _filter.SubCategory = (SubCategory)SubcategoryCombo.SelectedItem;
+
+            _router.NavigateTo(Routes.Overview);
+        }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _filter.SearchText = ((TextBox)sender).Text;
+
+            _router.NavigateTo(Routes.Overview);
+        }
 
         private void UserButton_Click(object sender, RoutedEventArgs e)
         {
