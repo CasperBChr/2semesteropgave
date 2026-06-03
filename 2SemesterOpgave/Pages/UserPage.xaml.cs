@@ -16,20 +16,22 @@ namespace _2SemesterOpgave.Pages
     {
         UserServices _userServices;
         ArticleServices _articleServices;
-        ReviewServices _reviewServices;
         Router _router;
-        public UserPage(UserServices userServices, ArticleServices articleServices, Router router, ReviewServices reviewServices)
-        {
-            InitializeComponent();
-
-            _router = router;
-            _userServices = userServices;
+        ReviewServices _reviewServices;
+		public UserPage(UserServices userServices, ArticleServices articleServices, Router router, ReviewServices reviewServices)
+		{
+			InitializeComponent();
+			_userServices = userServices;
+			_articleServices = articleServices;
             _reviewServices = reviewServices;
+			DataContext = userServices.GetAllUsers()[0]; // Sætter DataContext til den første bruger i listen, så UI kan binde til den
+            _userServices.TargetUser = _userServices.GetAllUsers()[1];
+            TextBlockUsername.Text = _userServices.TargetUser.Username;
+			ArticlesItemsControl.ItemsSource = _articleServices.GetNewestArticles(); // Sætter ItemsSource til de nyeste artikler, så de vises i UI
+			_router = router;
+		}
 
-            DataContext = _userServices.TargetUser;
-        }
-
-        private void ReviewUserButton_Click(object sender, RoutedEventArgs e)
+		private void ReviewUserButton_Click(object sender, RoutedEventArgs e)
         {
             if (_userServices.TargetUser.Id == 0)
             {

@@ -68,6 +68,14 @@
 						<TextBlock Text="Følger:" FontWeight="SemiBold" />
 						<TextBlock Text="{Binding FollowingCount}" Margin="6,0,0,0" />
 					</StackPanel>
+					<StackPanel>
+						<Button Content="Vurdér bruger"
+								Width="140"
+								Height="32"
+								HorizontalAlignment="Left"
+								Margin="0,16,0,0"
+								Click="ReviewUserButton_Click" />
+					</StackPanel>
 
 				</StackPanel>
 
