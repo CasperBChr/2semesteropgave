@@ -110,7 +110,7 @@ namespace _2SemesterOpgave
 			_insuranceOptionServices = new InsuranceOptionServices(_insuranceOptionRepository);
 			_rentalServices = new RentalServices(_rentalRepository, _userServices, _articleServices, _shippingOptionServices, _insuranceOptionServices);
 
-			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentalServices, _shippingOptionServices, _insuranceOptionServices, _filter, _sizeServices, _brandServices, _colorServices);
+			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentalServices, _shippingOptionServices, _insuranceOptionServices, _sizeServices, _brandServices, _filter, _colorServices);
 			_categories = new ObservableCollection<Category>(_categoryServices.GetAllCategories());
 
 			CategoryCombo.ItemsSource = _categories;

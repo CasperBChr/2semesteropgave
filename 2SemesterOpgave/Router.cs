@@ -14,21 +14,22 @@ namespace _2SemesterOpgave
         Routes _currentPage;
         public Routes CurrentPage { get { return _currentPage; } } // Property: gemmer den aktuelle side, som standard er sat til Home
         ContentControl _pageControl;
-        
+
         ObservableCollection<Article> _articles;
         ObservableCollection<Rental> _rentals;
         CategoryServices _categoryServices;
         ArticleServices _articleServices;
         UserServices _userServices;
-        SizeServices _sizeServices; 
         RentalServices _rentalServices;
         ShippingOptionServices _shippingOptionServices;
         InsuranceOptionServices _insuranceOptionServices;
+        SizeServices _sizeServices; 
         FilterCriteria _currentFilter;
+        BrandServices _brandServices;
+        Category _selectedCategory;
         ColorServices _colorServices;
-        BrandServices _brandServices;  
 
-		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, RentalServices rentalServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices, FilterCriteria filterCriteria, SizeServices sizeServices, BrandServices brandServices, ColorServices colorServices)
+		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, RentalServices rentalServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices, SizeServices sizeServices, BrandServices brandServices, FilterCriteria filterCriteria, ColorServices colorServices)
         {
 			_currentPage = Routes.Home;
             _pageControl = pageControl;
@@ -51,6 +52,11 @@ namespace _2SemesterOpgave
 			_currentFilter = filter;
 		}
 
+		public void SetSelectedCategory(Category category)
+		{
+			_selectedCategory = category;
+		}
+
 		public void NavigateTo(Routes route)
 		{
 			switch (route)
@@ -63,10 +69,10 @@ namespace _2SemesterOpgave
                     _pageControl.Content = new ExplorePage(this, _articleServices, _userServices);
 					_currentPage = Routes.Explore;
                     break;
-                case Routes.Categories:
-                    _pageControl.Content = new CategoryPage(_categoryServices);
+				case Routes.Categories:
+					_pageControl.Content = new CategoryPage(_categoryServices, this, _articleServices);
 					_currentPage = Routes.Categories;
-                    break;
+					break;
                 case Routes.Announcements:
                     _pageControl.Content = new NewsPage();
 					_currentPage = Routes.Announcements;
@@ -120,8 +126,12 @@ namespace _2SemesterOpgave
                     _currentPage = Routes.CreateArticle;
                     break;
                 case Routes.Rent:
-                    _pageControl.Content = new RentPage(this, _articleServices, _userServices);              
+                    _pageControl.Content = new RentPage(this, _articleServices, _userServices, _shippingOptionServices, _insuranceOptionServices);              
                     _currentPage = Routes.Rent;
+                    break;
+                case Routes.ArticleSortByCategory:
+                    _pageControl.Content = new ArticleSortByCategory(_selectedCategory, _articleServices, _categoryServices, this, _userServices);
+                    _currentPage = Routes.ArticleSortByCategory;
                     break;
             }
         }
@@ -145,7 +155,8 @@ namespace _2SemesterOpgave
         Message = 13,
         UserProfile = 14,
         CreateArticle = 15,
-        Rent = 16
+        Rent = 16,
+        ArticleSortByCategory = 17
     }
 }
 

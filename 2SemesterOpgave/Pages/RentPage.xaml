@@ -53,7 +53,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Vælg fragtløsning" FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                <ComboBox x:Name="ShippingComboBox" Margin="20,-2,150,-2" Grid.Row="0" Grid.Column="1" DisplayMemberPath="ShippingOptions"/>
+                <ComboBox x:Name="ShippingComboBox" Margin="20,-2,150,-2" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Name"/>
             </Grid>
 
             <Grid Grid.Row="3" Grid.Column="0" Margin="0,15,0,15">
@@ -65,7 +65,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Vælg forsikring" FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                <ComboBox x:Name="InsuranceComboBox" Margin="20,-2,150,-2" Grid.Row="0" Grid.Column="1" DisplayMemberPath="InsuranceOptions"/>
+                <ComboBox x:Name="InsuranceComboBox" Margin="20,-2,150,-2" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Name"/>
             </Grid>
 
             <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">

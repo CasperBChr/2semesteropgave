@@ -105,6 +105,20 @@ namespace _2SemesterOpgave.Services
 			return articles;
 		}
 
+		public IEnumerable<Article> GetArticlesByCategory(int categoryId)
+		{
+			IEnumerable<Article> allArticles = GetAllArticles();
+			List<Article> filteredArticles = new List<Article>();
+			foreach (Article article in allArticles)
+			{
+				if (article.Category != null && article.Category.Id == categoryId)
+				{
+					filteredArticles.Add(article);
+				}
+			}
+			return filteredArticles;
+		}
+
 
 		Article MapToArticle(ArticleDTO dto)
 		{

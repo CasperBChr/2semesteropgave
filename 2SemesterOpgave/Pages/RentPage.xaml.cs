@@ -15,20 +15,27 @@ using System.Windows.Shapes;
 
 namespace _2SemesterOpgave.Pages
 {
-    //Kodet af Camilla
+    /// <summary>
+    /// Kodet af Camilla. Interaction logic for RentPage.xaml.
+    /// </summary>
     public partial class RentPage : UserControl
     {
         private Router _router;
         private Models.Article _currentArticle;
         private ArticleServices _articleServices;
         private UserServices _userServices;
-        public RentPage(Router router, ArticleServices articleServices, UserServices userServices)
+        private ShippingOptionServices _shippingOptionServices;
+        private InsuranceOptionServices _insuranceOptionServices;
+        public RentPage(Router router, ArticleServices articleServices, UserServices userServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices)
         {
             InitializeComponent();
             _router = router;
             _articleServices = articleServices;
             _userServices = userServices;
-            
+            _shippingOptionServices = shippingOptionServices;
+            _insuranceOptionServices = insuranceOptionServices;
+            ShippingComboBox.ItemsSource = _shippingOptionServices.GetAll();
+            InsuranceComboBox.ItemsSource = _insuranceOptionServices.GetAll();
         }
         //Knap til at bekræfte leje af en artikel, og navigere derefter tilbage til oversigten
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)

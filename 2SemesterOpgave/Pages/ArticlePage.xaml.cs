@@ -16,7 +16,9 @@ using System.Windows.Shapes;
 
 namespace _2SemesterOpgave.Pages
 {
-    //Kodet af Camilla
+    /// <summary>
+    /// Kodet af Camilla. Interaction logic for ArticlePage.xaml.
+    /// </summary>
     public partial class ArticlePage : UserControl
     {
         private Router _router;
@@ -34,7 +36,6 @@ namespace _2SemesterOpgave.Pages
             _categoryServices = categoryServices;
             this.DataContext = _articleServices.SelectedArticle;
 			_currentArticle = _articleServices.SelectedArticle;
-
 		}
 
         //DataContext for at binde Article-objektet til ArticlePage
@@ -52,7 +53,7 @@ namespace _2SemesterOpgave.Pages
                 _router.NavigateTo(Routes.Message);
             }
         }
-
+        //Metode der navigerer til udlejnings siden for artiklen
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             _router.NavigateTo(Routes.Rent);

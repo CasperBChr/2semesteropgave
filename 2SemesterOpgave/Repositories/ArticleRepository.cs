@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Reflection.PortableExecutable;
-using System.Text;
+﻿using _2SemesterOpgave;
 using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
-using _2SemesterOpgave.Repositories.Interfaces;
-using _2SemesterOpgave;
-using _2SemesterOpgave.Services;
 using _2SemesterOpgave.Repositories.DTO;
+using _2SemesterOpgave.Repositories.Interfaces;
+using _2SemesterOpgave.Services;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Diagnostics;
+using System.Reflection.PortableExecutable;
+using System.Text;
 
 namespace _2SemesterOpgave.Repositories
 {
@@ -151,11 +152,86 @@ namespace _2SemesterOpgave.Repositories
 			}
 		}
 
+        //Metode til at oprette en ArticleDTO
+        public void CreateArticle(Article article)
+        {
+            _db.Open();
+            DbCommand command = _db.Connection.CreateCommand();
+
+            command.CommandText = "INSERT INTO Articles (name, description, category_id, subcategory_id, brand_id, color_id, size_id, daily_price, original_price, is_rented) VALUES (@name, @description, @categoryId, @subcategoryId, @brandId, @colorId, @sizeId, @dailyPrice, @originalPrice, @isRented)";
+            
+			DbParameter nameParam = command.CreateParameter();
+            nameParam.ParameterName = "name";
+            nameParam.DbType = DbType.String;
+            nameParam.Value = article.Title;
+            command.Parameters.Add(nameParam);
+
+            DbParameter descriptionParam = command.CreateParameter();
+            descriptionParam.DbType = DbType.String;
+            descriptionParam.ParameterName = "description";
+            descriptionParam.Value = article.Description;
+            command.Parameters.Add(descriptionParam);
+
+            DbParameter categoryIdParam = command.CreateParameter();
+            categoryIdParam.DbType = DbType.Int32;
+            categoryIdParam.ParameterName = "categoryId";
+            categoryIdParam.Value = article.Category;
+            command.Parameters.Add(categoryIdParam);
+
+            DbParameter subcategoryIdParam = command.CreateParameter();
+            subcategoryIdParam.DbType = DbType.Int32;
+            subcategoryIdParam.ParameterName = "subcategoryId";
+            subcategoryIdParam.Value = article.SubCategory;
+            command.Parameters.Add(subcategoryIdParam);
+
+            DbParameter brandIdParam = command.CreateParameter();
+            brandIdParam.DbType = DbType.Int32;
+            brandIdParam.ParameterName = "brandId";
+            brandIdParam.Value = article.Brand;
+            command.Parameters.Add(brandIdParam);
+
+            DbParameter colorIdParam = command.CreateParameter();
+            colorIdParam.DbType = DbType.Int32;
+            colorIdParam.ParameterName = "colorId";
+            colorIdParam.Value = article.Color;
+            command.Parameters.Add(colorIdParam);
+
+            DbParameter sizeIdParam = command.CreateParameter();
+            sizeIdParam.DbType = DbType.Int32;
+            sizeIdParam.ParameterName = "sizeId";
+            sizeIdParam.Value = article.Size;
+            command.Parameters.Add(sizeIdParam);
+
+            DbParameter dailyPriceParam = command.CreateParameter();
+            dailyPriceParam.DbType = DbType.Single;
+            dailyPriceParam.ParameterName = "dailyPrice";
+            dailyPriceParam.Value = article.DailyPrice;
+            command.Parameters.Add(dailyPriceParam);
+
+            DbParameter originalPriceParam = command.CreateParameter();
+            originalPriceParam.DbType = DbType.Single;
+            originalPriceParam.ParameterName = "originalPrice";
+            originalPriceParam.Value = article.OriginalPrice;
+            command.Parameters.Add(originalPriceParam);
+
+            DbParameter isRentedParam = command.CreateParameter();
+            isRentedParam.DbType = DbType.Int32;
+            isRentedParam.ParameterName = "isRented";
+            isRentedParam.Value = article.IsRented ? 1 : 0;
+            command.Parameters.Add(isRentedParam);
+            
+			DbParameter ownerParam = command.CreateParameter();
+            ownerParam.DbType = DbType.Int32;
+            ownerParam.ParameterName = "ownerId";
+            ownerParam.Value = article.Owner;
+            command.Parameters.Add(ownerParam);
+
+            command.ExecuteNonQuery();
+            _db.Close();
+        }
 
 
-
-
-		ArticleDTO CreateDTO(DbDataReader reader)
+        ArticleDTO CreateDTO(DbDataReader reader)
 		{
 			int id = reader.GetOrdinal("id");
 			int name = reader.GetOrdinal("name");

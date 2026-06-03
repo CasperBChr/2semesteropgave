@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <DataTemplate x:Key="CategoryTemplate">
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5" CornerRadius="5" Height="40" Width="200">
-                <Button Content="{Binding Name}" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0"/>
+                <Button x:Name="CategoryButton" Click="CategoryButton_Click" Content="{Binding Name}" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0"/>
             </Border>
         </DataTemplate>
     </UserControl.Resources>

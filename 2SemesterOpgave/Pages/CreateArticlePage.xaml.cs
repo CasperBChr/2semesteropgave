@@ -12,12 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using _2SemesterOpgave.Repositories;
 
 namespace _2SemesterOpgave.Pages
 {
-    //Kodet af Camilla
+    /// <summary>
+    /// Kodet af Camilla. Interaction logic for CreateArticlePage.xaml.
+    /// </summary>
     public partial class CreateArticlePage : UserControl
     {
+        ArticleRepository _articleRepository;
+
         private Router _router;
         private Models.Article _currentArticle;
         private ArticleServices _articleServices;
@@ -38,45 +43,74 @@ namespace _2SemesterOpgave.Pages
             CreateSizeComboBox.ItemsSource = _sizeServices.GetAllSizes();
             CreateBrandComboBox.ItemsSource = _brandServices.GetAllBrands();
         }
+
+        public void UploadImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            Image createArticleImage = new Image();         
+
+        }
+
         //Metode til at sætte en titel på en artikel som oprettes
         public void CreateTitleTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string userInput = CreateTitleTextBox.Text;
-            CreateTitleTextBox.Text = "New Value";  
+            // User input is stored in CreateTitleTextBox.Text
         }
         //Metode til at sætte en beskrivelse på en artikel som oprettes
         public void CreateDescriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string userInput = CreateDescriptionTextBox.Text;
-            CreateDescriptionTextBox.Text = "New Value";  
+            // User input is stored in CreateDescriptionTextBox.Text
         }
         //Metode til at sætte en pris på en artikel som oprettes
         public void CreatePriceTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string userInput = CreatePriceTextBox.Text;
-            CreatePriceTextBox.Text = "New Value";  
+            // User input is stored in CreatePriceTextBox.Text
         }
         //Metode til at sætte en farve på en artikel som oprettes
         public void CreateColorTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string userInput = CreateColorTextBox.Text;
-            CreateColorTextBox.Text = "New Value";  
+            // User input is stored in CreateColorTextBox.Text
         }
 
         //Metode til at gemme den oprettede artikel og navigere tilbage til oversigten
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            
+                //Article article = new Article();
+                //string titel = CreateTitleTextBox.Text;
+                //string description = CreateDescriptionTextBox.Text;
+                //Category category = (Category)CreateCategoryCombobox.SelectedItem;
+                //SubCategory subcategory = (SubCategory)CreateSubcategoryCombobox.SelectedItem;
+                //Models.Size size = (Models.Size)CreateSizeComboBox.SelectedItem;
+                //double prize = Convert.ToDouble(CreatePriceTextBox.Text);
+                //string colorText = CreateColorTextBox.Text;
+                //Brand brand = (Brand)CreateBrandComboBox.SelectedItem;
 
-            //GEM I DATABASE
+                //if (string.IsNullOrWhiteSpace(titel))
+                //{
+                //    MessageBox.Show("Husk titel!");
+                //    return;
+                //}
+                                
+                //article.Title = titel;
+                //article.Description = description;
+                //article.Category = category;
+                //article.SubCategory = subcategory;
+                //article.Size = size;
+                //article.DailyPrice = (float)prize;
+                //article.Color = colorText;
+                //article.Brand = brand;
 
+                //ArticleRepository createArticle = _articleServices.CreateArticle(article);
 
-            _router.NavigateTo(Routes.Overview);
+                //_router.NavigateTo(Routes.Overview);
+            
+          
         }
 
         private void DismissButton_Click(object sender, RoutedEventArgs e)
         {
             //Gemmer ikke den oprettede artikel og navigerer tilbage til oversigten
             _router.NavigateTo(Routes.Overview);
-        }   
+        } 
     }
 }
