@@ -13,7 +13,7 @@ namespace _2SemesterOpgave.Repositories
 {
     public class UserRepository
     {
-        private static Database _db;
+        Database _db;
 
         public UserRepository(Database db)
         { 
@@ -208,7 +208,7 @@ namespace _2SemesterOpgave.Repositories
 		//	}
 		//}
 
-		public static int GetUserFollowerCount(int id) 
+		public int GetUserFollowerCount(int id) 
         {
             try 
             {
@@ -230,7 +230,7 @@ namespace _2SemesterOpgave.Repositories
             }
 		}
 		
-		public static int GetUserFollowingCount(int userId)
+		public int GetUserFollowingCount(int userId)
 		{
 			try
 			{
@@ -428,6 +428,37 @@ namespace _2SemesterOpgave.Repositories
             command.ExecuteNonQuery();
             _db.Close();
         }
+
+		public UserDTO? GetUserByUsername(string username)
+		{
+			try
+			{
+				_db.Open();
+				DbCommand command = _db.Connection.CreateCommand();
+
+				command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.Username = @Username";
+
+				DbParameter usernameParam = command.CreateParameter();
+				usernameParam.ParameterName = "@Username";
+				usernameParam.DbType = DbType.String;
+				usernameParam.Value = username;
+
+				command.Parameters.Add(usernameParam);
+
+				using DbDataReader reader = command.ExecuteReader();
+
+				if (reader.Read())
+				{
+					return CreateDTO(reader);
+				}
+
+				return null;
+			}
+			finally
+			{
+				_db.Close();
+			}
+		}
 
 		UserDTO CreateDTO(DbDataReader reader)
 		{

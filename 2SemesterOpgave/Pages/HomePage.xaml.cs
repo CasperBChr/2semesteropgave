@@ -1,6 +1,4 @@
-﻿using _2SemesterOpgave.Models;
-using _2SemesterOpgave.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -12,6 +10,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using _2SemesterOpgave.Models;
+using _2SemesterOpgave.Services;
+using _2SemesterOpgave.Services.Interfaces;
 
 namespace _2SemesterOpgave.Pages
 {
@@ -21,15 +22,17 @@ namespace _2SemesterOpgave.Pages
     public partial class HomePage : UserControl
     {
         ArticleServices _articleServices;
+        UserServices _userServices;
         Router _router;
 
 
-        public HomePage(Router router, ArticleServices articleServices)
+        public HomePage(Router router, ArticleServices articleServices, UserServices userServices)
         {
             InitializeComponent();
 
             _router = router;
             _articleServices = articleServices;
+            _userServices = userServices;
 
             ArticlesItemsControl.ItemsSource = _articleServices.GetNewestArticles();
         }
@@ -38,7 +41,8 @@ namespace _2SemesterOpgave.Pages
 		{
             Button button = (Button)sender;
             _articleServices.SelectedArticle = (Article)button.DataContext;
-            _router.NavigateTo(Routes.Article);
+			_userServices.UserProfile.UpdateUserProfileView(_articleServices.SelectedArticle.ItemProfile);
+			_router.NavigateTo(Routes.Article);
 		}
 	}
 }

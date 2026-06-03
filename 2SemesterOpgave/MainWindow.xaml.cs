@@ -48,7 +48,7 @@ namespace _2SemesterOpgave
 		ObservableCollection<Accesibility> _accesibilities = new ObservableCollection<Accesibility>();
 
 
-		UserRepository _userRepository;
+		//UserRepository _userRepository;
 		ArticleRepository _articleRepository;
 		CategoryRepository _categoryRepository;
 		BrandRepository _brandRepository;
@@ -56,6 +56,9 @@ namespace _2SemesterOpgave
 		ColorRepository _colorRepository;
 		SizeRepository _sizeRepository;
 		DesignerRepository _designerRepository;
+		RentalRepository _rentalRepository;
+		ShippingOptionRepository _shippingOptionRepository;
+		InsuranceOptionRepository _insuranceOptionRepository;
 
 		UserServices _userServices;
 		ArticleServices _articleServices;
@@ -65,24 +68,25 @@ namespace _2SemesterOpgave
 		ColorServices _colorServices;
 		SizeServices _sizeServices;
 		DesignerServices _designerServices;
+		RentalServices _rentalServices;
+		ShippingOptionServices _shippingOptionServices;
+		InsuranceOptionServices _insuranceOptionServices;
 
 		FilterCriteria _filter = new FilterCriteria();
 
 		Database _db;
-        UserProfile UserProfile;
+        UserProfile? UserProfile;
 
-        public MainWindow()
+        public MainWindow(Database db, UserServices userServices)
 		{
 			InitializeComponent();
 			_pageControl = PageContentControl;
 
-
-			string dbpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "db.db");
-			_db = Database.GetInstance($"Data Source={dbpath}");
+			_db = db;
+			_userServices = userServices;
+			
 			//_db = new Database($"Data Source={dbpath}");
-
-
-			_userRepository = new UserRepository(_db);
+			//_userRepository = new UserRepository(_db);
 			_categoryRepository = new CategoryRepository(_db);
 			_brandRepository = new BrandRepository(_db);
 			_collectionRepository = new CollectionRepository(_db);
@@ -90,19 +94,23 @@ namespace _2SemesterOpgave
 			_sizeRepository = new SizeRepository(_db);
 			_articleRepository = new ArticleRepository(_db);
 			_designerRepository = new DesignerRepository(_db);
-			
-
+			_shippingOptionRepository = new ShippingOptionRepository(_db);
+			_insuranceOptionRepository = new InsuranceOptionRepository(_db);
+			_rentalRepository = new RentalRepository(_db);
 
 			_categoryServices = new CategoryServices(_categoryRepository);
 			_brandServices = new BrandServices(_brandRepository);
-			_userServices = new UserServices(_userRepository);
+			//_userServices = new UserServices(_userRepository);
 			_designerServices = new DesignerServices(_designerRepository);
 			_collectionServices = new CollectionServices(_collectionRepository, _brandServices, _designerServices);
 			_colorServices = new ColorServices(_colorRepository);
 			_sizeServices = new SizeServices(_sizeRepository);
 			_articleServices = new ArticleServices(_articleRepository, _userServices, _brandServices, _categoryServices, _collectionServices, _colorServices, _sizeServices);
+			_shippingOptionServices = new ShippingOptionServices(_shippingOptionRepository);
+			_insuranceOptionServices = new InsuranceOptionServices(_insuranceOptionRepository);
+			_rentalServices = new RentalServices(_rentalRepository, _userServices, _articleServices, _shippingOptionServices, _insuranceOptionServices);
 
-			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentals, _filter);
+			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentalServices, _shippingOptionServices, _insuranceOptionServices, _filter);
 			_categories = new ObservableCollection<Category>(_categoryServices.GetAllCategories());
 
 			CategoryCombo.ItemsSource = _categories;
@@ -110,63 +118,65 @@ namespace _2SemesterOpgave
 			InitializeAlgorithm(_userServices.CurrentUser);
 
         }
+
 		//Algoritme
-        public void InitializeAlgorithm(User user)
+		public void InitializeAlgorithm(User user)
         {
             //Liste der henter kategorier
-            var categories = _categoryServices.GetAllCategories();
+            IEnumerable<Category> categories = _categoryServices.GetAllCategories();
 
-            //Opretter en liste af features baseret på kategorierne, som bruges til at oprette brugerprofilen
-            var features = new List<string>();
-            foreach (var category in categories)
+			//Opretter en liste af features baseret på kategorierne, som bruges til at oprette brugerprofilen
+			List<string> features = new List<string>();
+            foreach (Category category in categories)
             {
                 features.Add(category.Name);
             }
 
-            //Katalog af elementer
-            var catalog = new List<ItemProfile>();
-            var articles = new List<Article>(_articleServices.GetAllArticles());
+			//Katalog af elementer
+			List<ItemProfile> catalog = new List<ItemProfile>();
+			List<Article> articles = new List<Article>(_articleServices.GetAllArticles());
 
-            for (int i = 0; i < articles.Count; i++)
-            {
-                var article = articles[i];
-                var itemProfile = new ItemProfile
-                {
-                    ArticleID = article.Id,
-                    Article = article,
-                    Features = new Dictionary<string, double>
-                    {
-                        { article.Category.Name, 1.0 }
-                    }
-                };
+			//        for(int i = 0; i < articles.Count; i++)
+			//        {
+			//            Article article = articles[i];
+			//            ItemProfile itemProfile = new ItemProfile
+			//            {
+			//                ArticleID = article.Id,
+			//                Article = article,
+			//                Features = new Dictionary<string, double>
+			//                {
+			//                    { article.Category.Name, 1.0 }
+			//                }
+			//            };
+
+			//article.ItemProfile = itemProfile;
+			//            catalog.Add(itemProfile);
+			//        }
+
+			for (int i = 0; i < articles.Count; i++)
+			{
+				Article article = articles[i];
+
+				if (article.Category == null) continue; // skip articles with no category
+
+				ItemProfile itemProfile = new ItemProfile
+				{
+					ArticleID = article.Id,
+					Article = article,
+					Features = new Dictionary<string, double>
+						{
+							{ article.Category.Name, 1.0 }
+						}
+				};
 
 				article.ItemProfile = itemProfile;
-                catalog.Add(itemProfile);
-            }
+				catalog.Add(itemProfile);
+			}
 
-            //Opret en ny bruger til algoritme
+			//Opret en ny brugerprofil til algoritme
 			_userServices.UserProfile = new UserProfile(user.Id.ToString(), features);
             _userServices.UserProfile.User = _userServices.GetById(user.Id);
-
-            //UserProfile.UpdateUserProfileView(catalog[0]);
-
-            PrintRecommendations(_userServices.UserProfile, catalog);
         }
-        //Metode der printer anbefalinger ud fra algoritmen
-        static void PrintRecommendations(UserProfile user, List<ItemProfile> catalog)
-        {
-            //Henter og printer anbefalingerne for brugeren
-            var recs = ContentBasedAlgorithm.GetRecommendations(user, catalog);
-
-            //Printer anbefalingerne i konsollen
-            foreach (var rec in recs)
-            {
-                //Udskriver anbefalingerne i konsollen
-                Debug.WriteLine($"- {rec.Item.Name} (Match Score: {rec.Score:F2})");
-            }
-
-        }
-
 
         private void HomeMenuButton_Click(object sender, RoutedEventArgs e)
 		{

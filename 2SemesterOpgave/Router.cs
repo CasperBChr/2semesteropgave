@@ -20,19 +20,24 @@ namespace _2SemesterOpgave
         CategoryServices _categoryServices;
         ArticleServices _articleServices;
         UserServices _userServices;
+        RentalServices _rentalServices;
+        ShippingOptionServices _shippingOptionServices;
+        InsuranceOptionServices _insuranceOptionServices;
         FilterCriteria _currentFilter;
 
-		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, ObservableCollection<Rental> rentals, FilterCriteria filterCriteria)
+		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, RentalServices rentalServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices, FilterCriteria filterCriteria)
         {
 			_currentPage = Routes.Home;
             _pageControl = pageControl;
             _articles = articles;
-            _rentals = rentals;
 			_categoryServices = categoryServices;
             _articleServices = articleServices;
             _currentFilter = filterCriteria;
             _userServices = userServices;
-            _pageControl.Content = new HomePage(this, _articleServices);
+            _shippingOptionServices = shippingOptionServices;
+            _insuranceOptionServices = insuranceOptionServices;
+            _rentalServices = rentalServices;
+            _pageControl.Content = new HomePage(this, _articleServices, _userServices);
         }
 
 		public void SetFilter(FilterCriteria filter)
@@ -45,7 +50,7 @@ namespace _2SemesterOpgave
 			switch (route)
             {
                 case Routes.Home:
-                    _pageControl.Content = new HomePage(this, _articleServices);
+                    _pageControl.Content = new HomePage(this, _articleServices, _userServices);
 					_currentPage = Routes.Home;
                     break;
                 case Routes.Explore:
@@ -65,7 +70,7 @@ namespace _2SemesterOpgave
                     _currentPage = Routes.Favorites;
                     break;
                 case Routes.MyOrders:
-                    _pageControl.Content = new MyOrdersPage(_userServices, _articleServices, _rentals);
+                    _pageControl.Content = new MyOrdersPage(_userServices, _articleServices, _rentalServices);
                     _currentPage = Routes.MyOrders;
                     break;
                 case Routes.MyAccount:

@@ -19,8 +19,9 @@ namespace _2SemesterOpgave.Services
         public FakeConversation FakeConversation;
         public User CurrentUser;
         public User? TargetUser;
-		public UserProfile UserProfile;
+		public UserProfile? UserProfile;
 		Dictionary<int, User> _cache = new Dictionary<int, User>();
+		SessionContext _session;
 		//public UserServices(UserRepository userRepository)
 		//      {
 		//          _userRepository = userRepository;
@@ -40,33 +41,38 @@ namespace _2SemesterOpgave.Services
 		//          Conversations[0].Messages.Add(new Message("Heeeeeeeeeey", Conversations[0], Conversations[0].Participants[0], DateTime.Now));
 		//      }
 
-		public UserServices(UserRepository userRepository)
+		public UserServices(UserRepository userRepository, SessionContext session)
 		{
 			_userRepository = userRepository;
+			_session = session;
+
 
 			Conversations = new ObservableCollection<Conversation>();
 
 			LoadCache(); // 1. FILL CACHE FIRST
 
 			Users = new ObservableCollection<User>(_cache.Values); // 2. NOW SAFE
+			CurrentUser = Users[0];
 
 			if (Users.Count < 2) 
 			{
 				throw new Exception("Skal bruge mindst to 2 users i DB");
 			}
 
-			CurrentUser = Users[0];
+			//if(CurrentUser != null) 
+			//{
+				Conversations.Add(new Conversation(new List<User> { CurrentUser, Users[1] }));
+				FakeConversation = new FakeConversation();
+				FakeConversation.ContinueConversationBot(Conversations[0], Conversations[0].Participants[1]);
+				AddFollower(Users[0], Users[1]);
+				AddFollower(Users[1], Users[0]);
 
-			Conversations.Add(new Conversation(new List<User> { Users[0], Users[1] }));
+				Conversations[0].Messages.Add(new Message("Suuup", Conversations[0], Conversations[0].Participants[1], DateTime.Now));
+				//Conversations[0].Messages.Add(new Message("Heeeeeeeeeey", Conversations[0].Participants[0], DateTime.Now));
+				Conversations[0].Messages.Add(new Message("Heeeeeeeeeey", Conversations[0], Conversations[0].Participants[0], DateTime.Now));
+			//}
 
-			FakeConversation = new FakeConversation();
-			FakeConversation.ContinueConversationBot(Conversations[0], Conversations[0].Participants[1]);
 
-			AddFollower(Users[0], Users[1]);
-
-			Conversations[0].Messages.Add(new Message("Suuup", Conversations[0], Conversations[0].Participants[1], DateTime.Now));
-			//Conversations[0].Messages.Add(new Message("Heeeeeeeeeey", Conversations[0].Participants[0], DateTime.Now));
-			Conversations[0].Messages.Add(new Message("Heeeeeeeeeey", Conversations[0], Conversations[0].Participants[0], DateTime.Now));
 		}
 
 		void LoadCache()
@@ -155,6 +161,27 @@ namespace _2SemesterOpgave.Services
         {
             return new Message(text, conversation, sender, DateTime.Now);
         }
+
+		public User? Login(string username, string password)
+		{
+			UserDTO? dto = _userRepository.GetUserByUsername(username);
+
+			if (dto == null) 
+			{
+				return null;
+			}
+
+			User user = Map(dto);
+
+			if (user.Password != password)
+			{
+				return null;
+			}
+
+			this.CurrentUser = user;
+
+			return user;
+		}
 
 		User Map(UserDTO dto)
 		{

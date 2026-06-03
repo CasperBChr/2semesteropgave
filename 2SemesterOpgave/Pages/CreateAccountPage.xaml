@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="_2SemesterOpgave.Pages.CreateAccountPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:_2SemesterOpgave.Pages"
+             mc:Ignorable="d" 
+             d:DesignHeight="650" d:DesignWidth="800">
+	<Grid>
+		<Grid x:Name="GridInputPanel" >
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+
+			<StackPanel Grid.Row="0" Margin="20, 20">
+				<TextBlock Foreground="White" FontSize="24">Username</TextBlock>
+				<TextBox x:Name="UsernameTextBox" Height="40" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+			</StackPanel>
+			<StackPanel Grid.Row="1" Margin="20, 20">
+				<TextBlock Foreground="White" FontSize="24">Email</TextBlock>
+				<TextBox x:Name="EmailTextBox" Height="40" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+			</StackPanel>
+			<StackPanel Grid.Row="2" Margin="20, 20">
+				<TextBlock Foreground="White" FontSize="24">Password</TextBlock>
+				<PasswordBox x:Name="PasswordBox" Height="40" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+			</StackPanel>
+			<StackPanel Grid.Row="3" Margin="20, 20">
+				<TextBlock Foreground="White" FontSize="24">Password Again</TextBlock>
+				<PasswordBox x:Name="PasswordAgainBox" Height="40" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+			</StackPanel>
+			<StackPanel Grid.Row="4"  Margin="20, 20">
+				<Button Background="HotPink" Foreground="White" Padding="15" FontSize="24" Cursor="Hand">
+					Create
+				</Button>
+			</StackPanel>
+		</Grid>
+	</Grid>
+</UserControl>

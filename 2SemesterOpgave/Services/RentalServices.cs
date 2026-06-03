@@ -1,10 +1,131 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
+using _2SemesterOpgave.Models;
+using _2SemesterOpgave.Repositories;
+using _2SemesterOpgave.Repositories.DTO;
 
 namespace _2SemesterOpgave.Services
 {
-	internal class RentalServices
+	public class RentalServices
 	{
+		RentalRepository _rentalRepository;
+		UserServices _userServices;
+		ArticleServices _articleServices;
+		ShippingOptionServices _shippingOptionServices;
+		InsuranceOptionServices _insuranceOptionServices;
+
+		public RentalServices(RentalRepository rentalRepository, UserServices userServices, ArticleServices articleServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices)
+		{
+			_rentalRepository = rentalRepository;
+			_userServices = userServices;
+			_articleServices = articleServices;
+			_shippingOptionServices = shippingOptionServices;
+			_insuranceOptionServices = insuranceOptionServices;
+		}
+
+		public ObservableCollection<Rental> GetByRenter(User renter)
+		{
+			IEnumerable<RentalDTO> dtos = _rentalRepository.GetByRenterId(renter.Id);
+			return MapMany(dtos);
+		}
+
+		public ObservableCollection<Rental> GetByRentee(User rentee)
+		{
+			IEnumerable<RentalDTO> dtos = _rentalRepository.GetByRenteeId(rentee.Id);
+			return MapMany(dtos);
+		}
+
+		public ObservableCollection<Rental> GetAll()
+		{
+			IEnumerable<RentalDTO> dtos = _rentalRepository.GetAll();
+			return MapMany(dtos);
+		}
+
+		public void CreateRental(Rental rental)
+		{
+			RentalDTO dto = new RentalDTO
+			{
+				StartDate = rental.StartDate.ToString("yyyy-MM-dd"),
+				EndDate = rental.EndDate.ToString("yyyy-MM-dd"),
+				TotalPrice = (float)rental.TotalPrice,
+				IsAccepted = false,
+				Status = "active",
+				RenterId = rental.Renter.Id,
+				RenteeId = rental.Rentee.Id,
+				ArticleId = rental.Article.Id,
+				ShippingOptionId = null, // sæt hvis ShippingOption får et Id-felt
+				InsuranceOptionId = null
+			};
+
+			_rentalRepository.Create(dto);
+		}
+
+		public void AcceptRental(Rental rental)
+		{
+			_rentalRepository.SetAccepted(rental.Id, true);
+			rental.IsAccepted = true;
+		}
+
+		public void UpdateStatus(Rental rental, string status)
+		{
+			_rentalRepository.UpdateStatus(rental.Id, status);
+			rental.Status = status;
+		}
+
+		ObservableCollection<Rental> MapMany(IEnumerable<RentalDTO> dtos)
+		{
+			ObservableCollection<Rental> rentals = new();
+
+			foreach (RentalDTO dto in dtos)
+			{
+				Rental? rental = MapToRental(dto);
+				if (rental != null)
+				{
+					rentals.Add(rental);
+				}
+			}
+
+			return rentals;
+		}
+
+		Rental? MapToRental(RentalDTO dto)
+		{
+			User? renter = _userServices.GetById(dto.RenterId);
+			User? rentee = _userServices.GetById(dto.RenteeId);
+
+			// Henter artikel via alle artikler – du kan optimere med GetById når det er implementeret
+			Article? article = new List<Article>(_articleServices.GetAllArticles())
+				.FirstOrDefault(a => a.Id == dto.ArticleId);
+
+			ShippingOption? shipping = dto.ShippingOptionId.HasValue
+			? _shippingOptionServices.GetById(dto.ShippingOptionId.Value)
+			: null;
+
+			InsuranceOption? insurance = dto.InsuranceOptionId.HasValue
+				? _insuranceOptionServices.GetById(dto.InsuranceOptionId.Value)
+				: null;
+
+			// Springer over hvis nødvendige relationer mangler
+			if (renter == null || rentee == null || article == null) return null;
+
+			return new Rental
+			{
+				Id = dto.Id,
+				StartDate = DateOnly.Parse(dto.StartDate),
+				EndDate = DateOnly.Parse(dto.EndDate),
+				TotalPrice = (decimal)dto.TotalPrice,
+				IsAccepted = dto.IsAccepted,
+				Status = dto.Status,
+				Renter = renter,
+				Rentee = rentee,
+				Article = article,
+				CreatedAt = dto.CreatedAt,
+				ShippingChoice = shipping,
+				InsuranceChoice = insurance
+
+			};
+		}
 	}
 }
