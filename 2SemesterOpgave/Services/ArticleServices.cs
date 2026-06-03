@@ -72,7 +72,27 @@ namespace _2SemesterOpgave.Services
 			return articles;
 		}
 
-
+		public IEnumerable<Article> GetRandomArticles(int amount)
+		{
+			List<Article> articles = new List<Article>(GetAllArticles());
+			HashSet<Article> randomArticles = new HashSet<Article>();
+			Random random = new Random();
+			if(articles.Count < amount)
+			{
+				for (int i = 0; i < amount; i++)
+				{
+					randomArticles.Add(articles[random.Next(0, articles.Count)]);
+				}
+			}
+			else
+			{
+				for(int i = 0; randomArticles.Count < amount; i++)
+				{
+					randomArticles.Add(articles[random.Next(0, articles.Count)]);
+				}
+			}
+			return randomArticles;
+		}
 
 		public IEnumerable<Article> GetFilteredArticles(FilterCriteria filter)
 		{

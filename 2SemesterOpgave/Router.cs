@@ -43,7 +43,7 @@ namespace _2SemesterOpgave
             _shippingOptionServices = shippingOptionServices;
             _insuranceOptionServices = insuranceOptionServices;
             _rentalServices = rentalServices;
-            _pageControl.Content = new HomePage(this, _articleServices, _userServices);
+            _pageControl.Content = new HomePage(this, _articleServices, _userServices, _categoryServices);
         }
 
 		public void SetFilter(FilterCriteria filter)
@@ -56,7 +56,7 @@ namespace _2SemesterOpgave
 			switch (route)
             {
                 case Routes.Home:
-                    _pageControl.Content = new HomePage(this, _articleServices, _userServices);
+                    _pageControl.Content = new HomePage(this, _articleServices, _userServices, _categoryServices);
 					_currentPage = Routes.Home;
                     break;
                 case Routes.Explore:

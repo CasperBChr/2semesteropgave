@@ -41,6 +41,28 @@ namespace _2SemesterOpgave.Services
 			}
 		}
 
+		public IEnumerable<Category> GetRandomCategories(int amount)
+		{
+			List<Category> categories = new List<Category>(GetAllCategories());
+			HashSet<Category> randomCategories = new HashSet<Category>();
+			Random random = new Random();
+			if (categories.Count < amount)
+			{
+				for (int i = 0; i < amount; i++)
+				{
+					randomCategories.Add(categories[random.Next(0, categories.Count)]);
+				}
+			}
+			else
+			{
+				for (int i = 0; randomCategories.Count < amount; i++)
+				{
+					randomCategories.Add(categories[random.Next(0, categories.Count)]);
+				}
+			}
+			return randomCategories;
+		}
+
 		public IEnumerable<Category> GetAllCategories()
 		{
 			return _categoryLookup.Values;

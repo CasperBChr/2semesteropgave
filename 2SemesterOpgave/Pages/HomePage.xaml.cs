@@ -23,18 +23,21 @@ namespace _2SemesterOpgave.Pages
     {
         ArticleServices _articleServices;
         UserServices _userServices;
+        CategoryServices _categoryServices;
         Router _router;
 
 
-        public HomePage(Router router, ArticleServices articleServices, UserServices userServices)
+        public HomePage(Router router, ArticleServices articleServices, UserServices userServices, CategoryServices categoryServices)
         {
             InitializeComponent();
 
             _router = router;
             _articleServices = articleServices;
             _userServices = userServices;
-
+			_categoryServices = categoryServices;
             ArticlesItemsControl.ItemsSource = _articleServices.GetNewestArticles();
+			RandomArticlesItemsControl.ItemsSource = _articleServices.GetRandomArticles(10);
+            RandomCategoriesItemsControl.ItemsSource = _categoryServices.GetRandomCategories(10);
         }
 
 		private void ArticlePageButton_Click(object sender, RoutedEventArgs e)

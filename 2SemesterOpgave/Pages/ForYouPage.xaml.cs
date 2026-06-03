@@ -51,12 +51,10 @@ namespace _2SemesterOpgave.Pages
 
         private void ForYouArticlePageButton_Click(object sender, RoutedEventArgs e)
         {
-            Button button = (Button)sender;
+			Button button = (Button)sender;
             ArticleServices.SelectedArticle = (Article)button.DataContext;
 			UserServices.UserProfile.UpdateUserProfileView(ArticleServices.SelectedArticle.ItemProfile);
 			Router.NavigateTo(Routes.Article);
         }
-              
-        
     }
 }
