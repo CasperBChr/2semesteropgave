@@ -35,31 +35,26 @@ namespace _2SemesterOpgave.Pages
 			List<Article> articles = new List<Article>(ArticleServices.GetAllArticles());
 			for(int i = 0; i < articles.Count; i++)
 			{
-				itemProfiles.Add(articles[i].ItemProfile);
+				if(articles[i].ItemProfile != null)
+				{
+					itemProfiles.Add(articles[i].ItemProfile);
+				}
 			}
-			PrintRecommendations(userService.UserProfile, itemProfiles);
+
+			List<Recommendation> recommendations = ContentBasedAlgorithm.GetRecommendations(UserServices.UserProfile, itemProfiles, 5);
+
+			List<Article> recommendedArticles = recommendations.Select(r => r.Item.Article).Where(a => a != null).ToList();
+			// Debug.WriteLine($"- {rec.Item.Name} (Match Score: {rec.Score:F2})");
+
+			ForYouArticlesItemsControl.ItemsSource = recommendedArticles;
 		}
-
-		//Metode der printer anbefalinger ud fra algoritmen
-		static void PrintRecommendations(UserProfile user, List<ItemProfile> catalog)
-        {
-            //Henter og printer anbefalingerne for brugeren
-            var recs = ContentBasedAlgorithm.GetRecommendations(user, catalog);
-
-            //Printer anbefalingerne i konsollen
-            foreach (var rec in recs)
-            {
-                //Udskriver anbefalingerne i konsollen
-                Debug.WriteLine($"- {rec.Item.Name} (Match Score: {rec.Score:F2})");
-            }
-
-        }
 
         private void ForYouArticlePageButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
             ArticleServices.SelectedArticle = (Article)button.DataContext;
-            Router.NavigateTo(Routes.Article);
+			UserServices.UserProfile.UpdateUserProfileView(ArticleServices.SelectedArticle.ItemProfile);
+			Router.NavigateTo(Routes.Article);
         }
               
         

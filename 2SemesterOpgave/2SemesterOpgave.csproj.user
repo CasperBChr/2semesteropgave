@@ -2,10 +2,16 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="LoginWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\ArticlePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\CategoryPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\CreateAccountPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\CreateArticlePage.xaml.cs">
@@ -21,6 +27,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\HomePage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\LoginPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\MessagePage.xaml.cs">

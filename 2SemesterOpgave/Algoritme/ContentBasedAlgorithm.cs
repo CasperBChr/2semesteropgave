@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace _2SemesterOpgave.Algoritme
@@ -45,22 +46,37 @@ namespace _2SemesterOpgave.Algoritme
         }
 
         //Finder de bedste 5 anbefalinger for en bruger baseret på Cosine Similarity og sorterer dem i faldende rækkefølge
-        public static List<(ItemProfile Item, double Score)> GetRecommendations(UserProfile user, List<ItemProfile> catalog, int topN = 5)
+        public static List<Recommendation> GetRecommendations(UserProfile user, List<ItemProfile> catalog, int topN = 5)
         {
-            //Liste til at gemme anbefalinger og deres match-score
-            var recommendations = new List<(ItemProfile Item, double Score)>();
+			//Liste til at gemme anbefalinger og deres match-score
+			List<Recommendation> recommendations = new List<Recommendation>();
 
             //Beregner match-score for hvert element i kataloget og tilføjer det til anbefalingslisten
-            foreach (var item in catalog)
+            foreach (ItemProfile item in catalog)
             {
                 //Beregner Cosine Similarity mellem brugerprofilen og elementprofilen
                 double score = CosineSimilarity(user, item);
-                recommendations.Add((item, score));
+                recommendations.Add(new Recommendation(item, score));
             }
 
             //Returnerer de top 5 anbefalinger sorteret efter match-score i faldende rækkefølge
             return recommendations.OrderByDescending(r => r.Score).Take(topN).ToList();
         }
 
-    }
+
+		//Metode der printer anbefalinger ud fra algoritmen
+		static void PrintRecommendations(UserProfile user, List<ItemProfile> catalog)
+		{
+			//Henter og printer anbefalingerne for brugeren
+			List<Recommendation> recommendations = ContentBasedAlgorithm.GetRecommendations(user, catalog);
+
+			//Printer anbefalingerne i konsollen
+			foreach (Recommendation recommendation in recommendations)
+			{
+				//Udskriver anbefalingerne i konsollen
+				Debug.WriteLine($"- {recommendation.Item.Name} (Match Score: {recommendation.Score:F2})");
+			}
+
+		}
+	}
 }
