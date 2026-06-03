@@ -244,5 +244,9 @@ namespace _2SemesterOpgave
 			_router.NavigateTo(Routes.Overview);
 		}
 
-	}
+        private void UserButton_Click(object sender, RoutedEventArgs e)
+        {
+			_router.NavigateTo(Routes.UserProfile);
+        }
+    }
 }
