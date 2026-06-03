@@ -1,4 +1,4 @@
-<img src="rentwear-banner.png" alt="Rentwear banner" width="100%">
+<img src="readme-banner.png" alt="Rentwear banner" width="100%">
 
 # RENTWEAR
 
