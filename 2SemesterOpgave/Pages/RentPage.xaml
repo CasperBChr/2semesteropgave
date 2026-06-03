@@ -17,7 +17,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" FontSize="50" RenderTransformOrigin="0.5,0.5" Text="Leje betingelser" Width="446" Margin="-126,0,0,0" Grid.ColumnSpan="2">
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" FontSize="50" RenderTransformOrigin="0.5,0.5" Text="Leje betingelser" Width="368" Margin="-87,206,0,0" Grid.ColumnSpan="2">
             <TextBlock.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -35,20 +35,39 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+
             <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="Gennemfør udlejning" FontSize="40" Margin="15"/>
             </StackPanel>
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
                 <TextBlock Text="Betingelser for udlejning.. i dette felt vil betingelserne for udlejningen stå." FontSize="15" Margin="20,30" Height="63"/>
             </StackPanel>
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <TextBlock Text="Vælg fragtløsning" FontSize="15" Margin="50,10"/>
-                <ListBox x:Name="ShippingListBox" Margin="10"/>
-            </StackPanel>
-            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Stretch" >
-                <TextBlock Text="Vælg forsikring" FontSize="15" Margin="50, 10, 68, 10"/>
-                <ListBox x:Name="InsuranceListBox" Margin="10"/>
-            </StackPanel>
+
+
+            <Grid Grid.Row="2" Grid.Column="0" Margin="0,15,0,15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="170" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Vælg fragtløsning" FontSize="15" Grid.Row="0" Grid.Column="0"/>
+                <ComboBox x:Name="ShippingComboBox" Margin="20,-2,150,-2" Grid.Row="0" Grid.Column="1" DisplayMemberPath="ShippingOptions"/>
+            </Grid>
+
+            <Grid Grid.Row="3" Grid.Column="0" Margin="0,15,0,15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="170" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Vælg forsikring" FontSize="15" Grid.Row="0" Grid.Column="0"/>
+                <ComboBox x:Name="InsuranceComboBox" Margin="20,-2,150,-2" Grid.Row="0" Grid.Column="1" DisplayMemberPath="InsuranceOptions"/>
+            </Grid>
+
             <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button x:Name="ConfirmButton" Content="Bekræft" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="20" Padding="20,10" Click="ConfirmButton_Click" />
                 <Button x:Name="CancelButton" Content="Annuller" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="20" Padding="20,10" Click="CancelButton_Click" />

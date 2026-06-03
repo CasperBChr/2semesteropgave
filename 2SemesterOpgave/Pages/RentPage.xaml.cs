@@ -28,6 +28,7 @@ namespace _2SemesterOpgave.Pages
             _router = router;
             _articleServices = articleServices;
             _userServices = userServices;
+            
         }
         //Knap til at bekræfte leje af en artikel, og navigere derefter tilbage til oversigten
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)

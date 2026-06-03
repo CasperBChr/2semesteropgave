@@ -20,12 +20,15 @@ namespace _2SemesterOpgave
         CategoryServices _categoryServices;
         ArticleServices _articleServices;
         UserServices _userServices;
+        SizeServices _sizeServices; 
         RentalServices _rentalServices;
         ShippingOptionServices _shippingOptionServices;
         InsuranceOptionServices _insuranceOptionServices;
         FilterCriteria _currentFilter;
+        ColorServices _colorServices;
+        BrandServices _brandServices;  
 
-		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, RentalServices rentalServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices, FilterCriteria filterCriteria)
+		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, RentalServices rentalServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices, FilterCriteria filterCriteria, SizeServices sizeServices, BrandServices brandServices, ColorServices colorServices)
         {
 			_currentPage = Routes.Home;
             _pageControl = pageControl;
@@ -34,6 +37,9 @@ namespace _2SemesterOpgave
             _articleServices = articleServices;
             _currentFilter = filterCriteria;
             _userServices = userServices;
+            _colorServices = colorServices;
+            _sizeServices = sizeServices;
+            _brandServices = brandServices;
             _shippingOptionServices = shippingOptionServices;
             _insuranceOptionServices = insuranceOptionServices;
             _rentalServices = rentalServices;
@@ -110,7 +116,7 @@ namespace _2SemesterOpgave
 					_currentPage = Routes.UserProfile;
 					break;
                 case Routes.CreateArticle:
-                    _pageControl.Content = new CreateArticlePage(this, _articleServices, _categoryServices);              
+                    _pageControl.Content = new CreateArticlePage(this, _articleServices, _categoryServices, _sizeServices, _brandServices);              
                     _currentPage = Routes.CreateArticle;
                     break;
                 case Routes.Rent:

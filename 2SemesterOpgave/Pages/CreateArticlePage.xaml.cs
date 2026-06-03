@@ -22,14 +22,21 @@ namespace _2SemesterOpgave.Pages
         private Models.Article _currentArticle;
         private ArticleServices _articleServices;
         private CategoryServices _categoryServices;
+        private SizeServices _sizeServices;
+        private BrandServices _brandServices;
 
-        public CreateArticlePage(Router router, ArticleServices articleServices, CategoryServices categoryServices)
+        public CreateArticlePage(Router router, ArticleServices articleServices, CategoryServices categoryServices, SizeServices sizeServices, BrandServices brandServices)
         {
             InitializeComponent();
             _router = router;
             _articleServices = articleServices;
             _categoryServices = categoryServices;
+            _sizeServices = sizeServices;
+            _brandServices = brandServices;
             CreateCategoryCombobox.ItemsSource = _categoryServices.GetAllCategories();
+            CreateSubcategoryCombobox.ItemsSource = _categoryServices.GetAllSubCategories();
+            CreateSizeComboBox.ItemsSource = _sizeServices.GetAllSizes();
+            CreateBrandComboBox.ItemsSource = _brandServices.GetAllBrands();
         }
         //Metode til at sætte en titel på en artikel som oprettes
         public void CreateTitleTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -44,21 +51,26 @@ namespace _2SemesterOpgave.Pages
             CreateDescriptionTextBox.Text = "New Value";  
         }
         //Metode til at sætte en pris på en artikel som oprettes
-        public void CreatePriceTextBlock_TextChanged(object sender, TextChangedEventArgs e)
+        public void CreatePriceTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string userInput = CreatePriceTextBlock.Text;
-            CreatePriceTextBlock.Text = "New Value";  
+            string userInput = CreatePriceTextBox.Text;
+            CreatePriceTextBox.Text = "New Value";  
         }
         //Metode til at sætte en farve på en artikel som oprettes
-        public void CreateColorTextBlock_TextChanged(object sender, TextChangedEventArgs e)
+        public void CreateColorTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string userInput = CreateColorTextBlock.Text;
-            CreateColorTextBlock.Text = "New Value";  
+            string userInput = CreateColorTextBox.Text;
+            CreateColorTextBox.Text = "New Value";  
         }
 
+        //Metode til at gemme den oprettede artikel og navigere tilbage til oversigten
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
 
+            //GEM I DATABASE
+
+
+            _router.NavigateTo(Routes.Overview);
         }
 
         private void DismissButton_Click(object sender, RoutedEventArgs e)

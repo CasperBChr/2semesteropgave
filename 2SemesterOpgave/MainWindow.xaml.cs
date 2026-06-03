@@ -110,7 +110,7 @@ namespace _2SemesterOpgave
 			_insuranceOptionServices = new InsuranceOptionServices(_insuranceOptionRepository);
 			_rentalServices = new RentalServices(_rentalRepository, _userServices, _articleServices, _shippingOptionServices, _insuranceOptionServices);
 
-			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentalServices, _shippingOptionServices, _insuranceOptionServices, _filter);
+			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentalServices, _shippingOptionServices, _insuranceOptionServices, _filter, _sizeServices, _brandServices, _colorServices);
 			_categories = new ObservableCollection<Category>(_categoryServices.GetAllCategories());
 
 			CategoryCombo.ItemsSource = _categories;
@@ -136,29 +136,14 @@ namespace _2SemesterOpgave
 			List<ItemProfile> catalog = new List<ItemProfile>();
 			List<Article> articles = new List<Article>(_articleServices.GetAllArticles());
 
-			//        for(int i = 0; i < articles.Count; i++)
-			//        {
-			//            Article article = articles[i];
-			//            ItemProfile itemProfile = new ItemProfile
-			//            {
-			//                ArticleID = article.Id,
-			//                Article = article,
-			//                Features = new Dictionary<string, double>
-			//                {
-			//                    { article.Category.Name, 1.0 }
-			//                }
-			//            };
-
-			//article.ItemProfile = itemProfile;
-			//            catalog.Add(itemProfile);
-			//        }
-
 			for (int i = 0; i < articles.Count; i++)
 			{
 				Article article = articles[i];
 
-				if (article.Category == null) continue; // skip articles with no category
-
+				if (article.Category == null)
+				{
+					continue;
+				}
 				ItemProfile itemProfile = new ItemProfile
 				{
 					ArticleID = article.Id,

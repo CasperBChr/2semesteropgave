@@ -18,6 +18,7 @@
         </Grid.ColumnDefinitions>
 
         <Image HorizontalAlignment="Center"  Margin="10,10,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+        
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -25,23 +26,22 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-
             </Grid.RowDefinitions>
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
 
             <Grid Grid.Row="0" Grid.Column="0" Margin="0,10,0,0">
                 <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="170" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Tilføj titel: " FontSize="30" Grid.Row="0" Grid.Column="0"/>
-                <TextBox x:Name="CreateTitleTextBox" FontSize="30" Margin="0,0,0,0" Grid.Row="0" Grid.Column="1"/>
+                <TextBox x:Name="CreateTitleTextBox" FontSize="30" Margin="0,0,20,0" Grid.Row="0" Grid.Column="1"/>
                 </Grid>
 
             <Grid Grid.Row="1" Grid.Column="0" Margin="0,10,0,0">
@@ -49,11 +49,11 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="170" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Tilføj beskrivelse: " FontSize="20" Grid.Row="0" Grid.Column="0"/>
-                <TextBox x:Name="CreateDescriptionTextBox" FontSize="20" Margin="0,0,0,0" Grid.Row="0" Grid.Column="1"/>
+                <TextBox x:Name="CreateDescriptionTextBox" FontSize="20" Margin="0,0,20,0" Grid.Row="0" Grid.Column="1"/>
             </Grid>
             
             <StackPanel Grid.Row="2" Grid.Column="0">
@@ -63,67 +63,69 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="170" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Kategori: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                    <ComboBox x:Name="CreateCategoryCombobox" FontSize="15" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Name"/>
+                    <ComboBox x:Name="CreateCategoryCombobox" FontSize="15" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Name" Margin="0,0,20,0"/>
                 </Grid>
                 <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="170" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Under kategori: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                    <ComboBox x:Name="CreateSubcategoryCombobox" FontSize="15" ItemsSource="{Binding Subcategories}" Grid.Row="0" Grid.Column="1"/>
+                    <ComboBox x:Name="CreateSubcategoryCombobox" FontSize="15" DisplayMemberPath="Name" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
                 </Grid>
                 <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="170" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Størrelse: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                    <ComboBox x:Name="CreateSizeTextBlock" FontSize="15" ItemsSource="{Binding Sizes}" Grid.Row="0" Grid.Column="1"/>
+                    <ComboBox x:Name="CreateSizeComboBox" FontSize="15" DisplayMemberPath="Name" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
                 </Grid>
                 <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="170" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Pris: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox x:Name="CreatePriceTextBlock" FontSize="15" Grid.Row="0" Grid.Column="1"/>
+                    <TextBox x:Name="CreatePriceTextBox" FontSize="15" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
                 </Grid>
                 <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="170" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Farve: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox x:Name="CreateColorTextBlock" FontSize="15" Grid.Row="0" Grid.Column="1"/>
+                    <TextBox x:Name="CreateColorTextBox" FontSize="15" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
                 </Grid>
+                
                 <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="170" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Brand: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                    <ComboBox x:Name="CreateBrandTextBlock" FontSize="15" ItemsSource="{Binding Brands}" Grid.Row="0" Grid.Column="1"/>
+                    <ComboBox x:Name="CreateBrandComboBox" FontSize="15" DisplayMemberPath="Name" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
                 </Grid>
+                
             </StackPanel>
             <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
 
