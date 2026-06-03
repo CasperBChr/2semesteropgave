@@ -8,6 +8,9 @@
     <Compile Update="Pages\ArticlePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\ArticleSortByCategory.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\CategoryPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

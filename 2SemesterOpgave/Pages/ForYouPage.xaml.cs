@@ -17,7 +17,9 @@ using System.Windows.Shapes;
 
 namespace _2SemesterOpgave.Pages
 {
-    //Kodet af Camilla
+    /// <summary>
+	/// Kodet af Camilla. Interaction logic for ForYouPage.xaml
+	/// </summary>
     public partial class ForYouPage : UserControl
     {
         public Router Router;

@@ -17,17 +17,31 @@ using _2SemesterOpgave.Services;
 namespace _2SemesterOpgave.Pages
 {
     /// <summary>
-    /// Interaction logic for CategoryPage.xaml
+    /// Kodet af Camilla. Interaction logic for CategoryPage.xaml
     /// </summary>
     public partial class CategoryPage : UserControl
     {
-        CategoryServices _services;
+        private CategoryServices _services;
+        private Router _router;
+        private ArticleServices _articlesServices;
 
-        public CategoryPage(CategoryServices categoryService)
+        public CategoryPage(CategoryServices categoryService, Router router, ArticleServices articleServices)
         {
             InitializeComponent();
             _services = categoryService;
+            _router = router;   
+            _articlesServices = articleServices;
             CategoriesItemsControl.ItemsSource = _services.GetAllCategories();
+        }
+
+        //Metode der navigerer til kategoriens artikler ved klik. 
+        private void CategoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            Category selectedCategory = (Category)button.DataContext;
+            _router.SetSelectedCategory(selectedCategory);
+            _router.NavigateTo(Routes.ArticleSortByCategory);                
+            
         }
     }
 }

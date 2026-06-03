@@ -17,8 +17,10 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Image HorizontalAlignment="Center"  Margin="10,10,0,0" VerticalAlignment="Center" Grid.Column="0"/>
-        
+        <Image x:Name="CreateArticleImage" HorizontalAlignment="Center"  Margin="10,10,0,0" VerticalAlignment="Center" Grid.Column="0" Stretch="UniformToFill"/>
+
+        <Button x:Name="UploadImageButton" Content="Tilføj billede" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Column="0" Margin="10,0,0,10" Padding="15,10" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" FontWeight="Bold" Click="UploadImageButton_Click"/>
+
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -127,7 +129,7 @@
                 </Grid>
                 
             </StackPanel>
-            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
 
                 <Button x:Name="SaveButton" Content="Opret" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="20" Padding="20,10" Click="SaveButton_Click"/>
                 <Button x:Name="DismissButton" Content="Annuller" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="20" Padding="20,10" Click="DismissButton_Click"/>

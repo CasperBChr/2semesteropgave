@@ -27,10 +27,11 @@ namespace _2SemesterOpgave.Models
         public Category? Category { get; set; }
         public SubCategory? SubCategory { get; set; }
 		public string? Color { get; set; }
-        public Size? Size { get; set; }
-        public Collection? collection { get; set; }
+		public Size? Size { get; set; }
+		public Collection? collection { get; set; }
+		public string? ImagePath { get; set; }
 
-        public List<ShippingOption>? ShippingOptions { get; set; }
+		public List<ShippingOption>? ShippingOptions { get; set; }
 
 		public DateTime CreatedAt { get; set; }
 		public DateTime UpdatedAt { get; set; }
