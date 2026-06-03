@@ -1,8 +1,15 @@
-﻿using System.Collections.ObjectModel;
+﻿using _2SemesterOpgave.Data;
+using _2SemesterOpgave.Models;
+using _2SemesterOpgave.Repositories;
+using _2SemesterOpgave.Repositories.Interfaces;
+using _2SemesterOpgave.Services;
+using _2SemesterOpgave.Utils;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,13 +19,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.IO;
-using _2SemesterOpgave.Data;
-using _2SemesterOpgave.Models;
-using _2SemesterOpgave.Repositories;
-using _2SemesterOpgave.Repositories.Interfaces;
-using _2SemesterOpgave.Services;
-using _2SemesterOpgave.Utils;
+using static System.Net.WebRequestMethods;
 
 namespace _2SemesterOpgave
 {
@@ -82,8 +83,9 @@ namespace _2SemesterOpgave
 			_articleRepository = new ArticleRepository(_db, _brandServices);
 			_articleServices = new ArticleServices(_articleRepository, _brandServices);
 			_userServices = new UserServices(_userRepository);
+			ReviewServices _reviewServices = new ReviewServices(_db);
 
-            _router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentals, _filter);
+            _router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _reviewServices, _userServices, _rentals, _filter);
             _categories = _categoryServices.GetAllCategories();
 
 			CategoryCombo.ItemsSource = _categories;
@@ -145,33 +147,40 @@ namespace _2SemesterOpgave
 			_router.NavigateTo(Routes.Notifications);
 		}
 
-		private void CategoryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			_filter.Category = (Category)CategoryCombo.SelectedItem;
-			_filter.SubCategory = null;
+        private void CategoryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CategoryCombo.SelectedItem == null)
+            {
+                return;
+            }
 
-			ComboBox comboBox = (ComboBox)sender;
-			Category chosenCategory = (Category)comboBox.SelectedItem;
+            _filter.Category = (Category)CategoryCombo.SelectedItem;
+            _filter.SubCategory = null;
 
-			SubcategoryCombo.ItemsSource = chosenCategory.SubCategories;
+            Category chosenCategory = (Category)CategoryCombo.SelectedItem;
+            SubcategoryCombo.ItemsSource = chosenCategory.SubCategories;
 
-			_router.SetFilter(_filter);
-			_router.NavigateTo(Routes.Overview);
-		}
+            _router.NavigateTo(Routes.Overview);
+        }
 
-		private void SubcategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			_filter.SubCategory = (SubCategory)SubcategoryCombo.SelectedItem;
-			_router.SetFilter(_filter);
-			_router.NavigateTo(Routes.Overview);
-		}
+        private void SubcategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SubcategoryCombo.SelectedItem == null)
+            {
+                return;
+            }
 
-		private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			_filter.SearchText = ((TextBox)sender).Text;
-			_router.SetFilter(_filter);
-			_router.NavigateTo(Routes.Overview);
-		}
+            _filter.SubCategory = (SubCategory)SubcategoryCombo.SelectedItem;
 
-	}
+            _router.NavigateTo(Routes.Overview);
+        }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _filter.SearchText = ((TextBox)sender).Text;
+
+            _router.NavigateTo(Routes.Overview);
+        }
+
+    }
 }

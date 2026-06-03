@@ -5,9 +5,66 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:_2SemesterOpgave.Pages"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-	<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-		<TextBlock x:Name="TextBlockUsername" Text="User Page" FontSize="40" />
-		<TextBlock  Text="User Page" FontSize="40" />
-	</Grid>
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Background="#F7F9FC">
+            <StackPanel Margin="24">
+
+                <Border Background="White"
+                        BorderBrush="#E5E7EB"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="20">
+
+                    <StackPanel>
+                        <TextBlock Text="BRUGERPROFIL"
+                                   Foreground="#3B5BFF"
+                                   FontWeight="SemiBold" />
+
+                        <TextBlock Text="{Binding Username}"
+                                   FontSize="28"
+                                   FontWeight="SemiBold"
+                                   Margin="0,4,0,0" />
+
+                        <TextBlock Text="{Binding FirstName}"
+                                   Margin="0,12,0,0" />
+
+                        <TextBlock Text="{Binding LastName}"
+                                   Margin="0,2,0,0" />
+
+                        <TextBlock Text="{Binding City}"
+                                   Margin="0,8,0,0"
+                                   Foreground="#6B7280" />
+
+                        <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                            <TextBlock Text="★"
+                                       Foreground="Gold"
+                                       FontSize="16"
+                                       Margin="0,0,6,0" />
+
+                            <TextBlock Text="Rating:"
+                                       FontWeight="SemiBold" />
+
+                            <TextBlock Text="{Binding RatingScore, StringFormat={}{0:0.0}}"
+                                       Margin="6,0,0,0" />
+                        </StackPanel>
+
+                        <TextBlock Text="{Binding Description}"
+                                   TextWrapping="Wrap"
+                                   Margin="0,12,0,0" />
+
+                        <Button Content="Vurdér bruger"
+                                Width="140"
+                                Height="32"
+                                HorizontalAlignment="Left"
+                                Margin="0,16,0,0"
+                                Click="ReviewUserButton_Click" />
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

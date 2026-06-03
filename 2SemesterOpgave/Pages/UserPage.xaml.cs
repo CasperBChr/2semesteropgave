@@ -1,30 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Services;
 
 namespace _2SemesterOpgave.Pages
 {
-    /// <summary>
-    /// Interaction logic for UserPage.xaml
-    /// </summary>
     public partial class UserPage : UserControl
     {
-        UserServices _userServices;
-        public UserPage(UserServices userServices)
+        private readonly Router _router;
+        private readonly UserServices _userServices;
+        private readonly ReviewServices _reviewServices;
+
+        public User TargetUser { get; private set; }
+
+        public UserPage(Router router, UserServices userServices, ReviewServices reviewServices)
         {
             InitializeComponent();
+
+            _router = router;
             _userServices = userServices;
-            TextBlockUsername.Text = userServices.TargetUser.Username;
+            _reviewServices = reviewServices;
+
+            TargetUser = _userServices.TargetUser ?? new User();
+
+            DataContext = TargetUser;
+        }
+
+        private void ReviewUserButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (TargetUser.Id == 0)
+            {
+                MessageBox.Show("Kan ikke finde brugeren.");
+                return;
+            }
+
+            if (TargetUser.Id == _userServices.CurrentUser.Id)
+            {
+                MessageBox.Show("Du kan ikke vurdere dig selv.");
+                return;
+            }
+
+            _reviewServices.SetReviewTarget(TargetUser);
+            _router.NavigateTo(Routes.Reviews);
         }
     }
 }
