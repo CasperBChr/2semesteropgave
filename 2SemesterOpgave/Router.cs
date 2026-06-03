@@ -99,7 +99,7 @@ namespace _2SemesterOpgave
 					_currentPage = Routes.Message;
 					break;
 				case Routes.UserProfile:
-					_pageControl.Content = new UserPage(_userServices);
+					_pageControl.Content = new UserPage(_userServices, _articleServices, this);
 					_currentPage = Routes.UserProfile;
 					break;
                 case Routes.CreateArticle:
