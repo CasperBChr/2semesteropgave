@@ -31,7 +31,7 @@ namespace _2SemesterOpgave
 		private ContentControl _pageControl;
 		private Router _router;
 
-		ObservableCollection<Article> _articles = new ObservableCollection<Article>();
+        ObservableCollection<Article> _articles = new ObservableCollection<Article>();
 		ObservableCollection<Category> _categories = new ObservableCollection<Category>();
 		ObservableCollection<SubCategory> _subCategories = new ObservableCollection<SubCategory>();
 		ObservableCollection<Conversation> Conversations = new ObservableCollection<Conversation>();
@@ -64,6 +64,7 @@ namespace _2SemesterOpgave
 		ShippingOptionServices _shippingOptionServices;
 		InsuranceOptionServices _insuranceOptionServices;
 		ReviewServices _reviewServices;
+        AuthServices _authServices;
 
 		ConversationServices _conversationServices;
 		UnreadBadgeServices _unreadBadgeService;
@@ -112,7 +113,7 @@ namespace _2SemesterOpgave
 			// Services der får _db ??
 			_reviewServices = new ReviewServices(_db);
 
-			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentalServices, _shippingOptionServices, _insuranceOptionServices, _sizeServices, _brandServices, _filter, _colorServices, _reviewServices, _conversationServices, _unreadBadgeService);
+			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentalServices, _shippingOptionServices, _insuranceOptionServices, _sizeServices, _brandServices, _filter, _colorServices, _reviewServices, _authServices, _conversationServices, _unreadBadgeService);
 			_categories = new ObservableCollection<Category>(_categoryServices.GetAllCategories());
 
 			CategoryCombo.ItemsSource = _categories;

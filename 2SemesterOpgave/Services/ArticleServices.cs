@@ -129,6 +129,20 @@ namespace _2SemesterOpgave.Services
 			}
 			return filteredArticles;
 		}
+		
+		public IEnumerable<Article> GetArticlesByOwner(int ownerId)
+		{
+			IEnumerable<Article> allArticles = GetAllArticles();
+			List<Article> filteredArticles = new List<Article>();
+			foreach (Article article in allArticles)
+			{
+				if (article.Owner != null && article.Owner.Id == ownerId)
+				{
+					filteredArticles.Add(article);
+				}
+			}
+			return filteredArticles;
+		}
 
 
 		Article MapToArticle(ArticleDTO dto)

@@ -47,6 +47,9 @@
     <Compile Update="Pages\MyAccountPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\MyArticlesPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\MyOrdersPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
