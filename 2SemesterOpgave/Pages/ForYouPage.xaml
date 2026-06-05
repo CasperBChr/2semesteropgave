@@ -7,78 +7,77 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-	<UserControl.Resources>
-		<DataTemplate x:Key="ArticleTemplate">
-			<Border BorderBrush="Gray" BorderThickness="1" Width="200" Margin="5" CornerRadius="5" Cursor="Hand" >
-				<Button x:Name="ForYouArticlePageButton" Click="ForYouArticlePageButton_Click" Background="Transparent" >
-					<StackPanel Orientation="Vertical" Margin="5">
-						<Image Source="{Binding ImageUrl}" Width="100" Height="100" Margin="5"/>
-						<StackPanel Orientation="Vertical" Margin="5">
-							<Image Source="{Binding ImageUrl}" Width="100" Height="100" Margin="5"/>
-							<StackPanel Orientation="Vertical" Margin="5">
-								<TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="14"/>
-								<TextBlock Text="{Binding Description}" TextWrapping="Wrap" MaxWidth="400"/>
-								<TextBlock Text="{Binding Brand.Name}" FontWeight="Bold" FontSize="12"/>
-								<TextBlock Text="{Binding Size.Name}" FontWeight="Bold" FontSize="12"/>
-								<TextBlock Text="{Binding Category.Name}" FontWeight="Bold" FontSize="12"/>
-								<TextBlock Text="{Binding Color}" FontWeight="Bold" FontSize="12"/>
-								<StackPanel Orientation="Horizontal">
-									<TextBlock Text="Price: "/>
-									<TextBlock Text="{Binding DailyPrice}" />
-								</StackPanel>
-							</StackPanel>
-						</StackPanel>
-					</StackPanel>
-				</Button>
-			</Border>
-		</DataTemplate>
-	</UserControl.Resources>
-	<ScrollViewer>
-		<Grid Margin="50, 50">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="*" MinHeight="600" />
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-			</Grid.ColumnDefinitions>
+    <UserControl.Resources>
+        <DataTemplate x:Key="ArticleTemplate">
+            <!--<Border BorderBrush="Gray" BorderThickness="1" Width="250" Margin="10" CornerRadius="5" Cursor="Hand" >-->
+            <Border x:Name="CardBorder" Margin="10" Cursor="Hand" CornerRadius="10" Background="White" BorderBrush="#E6E6E6" BorderThickness="1" SnapsToDevicePixels="True">
+                <Button x:Name="ForYouArticlePageButton" Click="ForYouArticlePageButton_Click" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="250"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="250"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Assets/Articles/ArticlePlaceholder.jpg" Grid.Row="0" Grid.Column="0"/>
+                        <Grid Grid.Row="1" Grid.Column="0" Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <!--<RowDefinition Height="auto"/>-->
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Title}" HorizontalAlignment="Left" Grid.Row="0" FontWeight="Bold" FontSize="14"/>
+                            <TextBlock Text="{Binding Description}" Grid.Row="1" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Brand.Name}" Grid.Row="2" FontWeight="Bold" FontSize="12"/>
+                            <TextBlock Text="{Binding Size.Name}" Grid.Row="3" FontWeight="Bold" FontSize="12"/>
+                            <TextBlock Text="{Binding Category.Name}" Grid.Row="4" FontWeight="Bold" FontSize="12"/>
+                            <!--<TextBlock Text="{Binding Color}" Grid.Row="5" FontWeight="Bold" FontSize="12"/>-->
+                            <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0">
+                                <TextBlock  FontWeight="Bold" Text="Dagspris: "/>
+                                <TextBlock Text="{Binding DailyPrice, StringFormat={}{0:F2} kr, ConverterCulture=da-DK}" />
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Button>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+    <ScrollViewer>
+        <Grid Margin="50, 50">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" MinHeight="600" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-			<Grid Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="0, 25">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="100" />
-					<RowDefinition Height="*" />
-				</Grid.RowDefinitions>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*"/>
-				</Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="0, 25">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-				<TextBlock Grid.Row="0" Grid.Column="0" Text="For You Page" HorizontalAlignment="Left" FontSize="50"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Anbefalet til dig" HorizontalAlignment="Left" FontSize="50"/>
 
-				<ItemsControl Grid.Row="1" Grid.Column="0" x:Name="ForYouArticlesItemsControl" ItemTemplate="{StaticResource ArticleTemplate}" Margin="10">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<WrapPanel Orientation="Horizontal" HorizontalAlignment="Left"></WrapPanel>
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-				</ItemsControl>
-			</Grid>
-		</Grid>
-	</ScrollViewer>
-
-	<!--<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        
-        <Grid.RowDefinitions>
-            <RowDefinition Height="100" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="For You Page" FontSize="50"/>
-
-        <ItemsControl Grid.Row="1" x:Name="ForYouArticlesItemsControl" ItemTemplate="{StaticResource ArticleTemplate}" Margin="10">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"></WrapPanel>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
-
-    </Grid>-->
+                <ItemsControl Grid.Row="1" Grid.Column="0" x:Name="ForYouArticlesItemsControl" ItemTemplate="{StaticResource ArticleTemplate}" Margin="0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left"></WrapPanel>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

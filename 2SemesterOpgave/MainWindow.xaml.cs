@@ -179,7 +179,7 @@ namespace _2SemesterOpgave
 			});
 		}
 
-		//Algoritme
+		//Algoritme, kodet af Camilla
 		public void InitializeAlgorithm(User user)
         {
             //Liste der henter kategorier
@@ -314,6 +314,11 @@ namespace _2SemesterOpgave
         private void UserButton_Click(object sender, RoutedEventArgs e)
         {
 			_router.NavigateTo(Routes.UserProfile);
+        }
+
+        private void MyArticlePageButton_Click(object sender, RoutedEventArgs e)
+        {
+			_router.NavigateTo(Routes.MyArticlesPage);
         }
     }
 }
