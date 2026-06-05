@@ -31,12 +31,12 @@ namespace _2SemesterOpgave
 		private ContentControl _pageControl;
 		private Router _router;
 
-		ObservableCollection<Article> _articles = new ObservableCollection<Article>();
+        ObservableCollection<Article> _articles = new ObservableCollection<Article>();
 		ObservableCollection<Category> _categories = new ObservableCollection<Category>();
 		ObservableCollection<SubCategory> _subCategories = new ObservableCollection<SubCategory>();
 
 
-		//UserRepository _userRepository;
+		UserRepository _userRepository;
 		ArticleRepository _articleRepository;
 		CategoryRepository _categoryRepository;
 		BrandRepository _brandRepository;
@@ -60,8 +60,9 @@ namespace _2SemesterOpgave
 		ShippingOptionServices _shippingOptionServices;
 		InsuranceOptionServices _insuranceOptionServices;
 		ReviewServices _reviewServices;
+        AuthServices _authServices;
 
-		FilterCriteria _filter = new FilterCriteria();
+        FilterCriteria _filter = new FilterCriteria();
 
 		Database _db;
         UserProfile? UserProfile;
@@ -75,7 +76,7 @@ namespace _2SemesterOpgave
 			_userServices = userServices;
 			
 			//_db = new Database($"Data Source={dbpath}");
-			//_userRepository = new UserRepository(_db);
+			_userRepository = new UserRepository(_db);
 			_categoryRepository = new CategoryRepository(_db);
 			_brandRepository = new BrandRepository(_db);
 			_collectionRepository = new CollectionRepository(_db);
@@ -98,12 +99,15 @@ namespace _2SemesterOpgave
 			_shippingOptionServices = new ShippingOptionServices(_shippingOptionRepository);
 			_insuranceOptionServices = new InsuranceOptionServices(_insuranceOptionRepository);
 			_rentalServices = new RentalServices(_rentalRepository, _userServices, _articleServices, _shippingOptionServices, _insuranceOptionServices);
-			
-			
-			// Services der får _db ??
-			_reviewServices = new ReviewServices(_db);
+            //_authServices = new AuthServices(_userRepository ,_userServices);
 
-			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentalServices, _shippingOptionServices, _insuranceOptionServices, _sizeServices, _brandServices, _filter, _colorServices, _reviewServices);
+        
+
+
+            // Services der får _db ??
+            _reviewServices = new ReviewServices(_db);
+
+			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentalServices, _shippingOptionServices, _insuranceOptionServices, _sizeServices, _brandServices, _filter, _colorServices, _reviewServices, _userServices.CurrentUser, _authServices);
 			_categories = new ObservableCollection<Category>(_categoryServices.GetAllCategories());
 
 			CategoryCombo.ItemsSource = _categories;

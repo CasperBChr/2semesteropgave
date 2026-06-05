@@ -26,8 +26,10 @@ namespace _2SemesterOpgave
         BrandServices _brandServices;
         ColorServices _colorServices;
         ReviewServices _reviewServices;
-
-		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, RentalServices rentalServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices, SizeServices sizeServices, BrandServices brandServices, FilterCriteria filterCriteria, ColorServices colorServices, ReviewServices reviewServices)
+        AuthServices _authServices;
+        User _selectedUser;
+      
+		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, RentalServices rentalServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices, SizeServices sizeServices, BrandServices brandServices, FilterCriteria filterCriteria, ColorServices colorServices, ReviewServices reviewServices, User selectedUser, AuthServices authServices)
         {
             _currentPage = Routes.Home;
             _pageControl = pageControl;
@@ -44,6 +46,7 @@ namespace _2SemesterOpgave
             _insuranceOptionServices = insuranceOptionServices;
             _rentalServices = rentalServices;
             _currentFilter = filterCriteria;
+            _authServices = authServices;
 
             _rentals = _rentalServices.GetAll();
         }
@@ -138,6 +141,15 @@ namespace _2SemesterOpgave
                     _pageControl.Content = new ReviewsPage(_reviewServices, _userServices);
                     _currentPage = Routes.Reviews;
                     break;
+                case Routes.EditArticlePage:
+                    _pageControl.Content = new EditArticlePage(this, _articleServices, _categoryServices, _sizeServices, _brandServices);
+                    _currentPage = Routes.EditArticlePage;
+                    break;
+                case Routes.MyArticlesPage:
+                    _pageControl.Content = new MyArticlesPage(_articleServices, _categoryServices, this, _userServices, _authServices, _selectedUser);
+                    _currentPage = Routes.MyArticlesPage;
+                    break;
+
             }
         }
     }
@@ -162,6 +174,8 @@ namespace _2SemesterOpgave
         CreateArticle = 15,
         Rent = 16,
         Reviews = 17,
-        ArticleSortByCategory = 18
+        ArticleSortByCategory = 18,
+        EditArticlePage = 19,
+        MyArticlesPage = 20
     }
 }
