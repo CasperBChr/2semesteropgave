@@ -9,7 +9,7 @@
 	<UserControl.Resources>
 		<DataTemplate x:Key="UserParticipantTemplate">
 			<Border BorderBrush="Gray" BorderThickness="1" Margin="5" CornerRadius="5" Height="40" Width="200">
-				<Button Content="{Binding Username}" Cursor="Hand" FontWeight="Bold" FontSize="14" Background="LightGreen" BorderBrush="Transparent" BorderThickness="0" Click="UserButton_Click"/>
+				<Button x:Name="UserProfileButton" Content="{Binding Username}" Cursor="Hand" FontWeight="Bold" FontSize="14" Background="LightGreen" BorderBrush="Transparent" BorderThickness="0" Click="UserProfileButton_Click"/>
 			</Border>
 		</DataTemplate>
 		<DataTemplate x:Key="MessageTemplate">

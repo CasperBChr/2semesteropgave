@@ -18,14 +18,14 @@ namespace _2SemesterOpgave.Repositories.DTO
 		public int? SubcategoryId { get; set; }
 
 		public int? BrandId { get; set; }
-		public int? CollectionId { get; set; }
+		//public int? CollectionId { get; set; }
 
 		public int? ColorId { get; set; }
 		public int? SizeId { get; set; }
 		
 		public bool IsRented { get; set; }
-		public bool IsSmoked { get; set; }
-		public bool IsAnimal { get; set; }
+		//public bool IsSmoked { get; set; }
+		//public bool IsAnimal { get; set; }
 		public bool IsClean { get; set; }
 
 		public int? OwnerId { get; set; }

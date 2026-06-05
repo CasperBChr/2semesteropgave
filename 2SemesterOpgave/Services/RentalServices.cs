@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Text;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories;
@@ -47,8 +48,8 @@ namespace _2SemesterOpgave.Services
 		{
 			RentalDTO dto = new RentalDTO
 			{
-				StartDate = rental.StartDate.ToString("yyyy-MM-dd"),
-				EndDate = rental.EndDate.ToString("yyyy-MM-dd"),
+				StartDate = rental.StartDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+				EndDate = rental.EndDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
 				TotalPrice = (float)rental.TotalPrice,
 				IsAccepted = false,
 				Status = "active",
@@ -109,6 +110,15 @@ namespace _2SemesterOpgave.Services
 
 			// Springer over hvis nødvendige relationer mangler
 			if (renter == null || rentee == null || article == null) return null;
+
+			if (!DateOnly.TryParseExact(dto.StartDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly startDate))
+			{
+				return null;
+			}
+			if (!DateOnly.TryParseExact(dto.EndDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly endDate))
+			{
+				return null;
+			}
 
 			return new Rental
 			{

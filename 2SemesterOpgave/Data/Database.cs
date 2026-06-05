@@ -7,38 +7,55 @@ namespace _2SemesterOpgave.Data
 {
     public class Database // Klasse til at håndtere databaseforbindelsen ved hjælp af SqliteConnection
     {
-        static Database? _instance;
-        static readonly object _lock = new object();
-        public SqliteConnection Connection { get; } // Privat felt til at gemme instansen af SqliteConnection, som repræsenterer forbindelsen til databasen
+		private readonly string _connectionString;
 
-        public Database(string connectionString) // Constructor: initialiserer en ny instans af DbConnection-klassen med en forbindelse til databasen baseret på den angivne connectionString
-        {
-            Connection = new SqliteConnection(connectionString); 
-        }
-
-		public static Database GetInstance(string connectionString = "")
+		public Database(string connectionString)
 		{
-			if (_instance == null)
-			{
-				lock (_lock)
-				{
-					if (_instance == null)
-                    {
-						_instance = new Database(connectionString);
-                    }
-				}
-			}
-			return _instance;
+			_connectionString = connectionString;
 		}
 
-		public void Open()
-        {
-            Connection.Open();
-        }
+		/// <summary>
+		/// Returnerer en NY åben connection hver gang.
+		/// Caller er ansvarlig for disposal.
+		/// </summary>
+		public SqliteConnection CreateConnection()
+		{
+			var connection = new SqliteConnection(_connectionString);
+			connection.Open();
+			return connection;
+		}
+		//      static Database? _instance;
+		//      static readonly object _lock = new object();
+		//      public SqliteConnection Connection { get; } // Privat felt til at gemme instansen af SqliteConnection, som repræsenterer forbindelsen til databasen
 
-        public void Close()
-        {
-            Connection.Close();
-        }
-    }
+		//      public Database(string connectionString) // Constructor: initialiserer en ny instans af DbConnection-klassen med en forbindelse til databasen baseret på den angivne connectionString
+		//      {
+		//          Connection = new SqliteConnection(connectionString); 
+		//      }
+
+		//public static Database GetInstance(string connectionString = "")
+		//{
+		//	if (_instance == null)
+		//	{
+		//		lock (_lock)
+		//		{
+		//			if (_instance == null)
+		//                  {
+		//				_instance = new Database(connectionString);
+		//                  }
+		//		}
+		//	}
+		//	return _instance;
+		//}
+
+		//public void Open()
+		//      {
+		//          Connection.Open();
+		//      }
+
+		//      public void Close()
+		//      {
+		//          Connection.Close();
+		//      }
+	}
 }

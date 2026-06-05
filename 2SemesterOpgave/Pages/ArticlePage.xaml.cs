@@ -24,9 +24,10 @@ namespace _2SemesterOpgave.Pages
         private Router _router;
         private Article _currentArticle;
         private ArticleServices _articleServices;
-        private CategoryServices _categoryServices; 
+        private CategoryServices _categoryServices;
+        UserServices _userServices;
         //Constructor der tager en Router som parameter for at kunne navigere til andre sider
-        public ArticlePage(Router router, ArticleServices articleServices, CategoryServices categoryServices)
+        public ArticlePage(Router router, ArticleServices articleServices, CategoryServices categoryServices, UserServices userService)
         {
             
             //Article article = new Article("Ganni", "Beskrivelse af Ganni-artiklen", new List<Category>(), new List<SubCategory>(), new Models.Size(36), 100.60f, "Hvid", new Brand("Ganni", "Ganni Brand", "Logo"), false, 10000f, false, false, true, new User("John Doe", "john@example.com", "hej", 6));
@@ -36,6 +37,7 @@ namespace _2SemesterOpgave.Pages
             _categoryServices = categoryServices;
             this.DataContext = _articleServices.SelectedArticle;
 			_currentArticle = _articleServices.SelectedArticle;
+			_userServices = userService;
 		}
 
         //DataContext for at binde Article-objektet til ArticlePage
@@ -45,10 +47,6 @@ namespace _2SemesterOpgave.Pages
             _currentArticle = article;
         }
 
-        public void OwnerTextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-           
-        }
 
         //Funktion der navigerer til chat med ejer af artiklen
         private void ContactButton_Click(object sender, RoutedEventArgs e)
@@ -63,6 +61,14 @@ namespace _2SemesterOpgave.Pages
         {
             _router.NavigateTo(Routes.Rent);
         }
-    }
+
+		private void OwnerProfileButton_Click(object sender, RoutedEventArgs e)
+		{
+            Button button = (Button)sender;
+            Article article = (Article)button.DataContext;
+			_userServices.TargetUser = article.Owner;
+			_router.NavigateTo(Routes.UserProfile);
+		}
+	}
 
 }

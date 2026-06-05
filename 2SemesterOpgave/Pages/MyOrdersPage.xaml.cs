@@ -25,8 +25,6 @@ namespace _2SemesterOpgave.Pages
 
 			CurrentUser = userServices?.CurrentUser ?? new User();
             Rentals = _rentalServices.GetAll();
-
-            DataContext = this;
         }
 
         private void ReviewButton_Click(object sender, RoutedEventArgs e)

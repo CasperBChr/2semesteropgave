@@ -157,7 +157,7 @@
 					<Button Style="{StaticResource TopBarIconButton}" Click="MessagesButton_Click">
 						<TextBlock Text="💬"/>
 					</Button>
-					<Border Background="Red" Width="20" Height="20" CornerRadius="20" HorizontalAlignment="Right" VerticalAlignment="Top">
+					<Border x:Name="MessagesBadgeBorder" Visibility="Collapsed" Background="Red" Width="20" Height="20" CornerRadius="20" HorizontalAlignment="Right" VerticalAlignment="Top">
 						<TextBlock x:Name="MessagesAmountTextBlock" Text="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 					</Border>
 				</Grid>

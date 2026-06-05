@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories.DTO;
+using Microsoft.Data.Sqlite;
 
 namespace _2SemesterOpgave.Repositories
 {
@@ -22,10 +23,8 @@ namespace _2SemesterOpgave.Repositories
 		{
 			List<BrandDTO> brands = new List<BrandDTO>();
 
-			try
-			{
-				_db.Open();
-				using DbCommand command = _db.Connection.CreateCommand();
+				using SqliteConnection connection = _db.CreateConnection();
+				using DbCommand command = connection.CreateCommand();
 				command.CommandText = "SELECT * FROM Brands";
 				using DbDataReader reader = command.ExecuteReader();
 
@@ -37,20 +36,12 @@ namespace _2SemesterOpgave.Repositories
 				}
 
 				return brands;
-			}
-			finally
-			{
-				_db.Close();
-			}
 		}
 
 		public BrandDTO? GetById(int idValue)
 		{
-			try
-			{
-				_db.Open();
-
-				using DbCommand command = _db.Connection.CreateCommand();
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
 				command.CommandText = "SELECT * FROM Brands WHERE id = @id";
 
 				var param = command.CreateParameter();
@@ -66,11 +57,7 @@ namespace _2SemesterOpgave.Repositories
 				}
 
 				return null;
-			}
-			finally
-			{
-				_db.Close();
-			}
+
 		}
 
 

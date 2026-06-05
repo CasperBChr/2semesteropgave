@@ -61,6 +61,17 @@ namespace _2SemesterOpgave.Services
 			return articles;
 		}
 
+		public IEnumerable<Article> GetAllArticlesByOwner(User owner)
+		{
+			IEnumerable<ArticleDTO> dtos = _articleRepository.GetAllArticlesByOwner(owner.Id);
+			ObservableCollection<Article> articles = new ObservableCollection<Article>();
+			foreach (ArticleDTO dto in dtos)
+			{
+				articles.Add(MapToArticle(dto));
+			}
+			return articles;
+		}
+
 		public IEnumerable<Article> GetNewestArticles()
 		{
 			IEnumerable<ArticleDTO> dtos = _articleRepository.GetNewestArticles();
@@ -131,8 +142,8 @@ namespace _2SemesterOpgave.Services
 				OriginalPrice = dto.OriginalPrice,
 
 				IsRented = dto.IsRented,
-				IsSmoked = dto.IsSmoked,
-				IsAnimal = dto.IsAnimal,
+				//IsSmoked = dto.IsSmoked,
+				//IsAnimal = dto.IsAnimal,
 				IsClean = dto.IsClean,
 
 				CreatedAt = dto.CreatedAt,
@@ -154,10 +165,10 @@ namespace _2SemesterOpgave.Services
 				article.SubCategory = _categoryServices.GetSubCategoryById(dto.SubcategoryId.Value);
 			}
 
-			if (dto.CollectionId.HasValue)
-			{
-				article.collection = _collectionServices.GetById(dto.CollectionId.Value);
-			}
+			//if (dto.CollectionId.HasValue)
+			//{
+			//	article.collection = _collectionServices.GetById(dto.CollectionId.Value);
+			//}
 
 			if (dto.ColorId.HasValue)
 			{

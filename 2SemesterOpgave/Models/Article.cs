@@ -15,8 +15,8 @@ namespace _2SemesterOpgave.Models
         public float OriginalPrice { get; set; } = 0.0f;
 
 		public bool IsRented { get; set; } = false;
-        public bool IsSmoked { get; set; } = false;
-		public bool IsAnimal { get; set; } = false;
+  //      public bool IsSmoked { get; set; } = false;
+		//public bool IsAnimal { get; set; } = false;
 		public bool IsClean { get; set; } = false;
 
         //Tilknytning til ItemProfile for anbefalingsalgoritmen
@@ -28,7 +28,7 @@ namespace _2SemesterOpgave.Models
         public SubCategory? SubCategory { get; set; }
 		public string? Color { get; set; }
 		public Size? Size { get; set; }
-		public Collection? collection { get; set; }
+		//public Collection? collection { get; set; }
 		public string? ImagePath { get; set; }
 
 		public List<ShippingOption>? ShippingOptions { get; set; }

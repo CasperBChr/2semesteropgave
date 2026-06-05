@@ -7,7 +7,8 @@ namespace _2SemesterOpgave.Models
 {
     public class Conversation : IReferrer // implementere IReferrer for at kunne modtage notifikationer, når der kommer nye beskeder i samtalen
     {
-        public DateTime CreationTime { get; set; } // Property til at gemme tidspunktet for, hvornår samtalen blev oprettet
+		public int Id { get; set; }
+		public DateTime CreationTime { get; set; } // Property til at gemme tidspunktet for, hvornår samtalen blev oprettet
         public DateTime LastActive { get; set; } 
         public List<User> Participants { get; set; }
         public ObservableCollection<Message> Messages { get; set; }
@@ -15,6 +16,7 @@ namespace _2SemesterOpgave.Models
         {
             return;
         }
+
         public Conversation() // Constructor: initialiserer en ny instans af Conversation-klassen, hvor Messages og Participants sættes til tomme lister, og CreationTime og LastActive sættes til det aktuelle tidspunkt
         {
             Messages = new ObservableCollection<Message>();

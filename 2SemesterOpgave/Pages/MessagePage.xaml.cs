@@ -29,43 +29,54 @@ namespace _2SemesterOpgave.Pages
 	{
 		UserServices _userServices;
 
-		IMessageService _messageService;
-
+		MessageService _messageService;
 		Conversation _conversation;
-
 		ConversationViewModel _conversationViewModel;
+
+		UnreadBadgeServices _unreadBadgeService;
+		ConversationServices _conversationServices;
 
 		Router _router;
 
-		public MessagePage(Router router, UserServices userServices)
+		Action<Conversation> _onNewMessageHandler;
+
+		public MessagePage(Router router, UserServices userServices, ConversationServices conversationServices, UnreadBadgeServices unreadBadgeService)
 		{
 			InitializeComponent();
-
 			_router = router;
-
 			_userServices = userServices;
-
+			_conversationServices = conversationServices;
+			_unreadBadgeService = unreadBadgeService;
 			_messageService = new MessageService();
 
 			_conversation = _userServices.Conversations[0];
 
-			_conversationViewModel = new ConversationViewModel(
-				_conversation,
-				_userServices.CurrentUser
-			);
-
+			_conversationViewModel = new ConversationViewModel(_conversation, _userServices.CurrentUser);
 			DataContext = _conversationViewModel;
 
-			_userServices.FakeConversation.OnNewMessage += (_conversation) =>
+			_conversationServices.MarkConversationAsRead(_conversation, _userServices.CurrentUser);
+			_unreadBadgeService.Refresh();
+
+			_onNewMessageHandler = (conv) =>
 			{
-				Dispatcher.Invoke(() =>
+				Dispatcher.Invoke((Delegate)(() =>
 				{
-					_messageService.SendMessage(_conversation, _conversation.Participants[1], _userServices.FakeConversation.RandomMessageText());
-				});
+					_messageService.SendMessage(conv, conv.Participants[1], _userServices.FakeConversation.RandomMessageText());
+					_conversationServices.MarkConversationAsRead(_conversation, _userServices.CurrentUser);
+					_unreadBadgeService.Refresh();
+				}));
+			};
+
+			_userServices.FakeConversation.OnNewMessage += _onNewMessageHandler;
+
+			Unloaded += (s, e) =>
+			{
+				_userServices.FakeConversation.OnNewMessage -= _onNewMessageHandler;
+				_conversationServices.MarkConversationAsRead(_conversation, _userServices.CurrentUser);
+				_unreadBadgeService.Refresh();
 			};
 
 			MessageItemsControl.ItemsSource = _conversationViewModel.Messages;
-			Debug.Write(MessageItemsControl.ItemsSource);
 		}
 
 		private void SendButton_Click(object sender, RoutedEventArgs e)
@@ -85,16 +96,12 @@ namespace _2SemesterOpgave.Pages
 		}
 
 
-		private void UserButton_Click(object sender, RoutedEventArgs e)
+		private void UserProfileButton_Click(object sender, RoutedEventArgs e)
 		{
 			Button button = (Button)sender;
-
-
 			User user = (User)button.DataContext;
-
 			_userServices.TargetUser = user;
 			_router.NavigateTo(Routes.UserProfile);
-
 		}
 	}
 

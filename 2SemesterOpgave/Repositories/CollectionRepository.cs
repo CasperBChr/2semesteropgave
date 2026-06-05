@@ -5,6 +5,7 @@ using System.Text;
 using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories.DTO;
+using Microsoft.Data.Sqlite;
 
 namespace _2SemesterOpgave.Repositories
 {
@@ -21,11 +22,8 @@ namespace _2SemesterOpgave.Repositories
 		{
 			List<CollectionDTO> collections = new List<CollectionDTO>();
 
-			try
-			{
-				_db.Open();
-
-				using DbCommand command = _db.Connection.CreateCommand();
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
 				command.CommandText = "SELECT * FROM Collections";
 
 				using DbDataReader reader = command.ExecuteReader();
@@ -37,11 +35,6 @@ namespace _2SemesterOpgave.Repositories
 				}
 
 				return collections;
-			}
-			finally
-			{
-				_db.Close();
-			}
 		}
 
 		CollectionDTO CreateDTO(DbDataReader reader)

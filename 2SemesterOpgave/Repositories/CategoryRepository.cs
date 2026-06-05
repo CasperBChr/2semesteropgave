@@ -5,6 +5,7 @@ using System.Text;
 using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories.Interfaces;
+using Microsoft.Data.Sqlite;
 
 namespace _2SemesterOpgave.Repositories
 {
@@ -20,8 +21,8 @@ namespace _2SemesterOpgave.Repositories
 
 		public IEnumerable<Category> GetAllCategories() 
 		{
-			_db.Open();
-			DbCommand command = _db.Connection.CreateCommand();
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
 			command.CommandText = "SELECT c.id as CategoryId, c.name as CategoryName, s.id as SubId, s.name as SubName FROM Categories c LEFT JOIN Subcategories s ON s.category_id = c.id ORDER BY c.id";
 			Dictionary<int, Category> categories = new Dictionary<int, Category>();
 			using DbDataReader reader = command.ExecuteReader();
@@ -56,9 +57,6 @@ namespace _2SemesterOpgave.Repositories
 				//	categories[categoryId].SubCategories.Add(new SubCategory(reader.GetString(reader.GetOrdinal("SubName")), categories[categoryId]));
 				//}
 			}
-
-			reader.Close();
-			_db.Close();
 			return categories.Values;
 		}
 	}

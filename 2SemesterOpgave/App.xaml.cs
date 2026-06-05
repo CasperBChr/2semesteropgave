@@ -31,8 +31,8 @@ namespace _2SemesterOpgave
 			try
 			{
 				string dbpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "db.db");
-				var db = Database.GetInstance($"Data Source={dbpath}");
-				_userRepository = new UserRepository(db);
+				_db = new Database($"Data Source={dbpath}");
+				_userRepository = new UserRepository(_db);
 				_session = new SessionContext();
 				_userServices = new UserServices(_userRepository, _session);
 				_authService = new AuthServices(_userRepository, _userServices, _session);
@@ -50,7 +50,7 @@ namespace _2SemesterOpgave
 						return;
 					}
 
-					MainWindow mainWindow = new MainWindow(db, _userServices);
+					MainWindow mainWindow = new MainWindow(_db, _userServices);
 					mainWindow.Show();
 
 					ShutdownMode = ShutdownMode.OnLastWindowClose;
@@ -62,7 +62,7 @@ namespace _2SemesterOpgave
 					_session.CurrentUser = users[0];
 					_userServices.CurrentUser = users[0];
 					//_authService.CurrentUser = users[0];
-					MainWindow mainWindow = new MainWindow(db, _userServices);
+					MainWindow mainWindow = new MainWindow(_db, _userServices);
 					mainWindow.Show();
 				}
 			}

@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Text;
 using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Repositories.DTO;
+using Microsoft.Data.Sqlite;
 
 namespace _2SemesterOpgave.Repositories
 {
@@ -20,11 +21,9 @@ namespace _2SemesterOpgave.Repositories
 		{
 			List<InsuranceOptionDTO> dtos = new();
 
-			try
-			{
-				_db.Open();
-				using DbCommand command = _db.Connection.CreateCommand();
-				command.CommandText = "SELECT * FROM InsuranceOptions";
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = "SELECT * FROM InsuranceOptions";
 
 				using DbDataReader reader = command.ExecuteReader();
 
@@ -38,11 +37,7 @@ namespace _2SemesterOpgave.Repositories
 				}
 
 				return dtos;
-			}
-			finally
-			{
-				_db.Close();
-			}
+
 		}
 
 		InsuranceOptionDTO CreateDTO(DbDataReader reader, int id, int name, int baseFees)

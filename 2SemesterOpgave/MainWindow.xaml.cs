@@ -34,7 +34,9 @@ namespace _2SemesterOpgave
 		ObservableCollection<Article> _articles = new ObservableCollection<Article>();
 		ObservableCollection<Category> _categories = new ObservableCollection<Category>();
 		ObservableCollection<SubCategory> _subCategories = new ObservableCollection<SubCategory>();
-
+		ObservableCollection<Conversation> Conversations = new ObservableCollection<Conversation>();
+		ObservableCollection<User> Users = new ObservableCollection<User>();
+		FakeConversation FakeConversation;
 
 		//UserRepository _userRepository;
 		ArticleRepository _articleRepository;
@@ -47,6 +49,8 @@ namespace _2SemesterOpgave
 		RentalRepository _rentalRepository;
 		ShippingOptionRepository _shippingOptionRepository;
 		InsuranceOptionRepository _insuranceOptionRepository;
+		ConversationRepository _conversationRepository;
+
 
 		UserServices _userServices;
 		ArticleServices _articleServices;
@@ -60,6 +64,9 @@ namespace _2SemesterOpgave
 		ShippingOptionServices _shippingOptionServices;
 		InsuranceOptionServices _insuranceOptionServices;
 		ReviewServices _reviewServices;
+
+		ConversationServices _conversationServices;
+		UnreadBadgeServices _unreadBadgeService;
 
 		FilterCriteria _filter = new FilterCriteria();
 
@@ -86,6 +93,7 @@ namespace _2SemesterOpgave
 			_shippingOptionRepository = new ShippingOptionRepository(_db);
 			_insuranceOptionRepository = new InsuranceOptionRepository(_db);
 			_rentalRepository = new RentalRepository(_db);
+			_conversationRepository = new ConversationRepository(_db);
 
 			_categoryServices = new CategoryServices(_categoryRepository);
 			_brandServices = new BrandServices(_brandRepository);
@@ -98,19 +106,77 @@ namespace _2SemesterOpgave
 			_shippingOptionServices = new ShippingOptionServices(_shippingOptionRepository);
 			_insuranceOptionServices = new InsuranceOptionServices(_insuranceOptionRepository);
 			_rentalServices = new RentalServices(_rentalRepository, _userServices, _articleServices, _shippingOptionServices, _insuranceOptionServices);
-			
+			_conversationServices = new ConversationServices(_conversationRepository, userServices);
+			_unreadBadgeService = new UnreadBadgeServices(_conversationServices, _userServices);
 			
 			// Services der får _db ??
 			_reviewServices = new ReviewServices(_db);
 
-			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentalServices, _shippingOptionServices, _insuranceOptionServices, _sizeServices, _brandServices, _filter, _colorServices, _reviewServices);
+			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentalServices, _shippingOptionServices, _insuranceOptionServices, _sizeServices, _brandServices, _filter, _colorServices, _reviewServices, _conversationServices, _unreadBadgeService);
 			_categories = new ObservableCollection<Category>(_categoryServices.GetAllCategories());
 
 			CategoryCombo.ItemsSource = _categories;
 			SubcategoryCombo.ItemsSource = _subCategories;
 			InitializeAlgorithm(_userServices.CurrentUser);
 
-        }
+
+			// Badge-service kobles til FakeConversation én gang her ved opstart
+			_unreadBadgeService = new UnreadBadgeServices(_conversationServices, _userServices);
+			_unreadBadgeService.UnreadCountChanged += OnUnreadCountChanged;
+			_unreadBadgeService.Refresh();
+
+			_userServices.FakeConversation.OnNewMessage += (conversation) =>
+			{
+				_unreadBadgeService.Refresh();
+			};
+
+
+
+			//_unreadBadgeService = new UnreadBadgeService(_conversationServices, _userServices);
+			//_unreadBadgeService.UnreadCountChanged += OnUnreadCountChanged;
+			//_unreadBadgeService.Refresh();
+
+
+			//Conversations = new ObservableCollection<Conversation>();
+
+			//Users = _userServices.GetAllUsers();
+			//_userServices.CurrentUser = Users[0];
+
+			//if (Users.Count < 2)
+			//{
+			//	throw new Exception("Skal bruge mindst to 2 users i DB");
+			//}
+
+			//Conversations.Add(new Conversation(new List<User> { Users[0], Users[1] }));
+			//FakeConversation = new FakeConversation();
+			//FakeConversation.ContinueConversationBot(Conversations[0], Conversations[0].Participants[1]);
+			//_userServices.AddFollower(Users[0], Users[1]);
+			//_userServices.AddFollower(Users[1], Users[0]);
+
+			//Conversations[0].Messages.Add(new Message("Suuup", Conversations[0], Conversations[0].Participants[1], DateTime.Now));
+			//Conversations[0].Messages.Add(new Message("Heeeeeeeeeey", Conversations[0], Conversations[0].Participants[0], DateTime.Now));
+
+			//FakeConversation.OnNewMessage += (conversation) =>
+			//{
+			//	_unreadBadgeService.Refresh();
+			//};
+		}
+
+		private void OnUnreadCountChanged(int count)
+		{
+			Dispatcher.Invoke(() =>
+			{
+				if (count > 0)
+				{
+					MessagesBadgeBorder.Visibility = Visibility.Visible;
+					MessagesAmountTextBlock.Text = count.ToString();
+				}
+				else
+				{
+					MessagesBadgeBorder.Visibility = Visibility.Collapsed;
+				}
+			});
+		}
 
 		//Algoritme
 		public void InitializeAlgorithm(User user)

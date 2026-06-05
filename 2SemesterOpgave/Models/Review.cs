@@ -6,7 +6,7 @@ namespace _2SemesterOpgave.Models
     {
         public int Id { get; set; }
         public int Rating { get; set; }
-        public string Comment { get; set; }
+        public string Comment { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public int? RentalId { get; set; }
 
@@ -14,8 +14,8 @@ namespace _2SemesterOpgave.Models
         public int RevieweeId { get; set; }
 
         // Bruges til visning i UI'et
-        public string ReviewerUsername { get; set; }
-        public string RevieweeUsername { get; set; }
+        public string ReviewerUsername { get; set; } = string.Empty;
+        public string RevieweeUsername { get; set; } = string.Empty;
 
         public Review()
         {

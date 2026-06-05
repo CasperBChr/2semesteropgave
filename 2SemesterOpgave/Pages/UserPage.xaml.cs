@@ -24,11 +24,13 @@ namespace _2SemesterOpgave.Pages
 			_userServices = userServices;
 			_articleServices = articleServices;
             _reviewServices = reviewServices;
-			DataContext = userServices.GetAllUsers()[0]; // Sætter DataContext til den første bruger i listen, så UI kan binde til den
-            _userServices.TargetUser = _userServices.GetAllUsers()[1];
-            TextBlockUsername.Text = _userServices.TargetUser.Username;
-			ArticlesItemsControl.ItemsSource = _articleServices.GetNewestArticles(); // Sætter ItemsSource til de nyeste artikler, så de vises i UI
 			_router = router;
+            if(_userServices.TargetUser == null)
+            {
+				MessageBox.Show("Kan ikke finde brugeren.");
+			}
+			DataContext = _userServices.TargetUser;
+			ArticlesItemsControl.ItemsSource = _articleServices.GetAllArticlesByOwner(_userServices.TargetUser); // Sætter ItemsSource til de nyeste artikler, så de vises i UI
 		}
 
 		private void ReviewUserButton_Click(object sender, RoutedEventArgs e)

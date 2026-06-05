@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Text;
 using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Repositories.DTO;
+using Microsoft.Data.Sqlite;
 
 namespace _2SemesterOpgave.Repositories
 {
@@ -19,13 +20,11 @@ namespace _2SemesterOpgave.Repositories
 
 		public IEnumerable<RentalDTO> GetAll()
 		{
-			List<RentalDTO> dtos = new();
+			List<RentalDTO> dtos = new List<RentalDTO>();
 
-			try
-			{
-				_db.Open();
-				using DbCommand command = _db.Connection.CreateCommand();
-				command.CommandText = "SELECT * FROM Rentals";
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = "SELECT * FROM Rentals";
 
 				using DbDataReader reader = command.ExecuteReader();
 
@@ -33,24 +32,18 @@ namespace _2SemesterOpgave.Repositories
 				{
 					dtos.Add(CreateDTO(reader));
 				}
-
+				reader.Close();
 				return dtos;
-			}
-			finally
-			{
-				_db.Close();
-			}
+
 		}
 
 		public IEnumerable<RentalDTO> GetByRenterId(int renterId)
 		{
-			List<RentalDTO> dtos = new();
+			List<RentalDTO> dtos = new List<RentalDTO>();
 
-			try
-			{
-				_db.Open();
-				using DbCommand command = _db.Connection.CreateCommand();
-				command.CommandText = "SELECT * FROM Rentals WHERE renter_id = @renterId";
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = "SELECT * FROM Rentals WHERE renter_id = @renterId";
 
 				DbParameter param = command.CreateParameter();
 				param.ParameterName = "@renterId";
@@ -64,24 +57,17 @@ namespace _2SemesterOpgave.Repositories
 				{
 					dtos.Add(CreateDTO(reader));
 				}
-
+				reader.Close();
 				return dtos;
-			}
-			finally
-			{
-				_db.Close();
-			}
 		}
 
 		public IEnumerable<RentalDTO> GetByRenteeId(int renteeId)
 		{
-			List<RentalDTO> dtos = new();
+			List<RentalDTO> dtos = new List<RentalDTO>();
 
-			try
-			{
-				_db.Open();
-				using DbCommand command = _db.Connection.CreateCommand();
-				command.CommandText = "SELECT * FROM Rentals WHERE rentee_id = @renteeId";
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = "SELECT * FROM Rentals WHERE rentee_id = @renteeId";
 
 				DbParameter param = command.CreateParameter();
 				param.ParameterName = "@renteeId";
@@ -95,27 +81,29 @@ namespace _2SemesterOpgave.Repositories
 				{
 					dtos.Add(CreateDTO(reader));
 				}
-
+				reader.Close();
 				return dtos;
-			}
-			finally
-			{
-				_db.Close();
-			}
 		}
 
 		public void Create(RentalDTO dto)
 		{
-			try
-			{
-				_db.Open();
-				using DbCommand command = _db.Connection.CreateCommand();
-				command.CommandText = @"
-                    INSERT INTO Rentals 
-                        (start_date, end_date, total_price, is_accepted, renter_id, rentee_id, article_id, status, shipping_option_id, insurance_option_id)
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = @"
+					INSERT INTO Rentals 
+                    (start_date, end_date, total_price, is_accepted, renter_id, rentee_id, article_id, status, shipping_option_id, insurance_option_id)
                     VALUES 
-                        (@startDate, @endDate, @totalPrice, @isAccepted, @renterId, @renteeId, @articleId, @status, @shippingOptionId, @insuranceOptionId)";
+                    (@startDate, @endDate, @totalPrice, @isAccepted, @renterId, @renteeId, @articleId, @status, @shippingOptionId, @insuranceOptionId)";
 
+
+				if (!DateOnly.TryParseExact(dto.StartDate, "yyyy-MM-dd", out _)) 
+				{
+					throw new Exception($"Invalid StartDate format: {dto.StartDate}");
+				}
+				if (!DateOnly.TryParseExact(dto.EndDate, "yyyy-MM-dd", out _))
+				{
+					throw new Exception($"Invalid EndDate format: {dto.EndDate}");
+				}
 				AddParameter(command, "@startDate", DbType.String, dto.StartDate);
 				AddParameter(command, "@endDate", DbType.String, dto.EndDate);
 				AddParameter(command, "@totalPrice", DbType.Double, dto.TotalPrice);
@@ -128,49 +116,30 @@ namespace _2SemesterOpgave.Repositories
 				AddParameter(command, "@insuranceOptionId", DbType.Int32, dto.InsuranceOptionId.HasValue ? dto.InsuranceOptionId.Value : DBNull.Value);
 
 				command.ExecuteNonQuery();
-			}
-			finally
-			{
-				_db.Close();
-			}
 		}
 
 		public void UpdateStatus(int id, string status)
 		{
-			try
-			{
-				_db.Open();
-				using DbCommand command = _db.Connection.CreateCommand();
-				command.CommandText = "UPDATE Rentals SET status = @status WHERE id = @id";
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = "UPDATE Rentals SET status = @status WHERE id = @id";
 
 				AddParameter(command, "@status", DbType.String, status);
 				AddParameter(command, "@id", DbType.Int32, id);
 
 				command.ExecuteNonQuery();
-			}
-			finally
-			{
-				_db.Close();
-			}
 		}
 
 		public void SetAccepted(int id, bool isAccepted)
 		{
-			try
-			{
-				_db.Open();
-				using DbCommand command = _db.Connection.CreateCommand();
-				command.CommandText = "UPDATE Rentals SET is_accepted = @isAccepted WHERE id = @id";
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = "UPDATE Rentals SET is_accepted = @isAccepted WHERE id = @id";
 
 				AddParameter(command, "@isAccepted", DbType.Int32, isAccepted ? 1 : 0);
 				AddParameter(command, "@id", DbType.Int32, id);
 
 				command.ExecuteNonQuery();
-			}
-			finally
-			{
-				_db.Close();
-			}
 		}
 
 		// Hjælpemetode så vi undgår at gentage parameter-oprettelse

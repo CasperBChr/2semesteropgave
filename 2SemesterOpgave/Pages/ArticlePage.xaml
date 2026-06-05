@@ -24,7 +24,11 @@
             </ItemsControl.ItemsPanel>
         </ItemsControl>-->
 
-        <Image HorizontalAlignment="Center"  Margin="10,10,0,0" VerticalAlignment="Center" Grid.Column="0"/>
+		<StackPanel Grid.Column="0">
+			<Border MaxHeight="600" MaxWidth="600" BorderBrush="Black" BorderThickness="1" Margin="40">
+				<Image Source="/Assets/Articles/ArticlePlaceholder.jpg" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Top"/>
+			</Border>
+		</StackPanel>
         
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -136,18 +140,18 @@
                     <TextBlock x:Name="BrandTextBlock" FontSize="15" Text="{Binding Brand.Name}" Margin="0,0,20,0" Grid.Row="0" Grid.Column="1"/>
                 </Grid>
 
-                <Grid Margin="0,10,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="170" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Udlejer: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                    <TextBlock x:Name="OwnerTextBlock" FontSize="15" Text="{Binding Owner.Username}" Margin="0,0,20,0" Grid.Row="0" Grid.Column="1"/>
-                </Grid>
-                </StackPanel>
+				<Grid Margin="0,10,0,0" VerticalAlignment="Center">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="170" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<TextBlock Text="Udlejer: " FontSize="15" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+					<Button x:Name="OwnerProfileButton" FontSize="15" Content="{Binding Owner.Username}" Cursor="Hand" Background="LightSkyBlue" BorderThickness="0" HorizontalAlignment="Left"  Padding="30, 10" Grid.Row="0" Grid.Column="1" Click="OwnerProfileButton_Click"/>
+				</Grid>
+			</StackPanel>
 
                 <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
                 

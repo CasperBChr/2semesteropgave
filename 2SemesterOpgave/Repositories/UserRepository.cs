@@ -8,6 +8,7 @@ using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories.DTO;
 using _2SemesterOpgave.Repositories.Interfaces;
+using Microsoft.Data.Sqlite;
 
 namespace _2SemesterOpgave.Repositories
 {
@@ -58,9 +59,9 @@ namespace _2SemesterOpgave.Repositories
 
         public void CreateUser(User user)
         {
-            _db.Open();
-            DbCommand command = _db.Connection.CreateCommand();
-            command.CommandText = "INSERT INTO Users (Username, Email, Password) VALUES (@Username, @Email, @Password)";
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = "INSERT INTO Users (Username, Email, Password) VALUES (@Username, @Email, @Password)";
             DbParameter usernameParam = command.CreateParameter();
             usernameParam.ParameterName = "Username";
             usernameParam.DbType = DbType.String;
@@ -80,35 +81,29 @@ namespace _2SemesterOpgave.Repositories
             command.Parameters.Add(passwordParam);
 
             command.ExecuteNonQuery();
-            _db.Close();
         }
 
         public void DeleteUser(int id)
         {
-            _db.Open();
-            DbCommand command = _db.Connection.CreateCommand();
-            command.CommandText = "DELETE FROM Users WHERE ID = @ID";
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = "DELETE FROM Users WHERE ID = @ID";
             DbParameter parameter = command.CreateParameter();
             parameter.DbType = DbType.Int32;
             parameter.Value = id;
 			parameter.ParameterName = "@ID";
 			command.Parameters.Add(parameter);
             command.ExecuteNonQuery();          
-
-            _db.Close();
         }
 
 		public IEnumerable<UserDTO> GetAllUsers()
 		{
 			List<UserDTO> users = new();
 
-			_db.Open();
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
 
-			try
-			{
-				DbCommand command = _db.Connection.CreateCommand();
-
-				command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u";
+			command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u";
 
 				using DbDataReader reader = command.ExecuteReader();
 
@@ -118,11 +113,6 @@ namespace _2SemesterOpgave.Repositories
 				}
 
 				return users;
-			}
-			finally
-			{
-				_db.Close();
-			}
 		}
 
 		//     public IEnumerable<User> GetAllUsers()
@@ -146,13 +136,10 @@ namespace _2SemesterOpgave.Repositories
 
 		public UserDTO? GetUserByID(int id)
 		{
-			_db.Open();
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
 
-			try
-			{
-				DbCommand command = _db.Connection.CreateCommand();
-
-				command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.ID = @ID";
+			command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.ID = @ID";
 
 				DbParameter parameter = command.CreateParameter();
 				parameter.DbType = DbType.Int32;
@@ -167,11 +154,6 @@ namespace _2SemesterOpgave.Repositories
 					return CreateDTO(reader);
 				}
 				return null;
-			}
-			finally
-			{
-				_db.Close();
-			}
 		}
 
 		//public User? GetUserByID(int id)
@@ -210,12 +192,9 @@ namespace _2SemesterOpgave.Repositories
 
 		public int GetUserFollowerCount(int id) 
         {
-            try 
-            {
-                _db.Open();
-
-                DbCommand command = _db.Connection.CreateCommand();
-                command.CommandText = "SELECT COUNT(*) FROM Followers WHERE following_id = @UserId";
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = "SELECT COUNT(*) FROM Followers WHERE following_id = @UserId";
                 DbParameter parameter = command.CreateParameter();
                 parameter.DbType = DbType.Int32;
 				parameter.ParameterName = "UserId";
@@ -223,21 +202,13 @@ namespace _2SemesterOpgave.Repositories
 				command.Parameters.Add(parameter);
 				int count = Convert.ToInt32(command.ExecuteScalar());
                 return count;
-			}
-			finally 
-            { 
-                _db.Close(); 
-            }
 		}
 		
 		public int GetUserFollowingCount(int userId)
 		{
-			try
-			{
-				_db.Open();
-
-			    DbCommand command = _db.Connection.CreateCommand();
-			    command.CommandText = "SELECT COUNT(*) FROM Followers WHERE follower_id = @UserId";
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = "SELECT COUNT(*) FROM Followers WHERE follower_id = @UserId";
 
 			    DbParameter parameter = command.CreateParameter();
 			    parameter.DbType = DbType.Int32;
@@ -247,24 +218,15 @@ namespace _2SemesterOpgave.Repositories
 
 			    int count = Convert.ToInt32(command.ExecuteScalar());
 
-			    return count;   
-			}
-			finally
-			{
-				_db.Close();
-			}
+			    return count;
 
 		}
 
 		public void AddFollower(User follower, User following)
 		{
-			_db.Open();
-
-			try
-			{
-				DbCommand command = _db.Connection.CreateCommand();
-
-				command.CommandText = @"INSERT INTO Followers (follower_id, following_id) VALUES (@FollowerId, @FollowingId)";
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = @"INSERT INTO Followers (follower_id, following_id) VALUES (@FollowerId, @FollowingId)";
 
 				DbParameter followerParam = command.CreateParameter();
 				followerParam.ParameterName = "@FollowerId";
@@ -279,22 +241,14 @@ namespace _2SemesterOpgave.Repositories
 				command.Parameters.Add(followingParam);
 
 				command.ExecuteNonQuery();
-			}
-			finally
-			{
-				_db.Close();
-			}
 		}
 
 		public void RemoveFollower(User follower, User following)
 		{
-			_db.Open();
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
 
-			try
-			{
-				DbCommand command = _db.Connection.CreateCommand();
-
-				command.CommandText = "DELETE FROM Followers WHERE follower_id = @FollowerId AND following_id = @FollowingId";
+			command.CommandText = "DELETE FROM Followers WHERE follower_id = @FollowerId AND following_id = @FollowingId";
 
 				DbParameter followerParam = command.CreateParameter();
 				followerParam.ParameterName = "@FollowerId";
@@ -309,21 +263,14 @@ namespace _2SemesterOpgave.Repositories
 				command.Parameters.Add(followingParam);
 
 				command.ExecuteNonQuery();
-			}
-			finally
-			{
-				_db.Close();
-			}
 		}
 
 		public bool IsFollowing(int followerId, int followingId)
 		{
-			try
-			{
-			    _db.Open();
-				DbCommand command = _db.Connection.CreateCommand();
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
 
-				command.CommandText = "SELECT COUNT(*) FROM Followers WHERE follower_id = @FollowerId AND following_id = @FollowingId";
+			command.CommandText = "SELECT COUNT(*) FROM Followers WHERE follower_id = @FollowerId AND following_id = @FollowingId";
 
 				DbParameter followerParam = command.CreateParameter();
 				followerParam.ParameterName = "@FollowerId";
@@ -337,18 +284,13 @@ namespace _2SemesterOpgave.Repositories
 
 				int count = Convert.ToInt32(command.ExecuteScalar());
 				return count > 0;
-			}
-			finally
-			{
-				_db.Close();
-			}
 		}
 
 		public void UpdateUser(User user)
         {
-            _db.Open();
-            DbCommand command = _db.Connection.CreateCommand();
-            command.CommandText =
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText =
                 "UPDATE Users SET Username = @Username, FirstName = @FirstName, LastName = @LastName, Email = @Email, Password = @Password, " +
                 "City = @City, ProfilePicture = @ProfilePicture, PhoneNumber = @PhoneNumber, Description = @Description, " +
                 "IsVerified = @IsVerified, RatingScore = @RatingScore WHERE ID = @ID";
@@ -426,17 +368,14 @@ namespace _2SemesterOpgave.Repositories
             command.Parameters.Add(ratingScoreParam);
 
             command.ExecuteNonQuery();
-            _db.Close();
         }
 
 		public UserDTO? GetUserByUsername(string username)
 		{
-			try
-			{
-				_db.Open();
-				DbCommand command = _db.Connection.CreateCommand();
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
 
-				command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.Username = @Username";
+			command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.Username = @Username";
 
 				DbParameter usernameParam = command.CreateParameter();
 				usernameParam.ParameterName = "@Username";
@@ -453,11 +392,6 @@ namespace _2SemesterOpgave.Repositories
 				}
 
 				return null;
-			}
-			finally
-			{
-				_db.Close();
-			}
 		}
 
 		UserDTO CreateDTO(DbDataReader reader)

@@ -26,8 +26,10 @@ namespace _2SemesterOpgave
         BrandServices _brandServices;
         ColorServices _colorServices;
         ReviewServices _reviewServices;
+        ConversationServices _conversationServices;
+        UnreadBadgeServices _unreadBadgeService;
 
-		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, RentalServices rentalServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices, SizeServices sizeServices, BrandServices brandServices, FilterCriteria filterCriteria, ColorServices colorServices, ReviewServices reviewServices)
+		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, RentalServices rentalServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices, SizeServices sizeServices, BrandServices brandServices, FilterCriteria filterCriteria, ColorServices colorServices, ReviewServices reviewServices, ConversationServices conversationServices, UnreadBadgeServices unreadBadgeServices)
         {
             _currentPage = Routes.Home;
             _pageControl = pageControl;
@@ -44,8 +46,10 @@ namespace _2SemesterOpgave
             _insuranceOptionServices = insuranceOptionServices;
             _rentalServices = rentalServices;
             _currentFilter = filterCriteria;
+			_conversationServices = conversationServices;
+            _unreadBadgeService = unreadBadgeServices;
 
-            _rentals = _rentalServices.GetAll();
+			_rentals = _rentalServices.GetAll();
         }
 
         public void SetFilter(FilterCriteria filter)
@@ -103,7 +107,7 @@ namespace _2SemesterOpgave
                     _currentPage = Routes.Overview;
                     break;
                 case Routes.Article:
-                    _pageControl.Content = new ArticlePage(this, _articleServices, _categoryServices);
+                    _pageControl.Content = new ArticlePage(this, _articleServices, _categoryServices, _userServices);
                     _currentPage = Routes.Article;
                     break;
                 case Routes.ForYou:
@@ -115,7 +119,7 @@ namespace _2SemesterOpgave
 					_currentPage = Routes.Notifications;
 					break;
 				case Routes.Message:
-					_pageControl.Content = new MessagePage(this, _userServices);
+					_pageControl.Content = new MessagePage(this, _userServices, _conversationServices, _unreadBadgeService);
 					_currentPage = Routes.Message;
 					break;
 				case Routes.UserProfile:

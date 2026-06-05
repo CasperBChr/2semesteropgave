@@ -4,6 +4,7 @@ using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories.DTO;
 using _2SemesterOpgave.Repositories.Interfaces;
 using _2SemesterOpgave.Services;
+using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -27,26 +28,19 @@ namespace _2SemesterOpgave.Repositories
 		{
 			List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
 
-			try 
-			{
-				_db.Open();
-				using DbCommand command = _db.Connection.CreateCommand();
-				command.CommandText = "SELECT * FROM Articles";
-				using DbDataReader reader = command.ExecuteReader();
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = "SELECT * FROM Articles";
+			using DbDataReader reader = command.ExecuteReader();
 
-				while (reader.Read())
-				{
-					ArticleDTO articleDTO = CreateDTO(reader);
-					articleDTOs.Add(articleDTO);
-				}
-
-				reader.Close();
-				return articleDTOs;
-			}
-			finally
+			while (reader.Read())
 			{
-				_db.Close();
+				ArticleDTO articleDTO = CreateDTO(reader);
+				articleDTOs.Add(articleDTO);
 			}
+
+			reader.Close();
+			return articleDTOs;
 		}
 
 
@@ -54,39 +48,57 @@ namespace _2SemesterOpgave.Repositories
         {
 			List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
 
-			try 
-			{
-				_db.Open();
-				using DbCommand command = _db.Connection.CreateCommand();
-				command.CommandText = "SELECT * FROM Articles ORDER BY created_at DESC LIMIT 10";
-				List<Article> articles = new List<Article>();
-				using DbDataReader reader = command.ExecuteReader();
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = "SELECT * FROM Articles ORDER BY created_at DESC LIMIT 10";
+			List<Article> articles = new List<Article>();
+			using DbDataReader reader = command.ExecuteReader();
 
-				while (reader.Read())
-				{
-					ArticleDTO articleDTO = CreateDTO(reader);
-					articleDTOs.Add(articleDTO);
-				}
-
-				reader.Close();
-				return articleDTOs;
-			}
-			finally 
+			while (reader.Read())
 			{
-				_db.Close();
+				ArticleDTO articleDTO = CreateDTO(reader);
+				articleDTOs.Add(articleDTO);
 			}
+
+			reader.Close();
+			return articleDTOs;
         }
 
-
-        public IEnumerable<ArticleDTO> GetFilteredArticles(FilterCriteria filter)
+		public IEnumerable<ArticleDTO> GetAllArticlesByOwner(int ownerId)
 		{
 			List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
-			try
-			{
-				_db.Open();
-				DbCommand command = _db.Connection.CreateCommand();
 
-				StringBuilder sql = new StringBuilder("SELECT * FROM Articles WHERE 1=1");
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = "SELECT * FROM Articles WHERE owner_id = @OwnerId";
+
+			DbParameter ownerParameter = command.CreateParameter();
+			ownerParameter.ParameterName = "@OwnerId";
+			ownerParameter.DbType = DbType.Int32;
+			ownerParameter.Value = ownerId;
+			command.Parameters.Add(ownerParameter);
+
+			using DbDataReader reader = command.ExecuteReader();
+
+			while (reader.Read())
+			{
+				ArticleDTO articleDTO = CreateDTO(reader);
+				articleDTOs.Add(articleDTO);
+			}
+
+			reader.Close();
+			return articleDTOs;
+		}
+
+		
+
+		public IEnumerable<ArticleDTO> GetFilteredArticles(FilterCriteria filter)
+		{
+			List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+
+			StringBuilder sql = new StringBuilder("SELECT * FROM Articles WHERE 1=1");
 
 				//if (filter.Category != null)
 				//{
@@ -142,24 +154,17 @@ namespace _2SemesterOpgave.Repositories
 					ArticleDTO articleDTO = CreateDTO(reader);
 					articleDTOs.Add(articleDTO);
 				}
-
-				reader.Close();
-				_db.Close();
 				return articleDTOs;
-			}
-			finally
-			{
-				_db.Close();
-			}
+
 		}
 
         //Metode til at oprette en ArticleDTO
         public void CreateArticle(Article article)
         {
-            _db.Open();
-            DbCommand command = _db.Connection.CreateCommand();
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
 
-            command.CommandText = "INSERT INTO Articles (name, description, category_id, subcategory_id, brand_id, color_id, size_id, daily_price, original_price, is_rented) VALUES (@name, @description, @categoryId, @subcategoryId, @brandId, @colorId, @sizeId, @dailyPrice, @originalPrice, @isRented)";
+			command.CommandText = "INSERT INTO Articles (name, description, category_id, subcategory_id, brand_id, color_id, size_id, daily_price, original_price, is_rented) VALUES (@name, @description, @categoryId, @subcategoryId, @brandId, @colorId, @sizeId, @dailyPrice, @originalPrice, @isRented)";
             
 			DbParameter nameParam = command.CreateParameter();
             nameParam.ParameterName = "name";
@@ -228,7 +233,6 @@ namespace _2SemesterOpgave.Repositories
             command.Parameters.Add(ownerParam);
 
             command.ExecuteNonQuery();
-            _db.Close();
         }
 
 
@@ -241,7 +245,7 @@ namespace _2SemesterOpgave.Repositories
 			int category = reader.GetOrdinal("category_id");
 			int subcategory = reader.GetOrdinal("subcategory_id");
 			int brand = reader.GetOrdinal("brand_id");
-			int collection = reader.GetOrdinal("collection_id");
+			//int collection = reader.GetOrdinal("collection_id");
 			int color = reader.GetOrdinal("color_id");
 			int size = reader.GetOrdinal("size_id");
 			int owner = reader.GetOrdinal("owner_id");
@@ -250,8 +254,8 @@ namespace _2SemesterOpgave.Repositories
 			int original = reader.GetOrdinal("original_price");
 
 			int rented = reader.GetOrdinal("is_rented");
-			int smoked = reader.GetOrdinal("is_smoked");
-			int animal = reader.GetOrdinal("is_animal");
+			//int smoked = reader.GetOrdinal("is_smoked");
+			//int animal = reader.GetOrdinal("is_animal");
 			int clean = reader.GetOrdinal("is_clean");
 
 			int created = reader.GetOrdinal("created_at");
@@ -286,10 +290,10 @@ namespace _2SemesterOpgave.Repositories
 				dto.BrandId = reader.GetInt32(brand);
 			}
 
-			if (!reader.IsDBNull(collection))
-			{
-				dto.CollectionId = reader.GetInt32(collection);
-			}
+			//if (!reader.IsDBNull(collection))
+			//{
+			//	dto.CollectionId = reader.GetInt32(collection);
+			//}
 
 			if (!reader.IsDBNull(color))
 			{
@@ -322,8 +326,8 @@ namespace _2SemesterOpgave.Repositories
 			}
 
 			dto.IsRented = reader.GetInt32(rented) != 0;
-			dto.IsSmoked = reader.GetInt32(smoked) != 0;
-			dto.IsAnimal = reader.GetInt32(animal) != 0;
+			//dto.IsSmoked = reader.GetInt32(smoked) != 0;
+			//dto.IsAnimal = reader.GetInt32(animal) != 0;
 			dto.IsClean = reader.GetInt32(clean) != 0;
 
 			if (!reader.IsDBNull(owner))
