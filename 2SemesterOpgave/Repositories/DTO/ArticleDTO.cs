@@ -30,6 +30,8 @@ namespace _2SemesterOpgave.Repositories.DTO
 
 		public int? OwnerId { get; set; }
 
+		public bool IsFavorite { get; set; }
+
 		public DateTime CreatedAt { get; set; }
 		public DateTime UpdatedAt { get; set; }
 

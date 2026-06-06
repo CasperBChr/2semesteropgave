@@ -31,7 +31,10 @@
                 <!-- reviews af min bruger -->
                 <Border Background="White" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,16,0,0">
                     <StackPanel>
-                        <TextBlock Text="Anmeldelser om dig" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,12" />
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Anmeldelser om " FontSize="18" FontWeight="SemiBold" Margin="0,0,0,12" />
+                            <TextBlock Text="{Binding TargetUser.Username}" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,12" />
+                        </StackPanel>
                         <ItemsControl ItemsSource="{Binding ReviewsAboutMe}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -56,7 +59,10 @@
                 <!-- mine reviews -->
                 <Border Background="White" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,16,0,0">
                     <StackPanel>
-                        <TextBlock Text="Dine anmeldelser" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,12" />
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="{Binding TargetUser.Username}" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,12" />
+                            <TextBlock Text="'s anmeldelser" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,12" />
+                        </StackPanel>
                         <ItemsControl ItemsSource="{Binding ReviewsByMe}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>

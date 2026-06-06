@@ -154,8 +154,8 @@
 			</StackPanel>
 
                 <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
-                
-                <Button x:Name="ContactButton" Content="Kontakt" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="20" Padding="20,10" Click="ContactButton_Click"/>
+				<Button x:Name="FavoriteButton" Content="🤍" FontSize="20" FontWeight="Bold" Background="Transparent" BorderThickness="0" Cursor="Hand" Margin="20" Click="FavoriteButton_Click"/>
+				<Button x:Name="ContactButton" Content="Kontakt" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="20" Padding="20,10" Click="ContactButton_Click"/>
                 <Button x:Name="RentButton"  Content="Lej" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="20" Padding="20,10" Click="Button_Click"/>
 
             </StackPanel>

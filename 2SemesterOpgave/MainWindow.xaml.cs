@@ -243,11 +243,6 @@ namespace _2SemesterOpgave
 			_router.NavigateTo(Routes.Categories);
 		}
 
-		private void NewsPageButton_Click(object sender, RoutedEventArgs e)
-		{
-			_router.NavigateTo(Routes.Announcements);
-		}
-
 		private void FavoritPageButton_Click(object sender, RoutedEventArgs e)
 		{
 			_router.NavigateTo(Routes.Favorites);
@@ -311,14 +306,9 @@ namespace _2SemesterOpgave
             _router.NavigateTo(Routes.Overview);
         }
 
-        private void UserButton_Click(object sender, RoutedEventArgs e)
-        {
-			_router.NavigateTo(Routes.UserProfile);
-        }
-
         private void MyArticlePageButton_Click(object sender, RoutedEventArgs e)
         {
 			_router.NavigateTo(Routes.MyArticlesPage);
         }
-    }
+	}
 }

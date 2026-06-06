@@ -26,8 +26,9 @@ namespace _2SemesterOpgave.Pages
         private ArticleServices _articleServices;
         private CategoryServices _categoryServices;
         UserServices _userServices;
-        //Constructor der tager en Router som parameter for at kunne navigere til andre sider
-        public ArticlePage(Router router, ArticleServices articleServices, CategoryServices categoryServices, UserServices userService)
+		private bool _isFavorite;
+		//Constructor der tager en Router som parameter for at kunne navigere til andre sider
+		public ArticlePage(Router router, ArticleServices articleServices, CategoryServices categoryServices, UserServices userService)
         {
             
             //Article article = new Article("Ganni", "Beskrivelse af Ganni-artiklen", new List<Category>(), new List<SubCategory>(), new Models.Size(36), 100.60f, "Hvid", new Brand("Ganni", "Ganni Brand", "Logo"), false, 10000f, false, false, true, new User("John Doe", "john@example.com", "hej", 6));
@@ -38,18 +39,24 @@ namespace _2SemesterOpgave.Pages
             this.DataContext = _articleServices.SelectedArticle;
 			_currentArticle = _articleServices.SelectedArticle;
 			_userServices = userService;
+			
+			SetArticle(_currentArticle);
 		}
 
-        //DataContext for at binde Article-objektet til ArticlePage
-        public void SetArticle(Article article)
-        {
-            this.DataContext = article;
-            _currentArticle = article;
-        }
+		//DataContext for at binde Article-objektet til ArticlePage
+		public void SetArticle(Article article)
+		{
+			this.DataContext = article;
+			_currentArticle = article;
+
+			_isFavorite = _articleServices.IsFavorite(_userServices.CurrentUser, _currentArticle);
+
+			UpdateFavoriteUI();
+		}
 
 
-        //Funktion der navigerer til chat med ejer af artiklen
-        private void ContactButton_Click(object sender, RoutedEventArgs e)
+		//Funktion der navigerer til chat med ejer af artiklen
+		private void ContactButton_Click(object sender, RoutedEventArgs e)
         {
             if (_currentArticle?.Owner != null && _router != null)
             {
@@ -69,6 +76,31 @@ namespace _2SemesterOpgave.Pages
 			_userServices.TargetUser = article.Owner;
 			_router.NavigateTo(Routes.UserProfile);
 		}
-	}
 
+		private void FavoriteButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (_currentArticle == null || _userServices.CurrentUser == null)
+				return;
+
+			if (_isFavorite)
+			{
+				_articleServices.RemoveFavorite(_userServices.CurrentUser, _currentArticle);
+
+				_isFavorite = false;
+			}
+			else
+			{
+				_articleServices.AddFavorite(_userServices.CurrentUser, _currentArticle);
+
+				_isFavorite = true;
+			}
+
+			UpdateFavoriteUI();
+		}
+
+		private void UpdateFavoriteUI()
+		{
+			FavoriteButton.Content = _isFavorite ? "❤️" : "🤍";
+		}
+	}
 }

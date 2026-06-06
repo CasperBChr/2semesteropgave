@@ -90,7 +90,106 @@ namespace _2SemesterOpgave.Repositories
 			return articleDTOs;
 		}
 
-		
+		public IEnumerable<ArticleDTO> GetAllFavoritedArticlesByUser(int userId)
+		{
+			List<ArticleDTO> articleDTOs = new();
+
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+
+			command.CommandText = @"
+				SELECT a.*
+				FROM Articles a
+				INNER JOIN UserFavorites uf
+					ON uf.article_id = a.id
+				WHERE uf.user_id = @UserId";
+
+			DbParameter parameter = command.CreateParameter();
+			parameter.ParameterName = "@UserId";
+			parameter.DbType = DbType.Int32;
+			parameter.Value = userId;
+
+			command.Parameters.Add(parameter);
+
+			using DbDataReader reader = command.ExecuteReader();
+
+			while (reader.Read())
+			{
+				articleDTOs.Add(CreateDTO(reader));
+			}
+
+			return articleDTOs;
+		}
+
+		public void AddFavorite(int userId, int articleId)
+		{
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+
+			command.CommandText = @"
+				INSERT INTO UserFavorites(user_id, article_id)
+				VALUES(@UserId, @ArticleId)";
+
+			DbParameter userParam = command.CreateParameter();
+			userParam.ParameterName = "@UserId";
+			userParam.Value = userId;
+			command.Parameters.Add(userParam);
+
+			DbParameter articleParam = command.CreateParameter();
+			articleParam.ParameterName = "@ArticleId";
+			articleParam.Value = articleId;
+			command.Parameters.Add(articleParam);
+
+			command.ExecuteNonQuery();
+		}
+
+		public void RemoveFavorite(int userId, int articleId)
+		{
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+
+			command.CommandText = @"
+				DELETE FROM UserFavorites
+				WHERE user_id = @UserId
+				AND article_id = @ArticleId";
+
+			DbParameter userParam = command.CreateParameter();
+			userParam.ParameterName = "@UserId";
+			userParam.Value = userId;
+			command.Parameters.Add(userParam);
+
+			DbParameter articleParam = command.CreateParameter();
+			articleParam.ParameterName = "@ArticleId";
+			articleParam.Value = articleId;
+			command.Parameters.Add(articleParam);
+
+			command.ExecuteNonQuery();
+		}
+
+		public bool IsFavorite(int userId, int articleId)
+		{
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+
+			command.CommandText = @"
+				SELECT COUNT(*)
+				FROM UserFavorites
+				WHERE user_id = @UserId
+				AND article_id = @ArticleId";
+
+			DbParameter userParam = command.CreateParameter();
+			userParam.ParameterName = "@UserId";
+			userParam.Value = userId;
+			command.Parameters.Add(userParam);
+
+			DbParameter articleParam = command.CreateParameter();
+			articleParam.ParameterName = "@ArticleId";
+			articleParam.Value = articleId;
+			command.Parameters.Add(articleParam);
+
+			return Convert.ToInt32(command.ExecuteScalar()) > 0;
+		}
+
 
 		public IEnumerable<ArticleDTO> GetFilteredArticles(FilterCriteria filter)
 		{

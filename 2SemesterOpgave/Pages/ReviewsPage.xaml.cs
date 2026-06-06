@@ -10,6 +10,7 @@ namespace _2SemesterOpgave.Pages
     public partial class ReviewsPage : UserControl
     {
         public User CurrentUser { get; private set; }
+        public User TargetUser { get; private set; }
         public ObservableCollection<Review> ReviewsAboutMe { get; private set; }
         public ObservableCollection<Review> ReviewsByMe { get; private set; }
 
@@ -21,6 +22,7 @@ namespace _2SemesterOpgave.Pages
 
             _reviewServices = reviewServices;
             CurrentUser = userServices?.CurrentUser ?? new User();
+			TargetUser = userServices?.TargetUser ?? new User();
 
             ReviewsAboutMe = new ObservableCollection<Review>();
             ReviewsByMe = new ObservableCollection<Review>();
@@ -35,14 +37,14 @@ namespace _2SemesterOpgave.Pages
         {
             ReviewsAboutMe.Clear();
 
-            foreach (Review review in _reviewServices.GetReviewsByRevieweeId(CurrentUser.Id))
+            foreach (Review review in _reviewServices.GetReviewsByRevieweeId(TargetUser.Id))
             {
                 ReviewsAboutMe.Add(review);
             }
 
             ReviewsByMe.Clear();
 
-            foreach (Review review in _reviewServices.GetReviewsByReviewerId(CurrentUser.Id))
+            foreach (Review review in _reviewServices.GetReviewsByReviewerId(TargetUser.Id))
             {
                 ReviewsByMe.Add(review);
             }

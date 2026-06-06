@@ -29,6 +29,8 @@ namespace _2SemesterOpgave.Models
         public List<User> Followers { get; set; }
         public List<User> Following { get; set; }
 
+        public List<Article> FavoriteArticles { get; set; } = new List<Article>();
+
         // Antal følgere/følger, som kommer direkte fra databasen
         public int FollowersCount { get; set; }
         public int FollowingCount { get; set; }

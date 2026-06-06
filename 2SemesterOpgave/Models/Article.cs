@@ -33,6 +33,8 @@ namespace _2SemesterOpgave.Models
 
 		public List<ShippingOption>? ShippingOptions { get; set; }
 
+		public bool IsFavorite { get; set; }
+
 		public DateTime CreatedAt { get; set; }
 		public DateTime UpdatedAt { get; set; }
 

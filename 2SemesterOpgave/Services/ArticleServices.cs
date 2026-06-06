@@ -50,6 +50,8 @@ namespace _2SemesterOpgave.Services
 		//}
 
 
+
+
 		public IEnumerable<Article> GetAllArticles()
 		{
 			IEnumerable<ArticleDTO> dtos = _articleRepository.GetAllArticles();
@@ -116,6 +118,7 @@ namespace _2SemesterOpgave.Services
 			return articles;
 		}
 
+		// VIRKER IKKE LÆNGERE
 		public IEnumerable<Article> GetArticlesByCategory(int categoryId)
 		{
 			IEnumerable<Article> allArticles = GetAllArticles();
@@ -129,7 +132,8 @@ namespace _2SemesterOpgave.Services
 			}
 			return filteredArticles;
 		}
-		
+
+		// VIRKER IKKE LÆNGERE
 		public IEnumerable<Article> GetArticlesByOwner(int ownerId)
 		{
 			IEnumerable<Article> allArticles = GetAllArticles();
@@ -144,6 +148,76 @@ namespace _2SemesterOpgave.Services
 			return filteredArticles;
 		}
 
+		public IEnumerable<Article> GetAllFavoritedArticlesByUser(int userId)
+		{
+			IEnumerable<ArticleDTO> dtos = _articleRepository.GetAllFavoritedArticlesByUser(userId);
+
+			List<Article> articles = new List<Article>();
+
+			foreach (ArticleDTO dto in dtos)
+			{
+				articles.Add(MapToArticle(dto));
+			}
+
+			return articles;
+		}
+
+		public void AddFavorite(User user, Article article)
+		{
+			if (user == null)
+			{
+				throw new Exception(nameof(user));
+			}
+
+			if (article == null)
+			{
+				throw new Exception(nameof(article));
+			}
+
+			_articleRepository.AddFavorite(user.Id, article.Id);
+		}
+
+		public void RemoveFavorite(User user, Article article)
+		{
+			if (user == null)
+			{
+				throw new Exception(nameof(user));
+			}
+
+			if (article == null)
+			{
+				throw new Exception(nameof(article));
+			}
+
+			_articleRepository.RemoveFavorite(user.Id, article.Id);
+		}
+
+		public bool IsFavorite(User user, Article article)
+		{
+			if (user == null) 
+			{
+				throw new Exception(nameof(user));
+			}
+
+			if (article == null)
+			{
+				throw new Exception(nameof(article));
+			}
+
+			return _articleRepository.IsFavorite(user.Id, article.Id);
+		}
+
+		public bool ToggleFavorite(User user, Article article)
+		{
+			if (IsFavorite(user, article))
+			{
+				RemoveFavorite(user, article);
+				return false;
+			}
+
+			AddFavorite(user, article);
+			return true;
+		}
 
 		Article MapToArticle(ArticleDTO dto)
 		{

@@ -79,12 +79,8 @@ namespace _2SemesterOpgave
 					_pageControl.Content = new CategoryPage(_categoryServices, this, _articleServices);
 					_currentPage = Routes.Categories;
 					break;
-                case Routes.Announcements:
-                    _pageControl.Content = new NewsPage();
-                    _currentPage = Routes.Announcements;
-                    break;
                 case Routes.Favorites:
-                    _pageControl.Content = new FavoritPage();
+                    _pageControl.Content = new FavoritesPage(this, _userServices, _articleServices);
                     _currentPage = Routes.Favorites;
                     break;
                 case Routes.MyOrders:
@@ -98,10 +94,6 @@ namespace _2SemesterOpgave
                 case Routes.Messages:
                     _pageControl.Content = new MessagesPage(this, _userServices);
                     _currentPage = Routes.Messages;
-                    break;
-                case Routes.Support:
-                    _pageControl.Content = new SupportPage();
-                    _currentPage = Routes.Support;
                     break;
                 case Routes.Overview:
                     _pageControl.Content = new OverviewPage(this, _articleServices, _currentFilter);
@@ -161,23 +153,21 @@ namespace _2SemesterOpgave
         Home = 0,
         Explore = 1,
         Categories = 2,
-        Announcements = 3,
-        Favorites = 4,
-        MyOrders = 5,
-        MyAccount = 6,
-        Messages = 7,
-        Support = 8,
-        Overview = 9,
-        Article = 10,
-        ForYou = 11,
-        Notifications = 12,
-        Message = 13,
-        UserProfile = 14,
-        CreateArticle = 15,
-        Rent = 16,
-        Reviews = 17,
-        ArticleSortByCategory = 18,
-        EditArticlePage = 19,
-        MyArticlesPage = 20
+        Favorites = 3,
+        MyOrders = 4,
+        MyAccount = 5,
+        Messages = 6,
+        Overview = 7,
+        Article = 8,
+        ForYou = 9,
+        Notifications = 10,
+        Message = 11,
+        UserProfile = 12,
+        CreateArticle = 13,
+        Rent = 14,
+        Reviews = 15,
+        ArticleSortByCategory = 16,
+        EditArticlePage = 17,
+        MyArticlesPage = 18
     }
 }

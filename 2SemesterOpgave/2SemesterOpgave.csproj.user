@@ -26,7 +26,7 @@
     <Compile Update="Pages\ExplorePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\FavoritPage.xaml.cs">
+    <Compile Update="Pages\FavoritesPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\ForYouPage.xaml.cs">
