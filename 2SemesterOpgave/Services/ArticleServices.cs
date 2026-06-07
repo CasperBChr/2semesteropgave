@@ -49,8 +49,15 @@ namespace _2SemesterOpgave.Services
 		//	);
 		//}
 
+		public void CreateArticle(Article article, User user)
+		{
+			_articleRepository.CreateArticle(article, user);
+		}
 
-
+		public void DeleteArticle(Article article)
+		{
+			_articleRepository.DeleteArticle(article);
+		}
 
 		public IEnumerable<Article> GetAllArticles()
 		{
@@ -118,6 +125,11 @@ namespace _2SemesterOpgave.Services
 			return articles;
 		}
 
+		public void UpdateArticle(Article article)
+		{
+			_articleRepository.UpdateArticle(article);
+		}
+
 		// VIRKER IKKE LÆNGERE
 		public IEnumerable<Article> GetArticlesByCategory(int categoryId)
 		{
@@ -147,6 +159,8 @@ namespace _2SemesterOpgave.Services
 			}
 			return filteredArticles;
 		}
+
+
 
 		public IEnumerable<Article> GetAllFavoritedArticlesByUser(int userId)
 		{
@@ -230,8 +244,6 @@ namespace _2SemesterOpgave.Services
 				OriginalPrice = dto.OriginalPrice,
 
 				IsRented = dto.IsRented,
-				//IsSmoked = dto.IsSmoked,
-				//IsAnimal = dto.IsAnimal,
 				IsClean = dto.IsClean,
 
 				CreatedAt = dto.CreatedAt,
@@ -260,7 +272,7 @@ namespace _2SemesterOpgave.Services
 
 			if (dto.ColorId.HasValue)
 			{
-				article.Color = _colorServices.GetNameById(dto.ColorId.Value);
+				article.Color = _colorServices.GetById(dto.ColorId.Value);
 			}
 
 			if (dto.SizeId.HasValue)

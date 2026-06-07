@@ -59,6 +59,7 @@ namespace _2SemesterOpgave.Services
 		{
 			return new Brand
 			{
+				Id = dto.Id,
 				Name = dto.Name,
 				LogoPath = dto.LogoPath ?? string.Empty,
 				CreatedAt = dto.CreatedAt,

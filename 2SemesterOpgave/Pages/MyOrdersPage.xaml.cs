@@ -20,8 +20,10 @@ namespace _2SemesterOpgave.Pages
         UserServices _userServices;
         public User CurrentUser { get; private set; }
 
+        ArticleServices _articleServices;
 
-		public MyOrdersPage(Router router, UserServices userServices, ReviewServices reviewServices, RentalServices rentalServices)
+
+		public MyOrdersPage(Router router, UserServices userServices, ReviewServices reviewServices, RentalServices rentalServices, ArticleServices articleServices)
         {
             InitializeComponent();
 
@@ -29,28 +31,12 @@ namespace _2SemesterOpgave.Pages
             _reviewServices = reviewServices;
 			_rentalServices = rentalServices;
 			_userServices = userServices;
+            _articleServices = articleServices;
 			DataContext = this;
             CurrentUser = _userServices.CurrentUser;
-            //CurrentUser = _userServices.GetAllUsers()[1];
 
-            //CurrentUser = userServices?.CurrentUser;
             Rentals = _rentalServices.GetByRenter(CurrentUser);
             RentedOut = _rentalServices.GetByRentee(CurrentUser);
-			foreach (var rental in Rentals)
-			{
-				Debug.WriteLine($"Rental ID: {rental.Id}");
-				Debug.WriteLine($"Artikel navn: {rental.Article?.Title}");
-				Debug.WriteLine($"Beskrivelse: {rental.Article?.Description}");
-				Debug.WriteLine($"Kategori: {rental.Article?.Category.Name}");
-				Debug.WriteLine($"Underkategori: {rental.Article?.SubCategory.Name}");
-				Debug.WriteLine($"Brand: {rental.Article?.Brand?.Name}");
-				Debug.WriteLine($"Udlejer: {rental.Renter?.Username}");
-				Debug.WriteLine($"Lejer: {rental.Rentee?.Username}");
-				Debug.WriteLine($"Startdato: {rental.StartDate:dd.MM.yyyy}");
-				Debug.WriteLine($"Slutdato: {rental.EndDate:dd.MM.yyyy}");
-				Debug.WriteLine($"Pris: {rental.TotalPrice} kr.");
-				Debug.WriteLine("--------------------------------");
-			}
 		}
 
         private void ReviewButton_Click(object sender, RoutedEventArgs e)
@@ -67,5 +53,13 @@ namespace _2SemesterOpgave.Pages
             _reviewServices?.SetReviewTarget(rental.Rentee);
             _router?.NavigateTo(Routes.Reviews);
         }
-    }
+
+		private void ArticlePageButton_Click(object sender, RoutedEventArgs e)
+		{
+            Button button = (Button)sender;
+            Article article = (Article)button.DataContext;
+            _articleServices.SelectedArticle = article;
+            _router.NavigateTo(Routes.Article);
+		}
+	}
 }

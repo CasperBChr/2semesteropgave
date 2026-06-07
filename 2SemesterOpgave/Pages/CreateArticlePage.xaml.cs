@@ -29,8 +29,10 @@ namespace _2SemesterOpgave.Pages
         private CategoryServices _categoryServices;
         private SizeServices _sizeServices;
         private BrandServices _brandServices;
+        private ColorServices _colorServices;
+        private UserServices _userServices;
 
-        public CreateArticlePage(Router router, ArticleServices articleServices, CategoryServices categoryServices, SizeServices sizeServices, BrandServices brandServices)
+        public CreateArticlePage(Router router, ArticleServices articleServices, CategoryServices categoryServices, SizeServices sizeServices, BrandServices brandServices, ColorServices colorServices, UserServices userServices)
         {
             InitializeComponent();
             _router = router;
@@ -38,11 +40,14 @@ namespace _2SemesterOpgave.Pages
             _categoryServices = categoryServices;
             _sizeServices = sizeServices;
             _brandServices = brandServices;
+            _colorServices = colorServices;
+            _userServices = userServices;
             CreateCategoryCombobox.ItemsSource = _categoryServices.GetAllCategories();
             CreateSubcategoryCombobox.ItemsSource = _categoryServices.GetAllSubCategories();
             CreateSizeComboBox.ItemsSource = _sizeServices.GetAllSizes();
+			CreateColorComboBox.ItemsSource = _colorServices.GetAllColors();
             CreateBrandComboBox.ItemsSource = _brandServices.GetAllBrands();
-        }
+		}
 
         public void UploadImageButton_Click(object sender, RoutedEventArgs e)
         {
@@ -50,67 +55,121 @@ namespace _2SemesterOpgave.Pages
 
         }
 
-        //Metode til at sætte en titel på en artikel som oprettes
-        public void CreateTitleTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            // User input is stored in CreateTitleTextBox.Text
-        }
-        //Metode til at sætte en beskrivelse på en artikel som oprettes
-        public void CreateDescriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            // User input is stored in CreateDescriptionTextBox.Text
-        }
-        //Metode til at sætte en pris på en artikel som oprettes
-        public void CreatePriceTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            // User input is stored in CreatePriceTextBox.Text
-        }
-        //Metode til at sætte en farve på en artikel som oprettes
-        public void CreateColorTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            // User input is stored in CreateColorTextBox.Text
-        }
-
         //Metode til at gemme den oprettede artikel og navigere tilbage til oversigten
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            
-                //Article article = new Article();
-                //string titel = CreateTitleTextBox.Text;
-                //string description = CreateDescriptionTextBox.Text;
-                //Category category = (Category)CreateCategoryCombobox.SelectedItem;
-                //SubCategory subcategory = (SubCategory)CreateSubcategoryCombobox.SelectedItem;
-                //Models.Size size = (Models.Size)CreateSizeComboBox.SelectedItem;
-                //double prize = Convert.ToDouble(CreatePriceTextBox.Text);
-                //string colorText = CreateColorTextBox.Text;
-                //Brand brand = (Brand)CreateBrandComboBox.SelectedItem;
 
-                //if (string.IsNullOrWhiteSpace(titel))
-                //{
-                //    MessageBox.Show("Husk titel!");
-                //    return;
-                //}
-                                
-                //article.Title = titel;
-                //article.Description = description;
-                //article.Category = category;
-                //article.SubCategory = subcategory;
-                //article.Size = size;
-                //article.DailyPrice = (float)prize;
-                //article.Color = colorText;
-                //article.Brand = brand;
+            Article article = new Article();
 
-                //ArticleRepository createArticle = _articleServices.CreateArticle(article);
+            string title = string.Empty;
+            if(!string.IsNullOrWhiteSpace(CreateTitleTextBox.Text))
+            {
+                title = CreateTitleTextBox.Text;
+            }
+            else{
+                MessageBox.Show("Venligst indtast titel");
+                return;
+            }
+            string description = string.Empty;
+            if (!string.IsNullOrWhiteSpace(CreateDescriptionTextBox.Text))
+            {
+                description = CreateDescriptionTextBox.Text;
+            }
+            else
+            {
+                MessageBox.Show("Venligst indtast beskrivelse");
+                return;
+            }
+            Category category;
+            if (CreateCategoryCombobox.SelectedItem is Category)
+            {
+                category = (Category)CreateCategoryCombobox.SelectedItem;
+			}
+            else 
+            {
+				MessageBox.Show("Venligst vælg kategori");
+                return;
+			}
+            SubCategory subCategory;
+            if(CreateSubcategoryCombobox.SelectedItem is SubCategory)
+            {
+				subCategory = (SubCategory)CreateSubcategoryCombobox.SelectedItem;
+			}
+            else
+            {
+				MessageBox.Show("Venligst vælg underkategori");
+				return;
+			}
+			Models.Size size;
+			if (CreateSizeComboBox.SelectedItem is Models.Size)
+			{
+				size = (Models.Size)CreateSizeComboBox.SelectedItem;
+			}
+			else
+			{
+				MessageBox.Show("Venligst vælg størrelse");
+				return;
+			}
 
-                //_router.NavigateTo(Routes.Overview);
-            
-          
+            float dailyPrice = 0.0f;
+            bool dailyPriceConverted = float.TryParse(CreatePriceTextBox.Text, out dailyPrice);
+            if(!dailyPriceConverted) 
+            {
+				MessageBox.Show("Indtast venligst gyldigt tal");
+				return;
+            }
+
+            Models.Color color;
+            if(CreateColorComboBox.SelectedItem is Models.Color)
+            {
+                color = (Models.Color)CreateColorComboBox.SelectedItem;
+			}
+			else
+			{
+				MessageBox.Show("Venligst vælg farve");
+				return;
+			}
+
+			Brand brand;
+            if(CreateBrandComboBox.SelectedItem is Brand)
+            {
+                brand = (Brand)CreateBrandComboBox.SelectedItem;
+            }
+			else
+			{
+				MessageBox.Show("Venligst vælg mærke");
+				return;
+			}
+
+            article.Title = title;
+            article.Description = description;
+            article.Category = category;
+            article.SubCategory = subCategory;
+            article.Size = size;
+            article.DailyPrice = dailyPrice;
+            article.Color = color;
+            article.Brand = brand;
+
+            _articleServices.CreateArticle(article, _userServices.CurrentUser);
+
+            _router.NavigateTo(Routes.Home);
         }
 
         private void DismissButton_Click(object sender, RoutedEventArgs e)
         {
             //Gemmer ikke den oprettede artikel og navigerer tilbage til oversigten
-            _router.NavigateTo(Routes.Overview);
-        } 
-    }
+            _router.NavigateTo(Routes.Home);
+        }
+
+		private void CategoryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (CreateCategoryCombobox.SelectedItem == null)
+			{
+				return;
+			}
+
+			Category chosenCategory = (Category)CreateCategoryCombobox.SelectedItem;
+			CreateSubcategoryCombobox.ItemsSource = chosenCategory.SubCategories;
+		}
+	}
 }

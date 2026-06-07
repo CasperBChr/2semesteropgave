@@ -56,8 +56,8 @@ namespace _2SemesterOpgave.Services
 				RenterId = rental.Renter.Id,
 				RenteeId = rental.Rentee.Id,
 				ArticleId = rental.Article.Id,
-				ShippingOptionId = null, // sæt hvis ShippingOption får et Id-felt
-				InsuranceOptionId = null
+				ShippingOptionId = rental.ShippingChoice?.Id,
+				InsuranceOptionId = rental.InsuranceChoice?.Id
 			};
 
 			_rentalRepository.Create(dto);
@@ -91,22 +91,29 @@ namespace _2SemesterOpgave.Services
 			return rentals;
 		}
 
+		public HashSet<DateOnly> GetBookedDatesForArticle(int articleId)
+		{
+			HashSet<DateOnly> booked = new();
+			foreach (var (start, end) in _rentalRepository.GetBookedDateRangesForArticle(articleId))
+			{
+				for (DateOnly d = start; d <= end; d = d.AddDays(1))
+					booked.Add(d);
+			}
+			return booked;
+		}
+
+
 		Rental? MapToRental(RentalDTO dto)
 		{
 			User? renter = _userServices.GetById(dto.RenterId);
 			User? rentee = _userServices.GetById(dto.RenteeId);
 
 			// Henter artikel via alle artikler – du kan optimere med GetById når det er implementeret
-			Article? article = new List<Article>(_articleServices.GetAllArticles())
-				.FirstOrDefault(a => a.Id == dto.ArticleId);
+			Article? article = new List<Article>(_articleServices.GetAllArticles()).FirstOrDefault(article => article.Id == dto.ArticleId);
 
-			ShippingOption? shipping = dto.ShippingOptionId.HasValue
-			? _shippingOptionServices.GetById(dto.ShippingOptionId.Value)
-			: null;
+			ShippingOption? shipping = dto.ShippingOptionId.HasValue ? _shippingOptionServices.GetById(dto.ShippingOptionId.Value) : null;
 
-			InsuranceOption? insurance = dto.InsuranceOptionId.HasValue
-				? _insuranceOptionServices.GetById(dto.InsuranceOptionId.Value)
-				: null;
+			InsuranceOption? insurance = dto.InsuranceOptionId.HasValue ? _insuranceOptionServices.GetById(dto.InsuranceOptionId.Value) : null;
 
 			// Springer over hvis nødvendige relationer mangler
 			if (renter == null || rentee == null || article == null) return null;
@@ -134,7 +141,6 @@ namespace _2SemesterOpgave.Services
 				CreatedAt = dto.CreatedAt,
 				ShippingChoice = shipping,
 				InsuranceChoice = insurance
-
 			};
 		}
 	}

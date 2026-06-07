@@ -22,7 +22,7 @@ namespace _2SemesterOpgave
 		SessionContext _session;
 		AuthServices _authService;
 
-		bool _testMode = false;
+		bool _testMode = true;
 
 		protected override void OnStartup(StartupEventArgs e)
 		{
@@ -39,7 +39,7 @@ namespace _2SemesterOpgave
 
 				if( _testMode )
 				{
-					LoginWindow loginWindow = new LoginWindow(_authService);
+					LoginWindow loginWindow = new LoginWindow(_authService, _userServices);
 					bool? loggedIn = loginWindow.ShowDialog();
 
 					//MessageBox.Show($"ShowDialog returned: {loggedIn}");

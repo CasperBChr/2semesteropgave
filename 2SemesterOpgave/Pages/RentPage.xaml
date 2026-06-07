@@ -4,76 +4,117 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:_2SemesterOpgave.Pages"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
+	<Grid>
+		<ScrollViewer>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*" MaxWidth="700"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+				<StackPanel Grid.Column="1" Margin="0,30,0,40">
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,40">
+						<TextBlock Text="Udlejning af " FontSize="36" FontWeight="Bold"/>
+						<TextBlock Text="{Binding Title}" FontSize="36" FontWeight="Bold"/>
+					</StackPanel>
 
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+					<TextBlock Text="Vælg lejeperiode" FontSize="20" FontWeight="Bold" Margin="0, 20"/>
 
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" FontSize="50" RenderTransformOrigin="0.5,0.5" Text="Leje betingelser" Width="368" Margin="-87,206,0,0" Grid.ColumnSpan="2">
-            <TextBlock.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-90"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </TextBlock.RenderTransform></TextBlock>
+					<Grid Margin="0,0,0,10">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="20"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<StackPanel Grid.Column="0">
+							<TextBlock Text="Startdato" FontSize="20" Margin="0, 10"/>
+							<DatePicker x:Name="StartDatePicker" Cursor="Hand" SelectedDateChanged="DatePicker_Changed" DisplayDateStart="{x:Static sys:DateTime.Today}" FontSize="14">
+								<DatePicker.LayoutTransform>
+									<ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+								</DatePicker.LayoutTransform>
+							</DatePicker>
+						</StackPanel>
+						<StackPanel Grid.Column="2">
+							<TextBlock Text="Slutdato" FontSize="20" Margin="0, 10"/>
+							<DatePicker x:Name="EndDatePicker" Cursor="Hand" SelectedDateChanged="DatePicker_Changed" DisplayDateStart="{x:Static sys:DateTime.Today}" FontSize="14">
+								<DatePicker.LayoutTransform>
+									<ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+								</DatePicker.LayoutTransform>
+							</DatePicker>
+						</StackPanel>
+					</Grid>
 
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+					<Border x:Name="PriceBorder" BorderThickness="1" Margin="0,30,0,0" Visibility="Collapsed">
+						<StackPanel>
+							<TextBlock x:Name="PreviewText" FontSize="14" FontWeight="Bold"/>
+							<TextBlock x:Name="BookedWarningText" FontSize="20" FontWeight="Bold" Foreground="Red" Visibility="Collapsed" TextWrapping="Wrap"/>
+						</StackPanel>
+					</Border>
 
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="Gennemfør udlejning" FontSize="40" Margin="15"/>
-            </StackPanel>
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
-                <TextBlock Text="Betingelser for udlejning.. i dette felt vil betingelserne for udlejningen stå." FontSize="15" Margin="20,30" Height="63"/>
-            </StackPanel>
+					<StackPanel Margin="0, 30">
+						<TextBlock Text="Vælg fragtløsning" FontSize="20" FontWeight="Bold" Margin="0, 10"/>
+						<ComboBox x:Name="ShippingComboBox" SelectionChanged="Options_Changed" DisplayMemberPath="Name" VerticalContentAlignment="Center" FontSize="18" Height="40"/>
+					</StackPanel>
+					<StackPanel Margin="0, 30">
+						<TextBlock Text="Vælg forsikring" FontSize="20" FontWeight="Bold" Margin="0, 10"/>
+						<ComboBox x:Name="InsuranceComboBox" SelectionChanged="Options_Changed" DisplayMemberPath="Name" VerticalContentAlignment="Center" FontSize="18" Height="40"/>
+					</StackPanel>
 
-
-            <Grid Grid.Row="2" Grid.Column="0" Margin="0,15,0,15">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="170" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="Vælg fragtløsning" FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                <ComboBox x:Name="ShippingComboBox" Margin="20,-2,150,-2" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Name"/>
-            </Grid>
-
-            <Grid Grid.Row="3" Grid.Column="0" Margin="0,15,0,15">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="170" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="Vælg forsikring" FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                <ComboBox x:Name="InsuranceComboBox" Margin="20,-2,150,-2" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Name"/>
-            </Grid>
-
-            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="ConfirmButton" Content="Bekræft" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="20" Padding="20,10" Click="ConfirmButton_Click" />
-                <Button x:Name="CancelButton" Content="Annuller" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="20" Padding="20,10" Click="CancelButton_Click" />
-            </StackPanel>
+					<Border x:Name="TotalBorder" BorderBrush="Black" BorderThickness="1" CornerRadius="6" Padding="14,10" Margin="0,20,0,0">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="*"/>
+								<RowDefinition Height="*"/>
+								<RowDefinition Height="*"/>
+								<RowDefinition Height="*"/>
+								<RowDefinition Height="*"/>
+								<RowDefinition Height="*"/>
+							
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="130"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
 
 
-        </Grid>
-    </Grid>
+							<TextBlock Text="Lejer:" Grid.Row="0" Grid.Column="0" Margin="10, 10" FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
+							<TextBlock x:Name="RenterName" Grid.Row="0"  Grid.Column="1"  FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
+
+							<TextBlock Text="Udlejer:" Grid.Row="1" Grid.Column="0" Margin="10, 10" FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
+							<TextBlock x:Name="RenteeName" Grid.Row="1"  Grid.Column="1" FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
+
+							<!--<Line Grid.Row="1" Grid.Column="0"></Line>-->
+
+							<TextBlock Text="Leje pris:" Grid.Row="2" Grid.Column="0" Margin="10, 10" FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
+							<TextBlock x:Name="RentPrice" Grid.Row="2"  Grid.Column="1"  FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
+
+							<TextBlock Text="Fragt:" Grid.Row="3" Grid.Column="0" Margin="10, 10" FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
+							<TextBlock x:Name="ShippingPrice" Grid.Row="3"  Grid.Column="1"  FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
+
+							<TextBlock Text="Forsikring:" Grid.Row="4" Grid.Column="0" Margin="10, 10" FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
+							<TextBlock x:Name="InsurancePrice" Grid.Row="4"  Grid.Column="1"  FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
+
+							<TextBlock Text="Total: " Grid.Row="5" Grid.Column="0" Margin="10, 10" FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
+							<TextBlock x:Name="TotalPrice" Grid.Row="5"  Grid.Column="1"  FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
+
+
+							<!--<TextBlock x:Name="TotalTextBlock" FontSize="16" xml:space="preserve"/>-->
+							<!--<TextBlock x:Name="TotalTextBlock" FontSize="16" xml:space="preserve"/>-->
+							<!--<TextBlock x:Name="TotalTextBlock"  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  FontSize="16" xml:space="preserve"/>-->
+						</Grid>
+					</Border>
+
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,0">
+						<Button x:Name="ConfirmButton" Content="Bekræft" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="10,0" Padding="20,10" Click="ConfirmButton_Click"/>
+						<Button x:Name="CancelButton" Content="Annuller" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="10,0" Padding="20,10" Click="CancelButton_Click"/>
+					</StackPanel>
+
+				</StackPanel>
+			</Grid>
+		</ScrollViewer>
+	</Grid>
 </UserControl>

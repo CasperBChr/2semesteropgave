@@ -84,7 +84,7 @@ namespace _2SemesterOpgave
                     _currentPage = Routes.Favorites;
                     break;
                 case Routes.MyOrders:
-                    _pageControl.Content = new MyOrdersPage(this, _userServices, _reviewServices, _rentalServices);
+                    _pageControl.Content = new MyOrdersPage(this, _userServices, _reviewServices, _rentalServices, _articleServices);
                     _currentPage = Routes.MyOrders;
                     break;
                 case Routes.MyAccount:
@@ -92,7 +92,7 @@ namespace _2SemesterOpgave
                     _currentPage = Routes.MyAccount;
                     break;
                 case Routes.Messages:
-                    _pageControl.Content = new MessagesPage(this, _userServices);
+                    _pageControl.Content = new MessagesPage(this, _userServices, _conversationServices);
                     _currentPage = Routes.Messages;
                     break;
                 case Routes.Overview:
@@ -100,7 +100,7 @@ namespace _2SemesterOpgave
                     _currentPage = Routes.Overview;
                     break;
                 case Routes.Article:
-                    _pageControl.Content = new ArticlePage(this, _articleServices, _categoryServices, _userServices);
+                    _pageControl.Content = new ArticlePage(this, _articleServices, _categoryServices, _userServices, _conversationServices);
                     _currentPage = Routes.Article;
                     break;
                 case Routes.ForYou:
@@ -120,11 +120,11 @@ namespace _2SemesterOpgave
 					_currentPage = Routes.UserProfile;
 					break;
                 case Routes.CreateArticle:
-                    _pageControl.Content = new CreateArticlePage(this, _articleServices, _categoryServices, _sizeServices, _brandServices);              
+                    _pageControl.Content = new CreateArticlePage(this, _articleServices, _categoryServices, _sizeServices, _brandServices, _colorServices, _userServices);              
                     _currentPage = Routes.CreateArticle;
                     break;
                 case Routes.Rent:
-                    _pageControl.Content = new RentPage(this, _articleServices, _userServices, _shippingOptionServices, _insuranceOptionServices);              
+                    _pageControl.Content = new RentPage(this, _articleServices, _userServices, _shippingOptionServices, _insuranceOptionServices, _rentalServices);              
                     _currentPage = Routes.Rent;
                     break;
                 case Routes.ArticleSortByCategory:
@@ -136,7 +136,7 @@ namespace _2SemesterOpgave
                     _currentPage = Routes.Reviews;
                     break;
                 case Routes.EditArticlePage:
-                    _pageControl.Content = new EditArticlePage(this, _articleServices, _categoryServices, _sizeServices, _brandServices);
+                    _pageControl.Content = new EditArticlePage(this, _articleServices, _categoryServices, _sizeServices, _brandServices, _userServices, _colorServices);
                     _currentPage = Routes.EditArticlePage;
                     break;
                 case Routes.MyArticlesPage:

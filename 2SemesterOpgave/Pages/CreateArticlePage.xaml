@@ -69,7 +69,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Kategori: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                    <ComboBox x:Name="CreateCategoryCombobox" FontSize="15" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Name" Margin="0,0,20,0"/>
+                    <ComboBox x:Name="CreateCategoryCombobox" FontSize="15" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Name" Margin="0,0,20,0" SelectionChanged="CategoryCombo_SelectionChanged"/>
                 </Grid>
                 <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>
@@ -112,9 +112,9 @@
                         <ColumnDefinition Width="170" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Farve: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox x:Name="CreateColorTextBox" FontSize="15" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
-                </Grid>
+					<TextBlock Text="Farve: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
+					<ComboBox x:Name="CreateColorComboBox" FontSize="15" DisplayMemberPath="Name" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
+				</Grid>
                 
                 <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>

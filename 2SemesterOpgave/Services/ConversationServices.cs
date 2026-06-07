@@ -13,6 +13,8 @@ namespace _2SemesterOpgave.Services
 		ConversationRepository _conversationRepository;
 		UserServices _userServices;
 
+		public Conversation TargetConversation { get; set; }
+
 		// In-memory read-status: conversation.Id -> tidspunkt for sidst læst
 		Dictionary<int, DateTime> _lastReadAt = new Dictionary<int, DateTime>();
 

@@ -12,10 +12,11 @@ namespace _2SemesterOpgave.Services
 	public class AuthServices
 	{
 		UserRepository _userRepository;
-		public readonly SessionContext _session;
+		readonly SessionContext _session;
 		UserServices _userServices;
 		public User? CurrentUser => _session.CurrentUser;
-
+		
+		
 		public AuthServices(UserRepository userRepository, UserServices userServices, SessionContext session)
 		{
 			_userRepository = userRepository;

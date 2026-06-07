@@ -27,8 +27,9 @@ namespace _2SemesterOpgave.Pages
         private CategoryServices _categoryServices;
         UserServices _userServices;
 		private bool _isFavorite;
+		ConversationServices _conversationServices;
 		//Constructor der tager en Router som parameter for at kunne navigere til andre sider
-		public ArticlePage(Router router, ArticleServices articleServices, CategoryServices categoryServices, UserServices userService)
+		public ArticlePage(Router router, ArticleServices articleServices, CategoryServices categoryServices, UserServices userService, ConversationServices conversationServices)
         {
             
             //Article article = new Article("Ganni", "Beskrivelse af Ganni-artiklen", new List<Category>(), new List<SubCategory>(), new Models.Size(36), 100.60f, "Hvid", new Brand("Ganni", "Ganni Brand", "Logo"), false, 10000f, false, false, true, new User("John Doe", "john@example.com", "hej", 6));
@@ -36,7 +37,8 @@ namespace _2SemesterOpgave.Pages
             _router = router;
             _articleServices = articleServices;
             _categoryServices = categoryServices;
-            this.DataContext = _articleServices.SelectedArticle;
+			_conversationServices = conversationServices;
+			this.DataContext = _articleServices.SelectedArticle;
 			_currentArticle = _articleServices.SelectedArticle;
 			_userServices = userService;
 			
@@ -58,11 +60,24 @@ namespace _2SemesterOpgave.Pages
 		//Funktion der navigerer til chat med ejer af artiklen
 		private void ContactButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentArticle?.Owner != null && _router != null)
-            {
-                _router.NavigateTo(Routes.Message);
-            }
-        }
+			//if (_currentArticle?.Owner != null && _router != null)
+			//{
+			//    _router.NavigateTo(Routes.Message);
+			//}
+
+			if (_currentArticle?.Owner == null || _router == null)
+			{
+				return;
+			}
+
+			User currentUser = _userServices.CurrentUser;
+			User owner = _currentArticle.Owner;
+
+			Conversation conversation = _conversationServices.GetOrCreateConversation(currentUser, owner);
+			_conversationServices.TargetConversation = conversation;
+
+			_router.NavigateTo(Routes.Message);
+		}
         //Metode der navigerer til udlejnings siden for artiklen
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -100,7 +115,13 @@ namespace _2SemesterOpgave.Pages
 
 		private void UpdateFavoriteUI()
 		{
-			FavoriteButton.Content = _isFavorite ? "❤️" : "🤍";
+			if(_isFavorite)
+			{
+				FavoriteButton.Content = "❤️";
+				return;
+			}
+			FavoriteButton.Content = "🤍";
+			//FavoriteButton.Content = _isFavorite ? "❤️" : "🤍";
 		}
 	}
 }

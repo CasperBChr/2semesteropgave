@@ -93,10 +93,37 @@ namespace _2SemesterOpgave.Services
 
 		public void CreateUser(User user)
 		{
+			if (string.IsNullOrWhiteSpace(user.Username))
+			{
+				throw new Exception("Username is required");
+			}
+
 			if (string.IsNullOrWhiteSpace(user.Email))
+			{
 				throw new Exception("Email is required");
-			_userRepository.CreateUser(user);
+			}
+
+			if (string.IsNullOrWhiteSpace(user.Password))
+			{
+				throw new Exception("Password is required");
+			}
+
+			if (_userRepository.GetUserByUsername(user.Username) != null)
+			{
+				throw new Exception("Username already exists");
+			}
+
+			//_userRepository.CreateUser(user);
+			int newId = _userRepository.CreateUser(user);
+			user.Id = newId;
 		}
+
+		//public void CreateUser(User user)
+		//{
+		//	if (string.IsNullOrWhiteSpace(user.Email))
+		//		throw new Exception("Email is required");
+		//	_userRepository.CreateUser(user);
+		//}
 
 		public void UpdateUser(User user)
 		{

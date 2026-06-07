@@ -24,13 +24,15 @@ namespace _2SemesterOpgave
 	public partial class LoginWindow : Window
 	{
 		AuthServices _authServices;
+		UserServices _userServices;
 		LoginPage? _loginPage;
 		public User? LoggedInUser { get; private set; }
 
-		public LoginWindow(AuthServices authServices)
+		public LoginWindow(AuthServices authServices, UserServices userServices)
 		{
 			InitializeComponent();
 			_authServices = authServices;
+			_userServices = userServices;
 			GridPanel.Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(170, 200, 200, 200));
 
 			GridInputBorder.Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 20, 20, 20));
@@ -54,7 +56,7 @@ namespace _2SemesterOpgave
 			//	_loginPage.LoginSucceeded -= OnLoginSuccess;
 			//	_loginPage = null;
 			//}
-			LoginPageContentControl.Content = new CreateAccountPage();
+			LoginPageContentControl.Content = new CreateAccountPage(_userServices);
 			ShowCreateAccountButton.Visibility = Visibility.Collapsed;
 			ShowLoginAccountButton.Visibility = Visibility.Visible;
 		}
@@ -66,9 +68,14 @@ namespace _2SemesterOpgave
 			//	_loginPage.LoginSucceeded -= OnLoginSuccess;
 			//}
 			//_loginPage = new LoginPage(_authServices);
-			LoginPageContentControl.Content = new LoginPage(_authServices, OnLoginSuccess);
 			//_loginPage.LoginSucceeded += OnLoginSuccess;
+
+			//LoginPageContentControl.Content = new LoginPage(_authServices, OnLoginSuccess);
+			//LoginPageContentControl.Content = _loginPage;
+
+			_loginPage = new LoginPage(_authServices, OnLoginSuccess);
 			LoginPageContentControl.Content = _loginPage;
+
 			ShowCreateAccountButton.Visibility = Visibility.Visible;
 			ShowLoginAccountButton.Visibility = Visibility.Collapsed;
 		}

@@ -85,6 +85,29 @@ namespace _2SemesterOpgave.Repositories
 				return dtos;
 		}
 
+		public IEnumerable<(DateOnly Start, DateOnly End)> GetBookedDateRangesForArticle(int articleId)
+		{
+			List<(DateOnly, DateOnly)> ranges = new();
+
+			using SqliteConnection connection = _db.CreateConnection();
+			using DbCommand command = connection.CreateCommand();
+			command.CommandText = @"
+				SELECT start_date, end_date FROM Rentals
+				WHERE article_id = @articleId
+				AND status != 'cancelled'";
+
+			AddParameter(command, "@articleId", DbType.Int32, articleId);
+
+			using DbDataReader reader = command.ExecuteReader();
+			while (reader.Read())
+			{
+				DateOnly start = DateOnly.ParseExact(reader.GetString(0), "yyyy-MM-dd");
+				DateOnly end = DateOnly.ParseExact(reader.GetString(1), "yyyy-MM-dd");
+				ranges.Add((start, end));
+			}
+			return ranges;
+		}
+
 		public void Create(RentalDTO dto)
 		{
 			using SqliteConnection connection = _db.CreateConnection();
@@ -178,8 +201,8 @@ namespace _2SemesterOpgave.Repositories
 				RenterId = reader.GetInt32(renterId),
 				RenteeId = reader.GetInt32(renteeId),
 				ArticleId = reader.GetInt32(articleId),
-				ShippingOptionId = reader.IsDBNull(shippingOptionId) ? null : reader.GetInt32(shippingOptionId),
-				InsuranceOptionId = reader.IsDBNull(insuranceOptionId) ? null : reader.GetInt32(insuranceOptionId),
+				ShippingOptionId = reader.GetInt32(shippingOptionId),
+				InsuranceOptionId = reader.GetInt32(insuranceOptionId),
 				CreatedAt = DateTime.Parse(reader.GetString(createdAt))
 			};
 		}

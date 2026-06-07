@@ -283,7 +283,6 @@ namespace _2SemesterOpgave
 
             Category chosenCategory = (Category)CategoryCombo.SelectedItem;
             SubcategoryCombo.ItemsSource = chosenCategory.SubCategories;
-
             _router.NavigateTo(Routes.Overview);
         }
 
@@ -295,7 +294,6 @@ namespace _2SemesterOpgave
             }
 
             _filter.SubCategory = (SubCategory)SubcategoryCombo.SelectedItem;
-
             _router.NavigateTo(Routes.Overview);
         }
 

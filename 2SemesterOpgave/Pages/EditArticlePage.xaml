@@ -16,7 +16,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Image x:Name="EditArticleImage" HorizontalAlignment="Center"  Margin="10,10,0,0" VerticalAlignment="Center" Grid.Column="0" Stretch="UniformToFill"/>
+        <Image x:Name="EditArticleImage" Source="/Assets/Articles/ArticlePlaceholder.jpg" HorizontalAlignment="Center"  Margin="10,10,0,0" VerticalAlignment="Center" Grid.Column="0" Stretch="UniformToFill"/>
 
         <Button x:Name="EditUploadImageButton" Content="Skift billede" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Column="0" Margin="10,0,0,10" Padding="15,10" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" FontWeight="Bold" Click="EditImageButton_Click"/>
 
@@ -39,7 +39,10 @@
                 </Grid.RowDefinitions>
                 <!--<Grid.ColumnDefinitions>
                 </Grid.ColumnDefinitions>-->
-                <TextBlock Text="Rediger artikel" FontSize="35"/>
+				<StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Rediger " FontSize="35"/>
+					<TextBlock Text="{Binding Title}" FontSize="35"/>
+				</StackPanel>
             </Grid>
 
             <Grid Grid.Row="1" Grid.Column="0" Margin="0,10,0,0">
@@ -51,7 +54,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Titel: " FontSize="30" Grid.Row="0" Grid.Column="0"/>
-                <TextBox x:Name="EditTitleTextBox" FontSize="30" Margin="0,0,20,0" Grid.Row="0" Grid.Column="1"/>
+                <TextBox x:Name="EditTitleTextBox" Text="{Binding Title}"  FontSize="30" Margin="0,0,20,0" Grid.Row="0" Grid.Column="1"/>
             </Grid>
 
             <Grid Grid.Row="2" Grid.Column="0" Margin="0,10,0,0">
@@ -63,7 +66,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Beskrivelse: " FontSize="20" Grid.Row="0" Grid.Column="0"/>
-                <TextBox x:Name="EditDescriptionTextBox" FontSize="20" Margin="0,0,20,0" Grid.Row="0" Grid.Column="1"/>
+				<TextBox x:Name="EditDescriptionTextBox" Text="{Binding Description}" FontSize="20" Margin="0,0,20,0" Grid.Row="0" Grid.Column="1"/>
             </Grid>
 
             <StackPanel Grid.Row="3" Grid.Column="0">
@@ -77,7 +80,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Kategori: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                    <ComboBox x:Name="EditCategoryCombobox" FontSize="15" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Name" Margin="0,0,20,0"/>
+                    <ComboBox x:Name="EditCategoryCombobox" FontSize="15" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Name" Margin="0,0,20,0" SelectionChanged="CategoryCombo_SelectionChanged"/>
                 </Grid>
                 <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>
@@ -100,6 +103,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Størrelse: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
                     <ComboBox x:Name="EditSizeComboBox" FontSize="15" DisplayMemberPath="Name" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
+                    
                 </Grid>
                 <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>
@@ -109,8 +113,8 @@
                         <ColumnDefinition Width="170" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Pris: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox x:Name="EditPriceTextBox" FontSize="15" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
+                    <TextBlock Text="Dagspris: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
+                    <TextBox x:Name="EditPriceTextBox" Text="{Binding DailyPrice}" FontSize="15" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
                 </Grid>
                 <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>
@@ -121,8 +125,9 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Farve: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox x:Name="EditColorTextBox" FontSize="15" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
-                </Grid>
+                    <!--<TextBox x:Name="EditColorTextBox" FontSize="15" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>-->
+					<ComboBox x:Name="EditColorComboBox" FontSize="15" DisplayMemberPath="Name" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
+				</Grid>
 
                 <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>
@@ -137,12 +142,11 @@
                 </Grid>
 
             </StackPanel>
-            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
-
+			<StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+				<Button x:Name="EditDeleteButton"  Content="Slet Artikel" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="20" Padding="20,10" Click="EditDeleteButton_Click"/>
                 <Button x:Name="EditSaveButton" Content="Gem ændringer" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="20" Padding="20,10" Click="EditSaveButton_Click"/>
-                <Button x:Name="EditDismissButton" Content="Annuller ændring" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="20" Padding="20,10" Click="EditDismissButton_Click"/>
-
-            </StackPanel>
+				<Button x:Name="EditDismissButton" Content="Annuller ændring" FontWeight="Bold" FontSize="14" Background="HotPink" BorderBrush="Transparent" BorderThickness="0" Margin="20" Padding="20,10" Click="EditDismissButton_Click"/>
+			</StackPanel>
         </Grid>
 
     </Grid>

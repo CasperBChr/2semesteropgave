@@ -57,33 +57,79 @@ namespace _2SemesterOpgave.Repositories
 			return user;
         }
 
-        public void CreateUser(User user)
-        {
+		//     public void CreateUser(User user)
+		//     {
+		//using SqliteConnection connection = _db.CreateConnection();
+		//using DbCommand command = connection.CreateCommand();
+		//command.CommandText = "INSERT INTO Users (Username, Email, Password) VALUES (@Username, @Email, @Password)";
+		//         DbParameter usernameParam = command.CreateParameter();
+		//         usernameParam.ParameterName = "Username";
+		//         usernameParam.DbType = DbType.String;
+		//         usernameParam.Value = user.Username;
+		//         command.Parameters.Add(usernameParam);
+
+		//         DbParameter emailParam = command.CreateParameter();
+		//         emailParam.DbType = DbType.String;
+		//         emailParam.ParameterName = "Email";
+		//         emailParam.Value = user.Email;
+		//         command.Parameters.Add(emailParam);
+
+		//         DbParameter passwordParam = command.CreateParameter();
+		//         passwordParam.DbType = DbType.String;
+		//         passwordParam.ParameterName = "Password";
+		//         passwordParam.Value = user.Password;
+		//         command.Parameters.Add(passwordParam);
+
+		//         command.ExecuteNonQuery();
+		//     }
+
+
+		public int CreateUser(User user)
+		{
 			using SqliteConnection connection = _db.CreateConnection();
 			using DbCommand command = connection.CreateCommand();
-			command.CommandText = "INSERT INTO Users (Username, Email, Password) VALUES (@Username, @Email, @Password)";
-            DbParameter usernameParam = command.CreateParameter();
-            usernameParam.ParameterName = "Username";
-            usernameParam.DbType = DbType.String;
-            usernameParam.Value = user.FirstName;
-            command.Parameters.Add(usernameParam);
 
-            DbParameter emailParam = command.CreateParameter();
-            emailParam.DbType = DbType.String;
-            emailParam.ParameterName = "Email";
-            emailParam.Value = user.Email;
-            command.Parameters.Add(emailParam);
+			command.CommandText = @"
+				INSERT INTO Users
+				(
+					Username,
+					Email,
+					Password
+				)
+				VALUES
+				(
+					@Username,
+					@Email,
+					@Password
+				);
 
-            DbParameter passwordParam = command.CreateParameter();
-            passwordParam.DbType = DbType.String;
-            passwordParam.ParameterName = "Password";
-            passwordParam.Value = user.Password;
-            command.Parameters.Add(passwordParam);
+				SELECT last_insert_rowid();
+			";
 
-            command.ExecuteNonQuery();
-        }
+			DbParameter usernameParam = command.CreateParameter();
+			usernameParam.ParameterName = "@Username";
+			usernameParam.Value = user.Username;
+			command.Parameters.Add(usernameParam);
 
-        public void DeleteUser(int id)
+			DbParameter emailParam = command.CreateParameter();
+			emailParam.ParameterName = "@Email";
+			emailParam.Value = user.Email;
+			command.Parameters.Add(emailParam);
+
+			DbParameter passwordParam = command.CreateParameter();
+			passwordParam.ParameterName = "@Password";
+			passwordParam.Value = user.Password;
+			command.Parameters.Add(passwordParam);
+
+			return Convert.ToInt32(command.ExecuteScalar());
+		}
+
+
+
+
+
+
+		public void DeleteUser(int id)
         {
 			using SqliteConnection connection = _db.CreateConnection();
 			using DbCommand command = connection.CreateCommand();
@@ -394,6 +440,59 @@ namespace _2SemesterOpgave.Repositories
 				return null;
 		}
 
+		//UserDTO CreateDTO(DbDataReader reader)
+		//{
+		//	int id = reader.GetOrdinal("ID");
+		//	int username = reader.GetOrdinal("Username");
+		//	int firstName = reader.GetOrdinal("FirstName");
+		//	int lastName = reader.GetOrdinal("LastName");
+		//	int email = reader.GetOrdinal("Email");
+		//	int password = reader.GetOrdinal("Password");
+		//	int city = reader.GetOrdinal("City");
+		//	int profile = reader.GetOrdinal("ProfilePicture");
+		//	int phone = reader.GetOrdinal("PhoneNumber");
+		//	int description = reader.GetOrdinal("Description");
+		//	int verified = reader.GetOrdinal("IsVerified");
+		//	int rating = reader.GetOrdinal("RatingScore");
+		//	int createdAt = reader.GetOrdinal("created_at");
+		//	int updatedAt = reader.GetOrdinal("updated_at");
+		//	int followers = reader.GetOrdinal("FollowersCount");
+		//	int following = reader.GetOrdinal("FollowingCount");
+
+		//	return new UserDTO
+		//	{
+		//		Id = reader.GetInt32(id),
+
+		//		Username = reader.GetString(username),
+		//		FirstName = reader.GetString(firstName),
+		//		LastName = reader.GetString(lastName),
+
+		//		Email = reader.GetString(email),
+		//		Password = reader.GetString(password),
+
+		//		City = reader.GetString(city),
+		//		ProfilePicture = reader.GetString(profile),
+		//		PhoneNumber = reader.GetString(phone),
+		//		Description = reader.GetString(description),
+
+		//		IsVerified = !reader.IsDBNull(verified) && Convert.ToInt32(reader.GetValue(verified)) == 1,
+		//		RatingScore = reader.IsDBNull(rating) ? 0 : Convert.ToSingle(reader.GetValue(rating)),
+
+		//		CreatedAt = reader.IsDBNull(createdAt)
+		//			? DateTime.MinValue
+		//			: Convert.ToDateTime(reader.GetValue(createdAt)),
+
+		//		UpdatedAt = reader.IsDBNull(updatedAt)
+		//			? DateTime.MinValue
+		//			: Convert.ToDateTime(reader.GetValue(updatedAt)),
+
+		//		FollowersCount = reader.IsDBNull(followers) ? 0 : Convert.ToInt32(reader.GetValue(followers)),
+		//		FollowingCount = reader.IsDBNull(following) ? 0 : Convert.ToInt32(reader.GetValue(following))
+		//	};
+		//}
+
+
+
 		UserDTO CreateDTO(DbDataReader reader)
 		{
 			int id = reader.GetOrdinal("ID");
@@ -417,20 +516,48 @@ namespace _2SemesterOpgave.Repositories
 			{
 				Id = reader.GetInt32(id),
 
-				Username = reader.GetString(username),
-				FirstName = reader.GetString(firstName),
-				LastName = reader.GetString(lastName),
+				Username = reader.IsDBNull(username)
+					? string.Empty
+					: reader.GetString(username),
 
-				Email = reader.GetString(email),
-				Password = reader.GetString(password),
+				FirstName = reader.IsDBNull(firstName)
+					? string.Empty
+					: reader.GetString(firstName),
 
-				City = reader.GetString(city),
-				ProfilePicture = reader.GetString(profile),
-				PhoneNumber = reader.GetString(phone),
-				Description = reader.GetString(description),
+				LastName = reader.IsDBNull(lastName)
+					? string.Empty
+					: reader.GetString(lastName),
 
-				IsVerified = !reader.IsDBNull(verified) && Convert.ToInt32(reader.GetValue(verified)) == 1,
-				RatingScore = reader.IsDBNull(rating) ? 0 : Convert.ToSingle(reader.GetValue(rating)),
+				Email = reader.IsDBNull(email)
+					? string.Empty
+					: reader.GetString(email),
+
+				Password = reader.IsDBNull(password)
+					? string.Empty
+					: reader.GetString(password),
+
+				City = reader.IsDBNull(city)
+					? string.Empty
+					: reader.GetString(city),
+
+				ProfilePicture = reader.IsDBNull(profile)
+					? string.Empty
+					: reader.GetString(profile),
+
+				PhoneNumber = reader.IsDBNull(phone)
+					? string.Empty
+					: reader.GetString(phone),
+
+				Description = reader.IsDBNull(description)
+					? string.Empty
+					: reader.GetString(description),
+
+				IsVerified = !reader.IsDBNull(verified)
+					&& Convert.ToInt32(reader.GetValue(verified)) == 1,
+
+				RatingScore = reader.IsDBNull(rating)
+					? 0
+					: Convert.ToSingle(reader.GetValue(rating)),
 
 				CreatedAt = reader.IsDBNull(createdAt)
 					? DateTime.MinValue
@@ -440,8 +567,13 @@ namespace _2SemesterOpgave.Repositories
 					? DateTime.MinValue
 					: Convert.ToDateTime(reader.GetValue(updatedAt)),
 
-				FollowersCount = reader.IsDBNull(followers) ? 0 : Convert.ToInt32(reader.GetValue(followers)),
-				FollowingCount = reader.IsDBNull(following) ? 0 : Convert.ToInt32(reader.GetValue(following))
+				FollowersCount = reader.IsDBNull(followers)
+					? 0
+					: Convert.ToInt32(reader.GetValue(followers)),
+
+				FollowingCount = reader.IsDBNull(following)
+					? 0
+					: Convert.ToInt32(reader.GetValue(following))
 			};
 		}
 	}

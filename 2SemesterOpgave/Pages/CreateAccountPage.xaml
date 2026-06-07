@@ -36,7 +36,7 @@
 				<PasswordBox x:Name="PasswordAgainBox" Height="40" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
 			</StackPanel>
 			<StackPanel Grid.Row="4"  Margin="20, 20">
-				<Button Background="HotPink" Foreground="White" Padding="15" FontSize="24" Cursor="Hand">
+				<Button Background="HotPink" Foreground="White" Padding="15" FontSize="24" Cursor="Hand" Click="CreateButton_Click">
 					Create
 				</Button>
 			</StackPanel>

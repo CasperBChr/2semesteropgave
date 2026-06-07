@@ -72,14 +72,10 @@
                                         <TextBlock Text="{Binding TotalPrice, StringFormat={}{0:0} kr.}" FontWeight="SemiBold" Margin="0,4,0,0" />
                                     </StackPanel>
 
-                                    <!-- Actions -->
                                     <StackPanel Grid.Column="2" HorizontalAlignment="Right">
-                                        <Button Content="Se artikel" Width="120" Height="32" Margin="0,0,0,6" />
-                                        <Button Content="Annullér" Width="120" Height="32" Margin="0,0,0,6" Foreground="#C0392B" />
-                                        <Button Content="Vurdér"
-                                                Width="120"
-                                                Height="32"
-                                                Click="ReviewButton_Click" />
+                                        <Button x:Name="ArticlePageButton" Cursor="Hand" Content="Se artikel" Width="120" Height="32" Margin="0,0,0,6" Click="ArticlePageButton_Click" />
+										<Button Content="Annullér" Cursor="Hand" Width="120" Height="32" Margin="0,0,0,6" Foreground="#C0392B" />
+										<Button Content="Vurdér" Cursor="Hand" Width="120" Height="32" Click="ReviewButton_Click" />
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -135,15 +131,15 @@
 										<TextBlock Text="{Binding Article.Title}" FontWeight="SemiBold" FontSize="16" Margin="0,8,0,2" />
 										<TextBlock Text="{Binding Article.Description}" FontWeight="SemiBold" FontSize="14" Margin="0,8,0,2" />
 										<TextBlock>
-                            <Run Text="{Binding Article.Brand.Name}" />
-                            <Run Text=" · " />
-                            <Run Text="{Binding Rentee.Username}" />
+                                            <Run Text="{Binding Article.Brand.Name}" />
+                                            <Run Text=" · " />
+                                            <Run Text="{Binding Rentee.Username}" />
 										</TextBlock>
 
 										<TextBlock Margin="0,4,0,0">
-                            <Run Text="{Binding StartDate, StringFormat={}{0:dd. MMM yyyy}}" />
-                            <Run Text=" - " />
-                            <Run Text="{Binding EndDate, StringFormat={}{0:dd. MMM yyyy}}" />
+                                            <Run Text="{Binding StartDate, StringFormat={}{0:dd. MMM yyyy}}" />
+                                            <Run Text=" - " />
+                                            <Run Text="{Binding EndDate, StringFormat={}{0:dd. MMM yyyy}}" />
 										</TextBlock>
 
 										<TextBlock Text="{Binding TotalPrice, StringFormat={}{0:0} kr.}" FontWeight="SemiBold" Margin="0,4,0,0" />

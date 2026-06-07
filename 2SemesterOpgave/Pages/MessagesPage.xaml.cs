@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Services;
 
 namespace _2SemesterOpgave.Pages
@@ -21,22 +23,28 @@ namespace _2SemesterOpgave.Pages
     {
         Router _router;
         UserServices _userServices;
+		ConversationServices _conversationServices;
 
-        public MessagesPage(Router router, UserServices userServices)
+		public MessagesPage(Router router, UserServices userServices, ConversationServices conversationServices)
         {
             InitializeComponent();
 
             _router = router;
             _userServices = userServices;
+			_conversationServices = conversationServices;
 
-            MessagesItemsControl.ItemsSource = _userServices.Conversations;
+			ObservableCollection<Conversation> conversations = _conversationServices.GetConversationsForUser(_userServices.CurrentUser);
+            MessagesItemsControl.ItemsSource = conversations;
+			//MessagesItemsControl.ItemsSource = _userServices.Conversations;
 
 		}
 
 		private void MessageButton_Click(object sender, RoutedEventArgs e)
 		{
-            //_userService
-            _router.NavigateTo(Routes.Message);
+			Button button = (Button)sender;
+			Conversation conversation = (Conversation)button.DataContext;
+			_conversationServices.TargetConversation = conversation;
+			_router.NavigateTo(Routes.Message);
 		}
 	}
 }
