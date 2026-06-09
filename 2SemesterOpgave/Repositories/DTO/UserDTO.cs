@@ -19,12 +19,8 @@ namespace _2SemesterOpgave.Repositories.DTO
 		public string Description { get; set; } = string.Empty;
 
 		public bool IsVerified { get; set; }
-		public float RatingScore { get; set; }
 
 		public DateTime CreatedAt { get; set; }
 		public DateTime UpdatedAt { get; set; }
-
-		public int FollowersCount { get; set; }
-		public int FollowingCount { get; set; }
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Services;
 
@@ -9,35 +10,32 @@ namespace _2SemesterOpgave.Pages
     public partial class MyAccountPage : UserControl
     {
         public User CurrentUser { get; private set; }
+        public float UserRating { get; private set; }
 
-        private readonly UserServices? _userServices;
-        private readonly Router? _router;
+        UserServices? _userServices;
+        Router? _router;
 
-        public MyAccountPage()
-        {
-            InitializeComponent();
-
-            CurrentUser = new User();
-            DataContext = CurrentUser;
-        }
-
-        public MyAccountPage(Router router, UserServices userServices)
+        public MyAccountPage(Router router, UserServices userServices, ReviewServices reviewServices)
         {
             InitializeComponent();
 
             _router = router;
             _userServices = userServices;
 
-            CurrentUser = _userServices.GetUserById(_userServices.CurrentUser.Id) ?? new User();
+            CurrentUser = _userServices.GetUserById(_userServices.CurrentUser.Id);
+			//CurrentUser = _userServices.CurrentUser;
 
-            DataContext = CurrentUser;
+			UserRating = reviewServices.GetAverageRating(CurrentUser.Id);
+
+            DataContext = this;
+            //DataContext = CurrentUser;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_userServices == null)
+            if (_userServices.CurrentUser == null)
             {
-                MessageBox.Show("User service is not available.");
+                MessageBox.Show("User is not available.");
                 return;
             }
 

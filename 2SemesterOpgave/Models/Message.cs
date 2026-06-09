@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Text;
-
-namespace _2SemesterOpgave.Models
+﻿namespace _2SemesterOpgave.Models
 {
     public class Message // Klasse til at repræsentere en besked i en samtale, som indeholder tekst og en reference til den samtale, som beskeden tilhører
     {

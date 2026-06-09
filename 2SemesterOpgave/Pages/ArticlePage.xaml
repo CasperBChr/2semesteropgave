@@ -11,18 +11,10 @@
             <RowDefinition Height="*" />
 
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        
-        <!--<ItemsControl x:Name="articleItemsControl">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"></WrapPanel>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>-->
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
 
 		<StackPanel Grid.Column="0">
 			<Border MaxHeight="600" MaxWidth="600" BorderBrush="Black" BorderThickness="1" Margin="40">
@@ -62,7 +54,7 @@
                     <ColumnDefinition Width="170" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TextBlock x:Name="DescriptionTextBox" FontSize="20" Text="{Binding Description}"/>
+                <TextBlock x:Name="DescriptionTextBox" Grid.ColumnSpan="2" FontSize="20" Text="{Binding Description}"/>
             </Grid>
 
             <StackPanel Grid.Row="2" Grid.Column="0">

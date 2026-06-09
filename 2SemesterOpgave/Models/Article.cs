@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Media;
-using _2SemesterOpgave;
-using _2SemesterOpgave.Algoritme;
+﻿using _2SemesterOpgave.Algoritme;
 namespace _2SemesterOpgave.Models
 {
     public class Article // Klasse til at repræsentere en artikel, som kan lejes ud på platformen
@@ -16,22 +11,15 @@ namespace _2SemesterOpgave.Models
 		public bool IsRented { get; set; } = false;
 		public bool IsClean { get; set; } = false;
 
-        //Tilknytning til ItemProfile for anbefalingsalgoritmen
+        // Tilknytning til ItemProfile for anbefalingsalgoritmen
         public ItemProfile? ItemProfile { get; set; } 
 
         public Brand? Brand { get; set; }
         public User? Owner { get; set; }
         public Category? Category { get; set; }
         public SubCategory? SubCategory { get; set; }
-		//public string? Color { get; set; }
         public Color? Color { get; set; }
         public Size? Size { get; set; }
-		//public Collection? collection { get; set; }
-		public string? ImagePath { get; set; }
-
-		public List<ShippingOption>? ShippingOptions { get; set; }
-
-		public bool IsFavorite { get; set; }
 
 		public DateTime CreatedAt { get; set; }
 		public DateTime UpdatedAt { get; set; }

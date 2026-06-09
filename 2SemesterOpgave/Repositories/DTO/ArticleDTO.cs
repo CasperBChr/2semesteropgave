@@ -18,14 +18,11 @@ namespace _2SemesterOpgave.Repositories.DTO
 		public int? SubcategoryId { get; set; }
 
 		public int? BrandId { get; set; }
-		//public int? CollectionId { get; set; }
 
 		public int? ColorId { get; set; }
 		public int? SizeId { get; set; }
 		
 		public bool IsRented { get; set; }
-		//public bool IsSmoked { get; set; }
-		//public bool IsAnimal { get; set; }
 		public bool IsClean { get; set; }
 
 		public int? OwnerId { get; set; }
@@ -34,28 +31,6 @@ namespace _2SemesterOpgave.Repositories.DTO
 
 		public DateTime CreatedAt { get; set; }
 		public DateTime UpdatedAt { get; set; }
-
-		//public ArticleDTO(int id, string title, string description, float dailyPrice, float originalPrice, int categoryId, int subcategoryId, int brandId, int collectionId, int colorId, int sizeId, bool isRented, bool isSmoked, bool isAnimal, bool isClean, int ownerId, string createdAt, string updatedAt) 
-		//{
-		//	Id = id; 
-		//	Title = title; 
-		//	Description = description; 
-		//	DailyPrice = dailyPrice; 
-		//	OriginalPrice = originalPrice;	
-		//	CategoryId = categoryId;	
-		//	SubcategoryId = subcategoryId; 
-		//	BrandId = brandId; 
-		//	CollectionId = collectionId; 
-		//	ColorId = colorId; 
-		//	SizeId = sizeId; 
-		//	IsRented = isRented;
-		//	IsSmoked = isSmoked;
-		//	IsAnimal = isAnimal;
-		//	IsClean = isClean;
-		//	OwnerId = ownerId;
-		//	CreatedAt = DateTime.ParseExact(createdAt, "yyyy-MM-dd HH:mm:ss", null);
-		//	UpdatedAt = DateTime.ParseExact(updatedAt, "yyyy-MM-dd HH:mm:ss", null);
-		//}
 
 	}
 }

@@ -39,27 +39,57 @@ namespace _2SemesterOpgave.Pages
             RentedOut = _rentalServices.GetByRentee(CurrentUser);
 		}
 
-        private void ReviewButton_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = (Button)sender;
-            Rental rental = (Rental)button.DataContext;
+        //private void ReviewButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = (Button)sender;
+        //    Rental rental = (Rental)button.DataContext;
 
-            if (rental.Rentee == null)
-            {
-                MessageBox.Show("Kan ikke finde brugeren, der skal vurderes.");
-                return;
-            }
+        //    if (rental.Rentee == null)
+        //    {
+        //        MessageBox.Show("Kan ikke finde brugeren, der skal vurderes.");
+        //        return;
+        //    }
 
-            _reviewServices?.SetReviewTarget(rental.Rentee);
-            _router?.NavigateTo(Routes.Reviews);
-        }
+        //    _reviewServices?.SetReviewTarget(rental.Rentee);
+        //    _router?.NavigateTo(Routes.Reviews);
+        //}
+
+		private void ReviewButton_Click(object sender, RoutedEventArgs e)
+		{
+			Button button = (Button)sender;
+			Rental rental = (Rental)button.DataContext;
+
+			if (rental.Rentee == null)
+			{
+				MessageBox.Show("Kan ikke finde brugeren, der skal vurderes.");
+				return;
+			}
+
+			_userServices.TargetUser = rental.Rentee;
+			_router?.NavigateTo(Routes.Reviews);
+		}
+
+		//private void ArticlePageButton_Click(object sender, RoutedEventArgs e)
+		//{
+		//          Button button = (Button)sender;
+		//          Article article = (Article)button.DataContext;
+		//          _articleServices.SelectedArticle = article;
+		//          _router.NavigateTo(Routes.Article);
+		//}
 
 		private void ArticlePageButton_Click(object sender, RoutedEventArgs e)
 		{
-            Button button = (Button)sender;
-            Article article = (Article)button.DataContext;
-            _articleServices.SelectedArticle = article;
-            _router.NavigateTo(Routes.Article);
+			Button button = (Button)sender;
+			Rental rental = (Rental)button.DataContext;
+
+			if (rental.Article == null)
+			{
+				MessageBox.Show("Kan ikke finde artiklen.");
+				return;
+			}
+
+			_articleServices.SelectedArticle = rental.Article;
+			_router?.NavigateTo(Routes.Article);
 		}
 	}
 }

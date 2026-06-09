@@ -12,7 +12,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Services;
-using _2SemesterOpgave.Services.Interfaces;
 
 namespace _2SemesterOpgave.Pages
 {

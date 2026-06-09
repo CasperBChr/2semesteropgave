@@ -42,11 +42,5 @@ namespace _2SemesterOpgave.Services
 			_colors.TryGetValue(id, out Color? color);
 			return color;
 		}
-
-		public string? GetNameById(int id)
-		{
-			_colors.TryGetValue(id, out Color? color);
-			return color?.Name;
-		}
 	}
 }

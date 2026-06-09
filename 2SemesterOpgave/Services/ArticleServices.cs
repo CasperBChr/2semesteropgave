@@ -8,8 +8,6 @@ using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories;
 using _2SemesterOpgave.Repositories.DTO;
-using _2SemesterOpgave.Repositories.Interfaces;
-using _2SemesterOpgave.Services.Interfaces;
 
 namespace _2SemesterOpgave.Services
 {
@@ -19,35 +17,19 @@ namespace _2SemesterOpgave.Services
 		UserServices _userServices;
 		BrandServices _brandServices;
 		CategoryServices _categoryServices;
-		CollectionServices _collectionServices;
 		ColorServices _colorServices;
 		SizeServices _sizeServices;
 		public Article? SelectedArticle { get; set; }
 
-		public ArticleServices(ArticleRepository articleRepository, UserServices userService, BrandServices brandService, CategoryServices categoryServices, CollectionServices collectionServices, ColorServices colorServices, SizeServices sizeServices) 
+		public ArticleServices(ArticleRepository articleRepository, UserServices userService, BrandServices brandService, CategoryServices categoryServices, ColorServices colorServices, SizeServices sizeServices) 
 		{
 			_articleRepository = articleRepository;
 			_brandServices = brandService;
 			_categoryServices = categoryServices;
-			_collectionServices = collectionServices;
 			_colorServices = colorServices;
 			_sizeServices = sizeServices;
 			_userServices = userService;
 		}
-
-		//Article MapArticle(DbDataReader reader)
-		//{
-		//	return new Article(
-		//		title: reader.GetString(reader.GetOrdinal("name")),
-		//		description: reader.GetString(reader.GetOrdinal("description")),
-		//		dailyPrice: reader.GetFloat(reader.GetOrdinal("daily_price")),
-		//		originalPrice: reader.GetFloat(reader.GetOrdinal("original_price")),
-		//		isRented: reader.GetBoolean(reader.GetOrdinal("is_rented")),
-		//		isSmoked: reader.GetBoolean(reader.GetOrdinal("is_smoked")),
-		//		isAnimal: reader.GetBoolean(reader.GetOrdinal("is_animal")),
-		//		isClean: reader.GetBoolean(reader.GetOrdinal("is_clean"))
-		//	);
-		//}
 
 		public void CreateArticle(Article article, User user)
 		{

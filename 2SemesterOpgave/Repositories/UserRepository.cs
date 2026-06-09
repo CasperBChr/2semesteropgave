@@ -7,7 +7,6 @@ using System.Text;
 using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories.DTO;
-using _2SemesterOpgave.Repositories.Interfaces;
 using Microsoft.Data.Sqlite;
 
 namespace _2SemesterOpgave.Repositories
@@ -38,7 +37,6 @@ namespace _2SemesterOpgave.Repositories
             user.Description = reader["Description"]?.ToString() ?? string.Empty;
 
             user.IsVerified = !reader.IsDBNull(reader.GetOrdinal("IsVerified")) && Convert.ToInt32(reader["IsVerified"]) == 1;
-            user.RatingScore = reader.IsDBNull(reader.GetOrdinal("RatingScore")) ? 0 : Convert.ToSingle(reader["RatingScore"]);
 
             if (!reader.IsDBNull(reader.GetOrdinal("SignupTime")))
             {
@@ -56,33 +54,6 @@ namespace _2SemesterOpgave.Repositories
 			//         user.FollowingCount = reader.IsDBNull(reader.GetOrdinal("Following")) ? 0 : Convert.ToInt32(reader["Following"]);
 			return user;
         }
-
-		//     public void CreateUser(User user)
-		//     {
-		//using SqliteConnection connection = _db.CreateConnection();
-		//using DbCommand command = connection.CreateCommand();
-		//command.CommandText = "INSERT INTO Users (Username, Email, Password) VALUES (@Username, @Email, @Password)";
-		//         DbParameter usernameParam = command.CreateParameter();
-		//         usernameParam.ParameterName = "Username";
-		//         usernameParam.DbType = DbType.String;
-		//         usernameParam.Value = user.Username;
-		//         command.Parameters.Add(usernameParam);
-
-		//         DbParameter emailParam = command.CreateParameter();
-		//         emailParam.DbType = DbType.String;
-		//         emailParam.ParameterName = "Email";
-		//         emailParam.Value = user.Email;
-		//         command.Parameters.Add(emailParam);
-
-		//         DbParameter passwordParam = command.CreateParameter();
-		//         passwordParam.DbType = DbType.String;
-		//         passwordParam.ParameterName = "Password";
-		//         passwordParam.Value = user.Password;
-		//         command.Parameters.Add(passwordParam);
-
-		//         command.ExecuteNonQuery();
-		//     }
-
 
 		public int CreateUser(User user)
 		{
@@ -149,7 +120,7 @@ namespace _2SemesterOpgave.Repositories
 			using SqliteConnection connection = _db.CreateConnection();
 			using DbCommand command = connection.CreateCommand();
 
-			command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u";
+			command.CommandText = "SELECT * FROM Users";
 
 				using DbDataReader reader = command.ExecuteReader();
 
@@ -160,24 +131,6 @@ namespace _2SemesterOpgave.Repositories
 
 				return users;
 		}
-
-		//     public IEnumerable<User> GetAllUsers()
-		//     {
-		//         _db.Open();
-		//         DbCommand command = _db.Connection.CreateCommand();
-		//command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u";
-		//List<User> users = new List<User>();
-		//         DbDataReader reader = command.ExecuteReader();
-
-		//         while (reader.Read())
-		//         {
-		//             users.Add(MapUser(reader));
-		//         }
-
-		//         reader.Close();
-		//         _db.Close();
-		//         return users;
-		//     }
 
 
 		public UserDTO? GetUserByID(int id)
@@ -201,40 +154,6 @@ namespace _2SemesterOpgave.Repositories
 				}
 				return null;
 		}
-
-		//public User? GetUserByID(int id)
-		//{
-		//	_db.Open();
-
-		//	try
-		//	{
-		//		DbCommand command = _db.Connection.CreateCommand();
-
-		//		command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f  WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f  WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.ID = @ID";
-
-		//		DbParameter parameter = command.CreateParameter();
-		//		parameter.DbType = DbType.Int32;
-		//		parameter.ParameterName = "@ID";
-		//		parameter.Value = id;
-		//		command.Parameters.Add(parameter);
-
-		//		DbDataReader reader = command.ExecuteReader();
-
-		//		if (reader.Read())
-		//		{
-		//			User user = MapUser(reader);
-		//			reader.Close();
-		//			return user;
-		//		}
-
-		//		reader.Close();
-		//		return null;
-		//	}
-		//	finally
-		//	{
-		//		_db.Close();
-		//	}
-		//}
 
 		public int GetUserFollowerCount(int id) 
         {
@@ -339,7 +258,7 @@ namespace _2SemesterOpgave.Repositories
 			command.CommandText =
                 "UPDATE Users SET Username = @Username, FirstName = @FirstName, LastName = @LastName, Email = @Email, Password = @Password, " +
                 "City = @City, ProfilePicture = @ProfilePicture, PhoneNumber = @PhoneNumber, Description = @Description, " +
-                "IsVerified = @IsVerified, RatingScore = @RatingScore WHERE ID = @ID";
+                "IsVerified = @IsVerified WHERE ID = @ID";
 
             DbParameter idParam = command.CreateParameter();
             idParam.DbType = DbType.Int32;
@@ -407,11 +326,11 @@ namespace _2SemesterOpgave.Repositories
             isVerifiedParam.ParameterName = "@IsVerified";
             command.Parameters.Add(isVerifiedParam);
 
-            DbParameter ratingScoreParam = command.CreateParameter();
-            ratingScoreParam.DbType = DbType.Single;
-            ratingScoreParam.Value = user.RatingScore;
-            ratingScoreParam.ParameterName = "@RatingScore";
-            command.Parameters.Add(ratingScoreParam);
+            //DbParameter ratingScoreParam = command.CreateParameter();
+            //ratingScoreParam.DbType = DbType.Single;
+            //ratingScoreParam.Value = user.RatingScore;
+            //ratingScoreParam.ParameterName = "@RatingScore";
+            //command.Parameters.Add(ratingScoreParam);
 
             command.ExecuteNonQuery();
         }
@@ -476,7 +395,6 @@ namespace _2SemesterOpgave.Repositories
 		//		Description = reader.GetString(description),
 
 		//		IsVerified = !reader.IsDBNull(verified) && Convert.ToInt32(reader.GetValue(verified)) == 1,
-		//		RatingScore = reader.IsDBNull(rating) ? 0 : Convert.ToSingle(reader.GetValue(rating)),
 
 		//		CreatedAt = reader.IsDBNull(createdAt)
 		//			? DateTime.MinValue
@@ -506,11 +424,11 @@ namespace _2SemesterOpgave.Repositories
 			int phone = reader.GetOrdinal("PhoneNumber");
 			int description = reader.GetOrdinal("Description");
 			int verified = reader.GetOrdinal("IsVerified");
-			int rating = reader.GetOrdinal("RatingScore");
+			//int rating = reader.GetOrdinal("RatingScore");
 			int createdAt = reader.GetOrdinal("created_at");
 			int updatedAt = reader.GetOrdinal("updated_at");
-			int followers = reader.GetOrdinal("FollowersCount");
-			int following = reader.GetOrdinal("FollowingCount");
+			//int followers = reader.GetOrdinal("FollowersCount");
+			//int following = reader.GetOrdinal("FollowingCount");
 
 			return new UserDTO
 			{
@@ -555,9 +473,9 @@ namespace _2SemesterOpgave.Repositories
 				IsVerified = !reader.IsDBNull(verified)
 					&& Convert.ToInt32(reader.GetValue(verified)) == 1,
 
-				RatingScore = reader.IsDBNull(rating)
-					? 0
-					: Convert.ToSingle(reader.GetValue(rating)),
+				//RatingScore = reader.IsDBNull(rating)
+				//	? 0
+				//	: Convert.ToSingle(reader.GetValue(rating)),
 
 				CreatedAt = reader.IsDBNull(createdAt)
 					? DateTime.MinValue
@@ -567,13 +485,13 @@ namespace _2SemesterOpgave.Repositories
 					? DateTime.MinValue
 					: Convert.ToDateTime(reader.GetValue(updatedAt)),
 
-				FollowersCount = reader.IsDBNull(followers)
-					? 0
-					: Convert.ToInt32(reader.GetValue(followers)),
+				//FollowersCount = reader.IsDBNull(followers)
+				//	? 0
+				//	: Convert.ToInt32(reader.GetValue(followers)),
 
-				FollowingCount = reader.IsDBNull(following)
-					? 0
-					: Convert.ToInt32(reader.GetValue(following))
+				//FollowingCount = reader.IsDBNull(following)
+				//	? 0
+				//	: Convert.ToInt32(reader.GetValue(following))
 			};
 		}
 	}

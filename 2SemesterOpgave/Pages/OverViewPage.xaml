@@ -6,62 +6,59 @@
              xmlns:local="clr-namespace:_2SemesterOpgave.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
-    <UserControl.Resources>
-        <DataTemplate x:Key="ArticleTemplate">
-            <Border BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5">
-                <StackPanel Orientation="Horizontal" Margin="5">
-                    <!--<Image Source="{Binding ImageUrl}" Width="100" Height="100" Margin="5"/>-->
-					<Button Click="ArticleButton_Click">
-						<StackPanel Orientation="Vertical" Margin="5">
-							<TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="14"/>
-							<TextBlock Text="{Binding Description}" TextWrapping="Wrap" MaxWidth="400"/>
-						</StackPanel>
-					</Button>
-                </StackPanel>
-            </Border>
-        </DataTemplate>
-    </UserControl.Resources>
 
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="200"/>
-			<ColumnDefinition Width="*"/>
-		</Grid.ColumnDefinitions>
+	<UserControl.Resources>
+		<DataTemplate x:Key="ArticleTemplate">
+			<Border x:Name="CardBorder" Margin="10" Cursor="Hand" CornerRadius="10" Background="White" BorderBrush="#E6E6E6" BorderThickness="1" SnapsToDevicePixels="True">
+				<Button x:Name="ArticlePageButton" Click="ArticlePageButton_Click" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="250"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="250"/>
+						</Grid.ColumnDefinitions>
+						<Image Source="/Assets/Articles/ArticlePlaceholder.jpg" Grid.Row="0"/>
+						<Grid Grid.Row="1" Margin="10">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="auto"/>
+								<RowDefinition Height="auto"/>
+								<RowDefinition Height="auto"/>
+								<RowDefinition Height="auto"/>
+								<RowDefinition Height="auto"/>
+								<RowDefinition Height="auto"/>
+							</Grid.RowDefinitions>
+							<TextBlock Text="{Binding Title}" HorizontalAlignment="Left" Grid.Row="0" FontWeight="Bold" FontSize="14"/>
+							<TextBlock Text="{Binding Description}" Grid.Row="1" TextWrapping="Wrap"/>
+							<TextBlock Text="{Binding Brand.Name}" Grid.Row="2" FontWeight="Bold" FontSize="12"/>
+							<TextBlock Text="{Binding Size.Name}" Grid.Row="3" FontWeight="Bold" FontSize="12"/>
+							<TextBlock Text="{Binding Category.Name}" Grid.Row="4" FontWeight="Bold" FontSize="12"/>
+							<StackPanel Orientation="Horizontal" Grid.Row="5">
+								<TextBlock FontWeight="Bold" Text="Dagspris: "/>
+								<TextBlock Text="{Binding DailyPrice, StringFormat={}{0:F2} kr, ConverterCulture=da-DK}" />
+							</StackPanel>
+						</Grid>
+					</Grid>
+				</Button>
+			</Border>
+		</DataTemplate>
+	</UserControl.Resources>
 
-		<StackPanel Grid.Column="0" Margin="10">
-			<TextBlock Text="Farve" FontWeight="Bold" Margin="0,0,0,5"/>
-			<ComboBox x:Name="ColorFilter" SelectionChanged="FilterChanged">
-				<ComboBoxItem Content="Alle"/>
-				<ComboBoxItem Content="Sort"/>
-				<ComboBoxItem Content="Hvid"/>
-				<ComboBoxItem Content="Rød"/>
-			</ComboBox>
-
-			<TextBlock Text="Størrelse" FontWeight="Bold" Margin="0,10,0,5"/>
-			<ComboBox x:Name="SizeFilter" SelectionChanged="FilterChanged">
-				<ComboBoxItem Content="Alle"/>
-				<ComboBoxItem Content="XS"/>
-				<ComboBoxItem Content="S"/>
-				<ComboBoxItem Content="M"/>
-				<ComboBoxItem Content="L"/>
-				<ComboBoxItem Content="XL"/>
-			</ComboBox>
-
-			<TextBlock Text="Min pris" Foreground="Gray" FontSize="11"/>
-			<TextBox x:Name="MinPriceBox" TextChanged="FilterChanged"/>
-
-			<TextBlock Text="Max pris" Foreground="Gray" FontSize="11" Margin="0,5,0,0"/>
-			<TextBox x:Name="MaxPriceBox" TextChanged="FilterChanged"/>
-		</StackPanel>
-
-		<ItemsControl Grid.Column="1" x:Name="ArticlesItemsControl" ItemTemplate="{StaticResource ArticleTemplate}" Margin="10"/>
-	</Grid>
-
-
-	<!--<Grid>
-        --><!--<ListBox x:Name="ListBoxTest" DisplayMemberPath="Title" d:ItemsSource="{d:SampleData ItemCount=5}"/>--><!--
-        <ItemsControl x:Name="ArticlesItemsControl" ItemTemplate="{StaticResource ArticleTemplate}" Margin="10"/>
-    </Grid>-->
-
+	<ScrollViewer>
+		<Grid Margin="50,50">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="100"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<TextBlock Grid.Row="0" Text="Søgeresultater" FontSize="50" HorizontalAlignment="Left"/>
+			<ItemsControl Grid.Row="1" x:Name="ArticlesItemsControl" ItemTemplate="{StaticResource ArticleTemplate}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel Orientation="Horizontal" HorizontalAlignment="Left"/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+			</ItemsControl>
+		</Grid>
+	</ScrollViewer>
 </UserControl>

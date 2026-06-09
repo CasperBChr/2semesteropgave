@@ -2,7 +2,6 @@
 using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories;
-using _2SemesterOpgave.Repositories.Interfaces;
 using _2SemesterOpgave.Services;
 using _2SemesterOpgave.Utils;
 using System.Collections.ObjectModel;
@@ -28,38 +27,28 @@ namespace _2SemesterOpgave
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		private ContentControl _pageControl;
-		private Router _router;
+		ContentControl _pageControl;
+		Router _router;
 
         ObservableCollection<Article> _articles = new ObservableCollection<Article>();
-		ObservableCollection<Category> _categories = new ObservableCollection<Category>();
-		ObservableCollection<SubCategory> _subCategories = new ObservableCollection<SubCategory>();
-		ObservableCollection<Conversation> Conversations = new ObservableCollection<Conversation>();
-		ObservableCollection<User> Users = new ObservableCollection<User>();
-		FakeConversation FakeConversation;
 
-		//UserRepository _userRepository;
 		ArticleRepository _articleRepository;
 		CategoryRepository _categoryRepository;
 		BrandRepository _brandRepository;
-		CollectionRepository _collectionRepository;
 		ColorRepository _colorRepository;
 		SizeRepository _sizeRepository;
-		DesignerRepository _designerRepository;
 		RentalRepository _rentalRepository;
 		ShippingOptionRepository _shippingOptionRepository;
 		InsuranceOptionRepository _insuranceOptionRepository;
 		ConversationRepository _conversationRepository;
-
+		ReviewRepository _reviewRepository;
 
 		UserServices _userServices;
 		ArticleServices _articleServices;
 		CategoryServices _categoryServices;
 		BrandServices _brandServices;
-		CollectionServices _collectionServices;
 		ColorServices _colorServices;
 		SizeServices _sizeServices;
-		DesignerServices _designerServices;
 		RentalServices _rentalServices;
 		ShippingOptionServices _shippingOptionServices;
 		InsuranceOptionServices _insuranceOptionServices;
@@ -72,9 +61,8 @@ namespace _2SemesterOpgave
 		FilterCriteria _filter = new FilterCriteria();
 
 		Database _db;
-        UserProfile? UserProfile;
 
-        public MainWindow(Database db, UserServices userServices)
+        public MainWindow(Database db, UserServices userServices, ReviewServices reviewServices)
 		{
 			InitializeComponent();
 			_pageControl = PageContentControl;
@@ -82,85 +70,43 @@ namespace _2SemesterOpgave
 			_db = db;
 			_userServices = userServices;
 			
-			//_db = new Database($"Data Source={dbpath}");
-			//_userRepository = new UserRepository(_db);
 			_categoryRepository = new CategoryRepository(_db);
 			_brandRepository = new BrandRepository(_db);
-			_collectionRepository = new CollectionRepository(_db);
 			_colorRepository = new ColorRepository(_db);
 			_sizeRepository = new SizeRepository(_db);
 			_articleRepository = new ArticleRepository(_db);
-			_designerRepository = new DesignerRepository(_db);
 			_shippingOptionRepository = new ShippingOptionRepository(_db);
 			_insuranceOptionRepository = new InsuranceOptionRepository(_db);
 			_rentalRepository = new RentalRepository(_db);
 			_conversationRepository = new ConversationRepository(_db);
+			_reviewRepository = new ReviewRepository(_db);
 
 			_categoryServices = new CategoryServices(_categoryRepository);
 			_brandServices = new BrandServices(_brandRepository);
-			//_userServices = new UserServices(_userRepository);
-			_designerServices = new DesignerServices(_designerRepository);
-			_collectionServices = new CollectionServices(_collectionRepository, _brandServices, _designerServices);
 			_colorServices = new ColorServices(_colorRepository);
 			_sizeServices = new SizeServices(_sizeRepository);
-			_articleServices = new ArticleServices(_articleRepository, _userServices, _brandServices, _categoryServices, _collectionServices, _colorServices, _sizeServices);
+			_articleServices = new ArticleServices(_articleRepository, _userServices, _brandServices, _categoryServices, _colorServices, _sizeServices);
 			_shippingOptionServices = new ShippingOptionServices(_shippingOptionRepository);
 			_insuranceOptionServices = new InsuranceOptionServices(_insuranceOptionRepository);
 			_rentalServices = new RentalServices(_rentalRepository, _userServices, _articleServices, _shippingOptionServices, _insuranceOptionServices);
 			_conversationServices = new ConversationServices(_conversationRepository, userServices);
 			_unreadBadgeService = new UnreadBadgeServices(_conversationServices, _userServices);
-			
-			// Services der får _db ??
-			_reviewServices = new ReviewServices(_db);
+			_reviewServices = reviewServices;
 
 			_router = new Router(_pageControl, _articles, _categoryServices, _articleServices, _userServices, _rentalServices, _shippingOptionServices, _insuranceOptionServices, _sizeServices, _brandServices, _filter, _colorServices, _reviewServices, _authServices, _conversationServices, _unreadBadgeService);
-			_categories = new ObservableCollection<Category>(_categoryServices.GetAllCategories());
-
-			CategoryCombo.ItemsSource = _categories;
-			SubcategoryCombo.ItemsSource = _subCategories;
+			
 			InitializeAlgorithm(_userServices.CurrentUser);
 
-
-			// Badge-service kobles til FakeConversation én gang her ved opstart
-			_unreadBadgeService = new UnreadBadgeServices(_conversationServices, _userServices);
-			_unreadBadgeService.UnreadCountChanged += OnUnreadCountChanged;
-			_unreadBadgeService.Refresh();
+			_userServices.StartFakeBots(_conversationServices);
 
 			_userServices.FakeConversation.OnNewMessage += (conversation) =>
 			{
 				_unreadBadgeService.Refresh();
 			};
 
-
-
-			//_unreadBadgeService = new UnreadBadgeService(_conversationServices, _userServices);
-			//_unreadBadgeService.UnreadCountChanged += OnUnreadCountChanged;
-			//_unreadBadgeService.Refresh();
-
-
-			//Conversations = new ObservableCollection<Conversation>();
-
-			//Users = _userServices.GetAllUsers();
-			//_userServices.CurrentUser = Users[0];
-
-			//if (Users.Count < 2)
-			//{
-			//	throw new Exception("Skal bruge mindst to 2 users i DB");
-			//}
-
-			//Conversations.Add(new Conversation(new List<User> { Users[0], Users[1] }));
-			//FakeConversation = new FakeConversation();
-			//FakeConversation.ContinueConversationBot(Conversations[0], Conversations[0].Participants[1]);
-			//_userServices.AddFollower(Users[0], Users[1]);
-			//_userServices.AddFollower(Users[1], Users[0]);
-
-			//Conversations[0].Messages.Add(new Message("Suuup", Conversations[0], Conversations[0].Participants[1], DateTime.Now));
-			//Conversations[0].Messages.Add(new Message("Heeeeeeeeeey", Conversations[0], Conversations[0].Participants[0], DateTime.Now));
-
-			//FakeConversation.OnNewMessage += (conversation) =>
-			//{
-			//	_unreadBadgeService.Refresh();
-			//};
+			_unreadBadgeService.UnreadCountChanged += OnUnreadCountChanged;
+			_unreadBadgeService.Refresh();
+			_router.NavigateTo(Routes.Home);
 		}
 
 		private void OnUnreadCountChanged(int count)
@@ -250,6 +196,7 @@ namespace _2SemesterOpgave
 
 		private void MyAccountButton_Click(object sender, RoutedEventArgs e)
 		{
+			_userServices.TargetUser = _userServices.CurrentUser;
 			_router.NavigateTo(Routes.MyAccount);
 		}
 
@@ -266,47 +213,37 @@ namespace _2SemesterOpgave
 		{
 			_router.NavigateTo(Routes.ForYou);
 		}
-		private void NotificationsButton_Click(object sender, RoutedEventArgs e)
-		{
-			_router.NavigateTo(Routes.Notifications);
-		}
-
-        private void CategoryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (CategoryCombo.SelectedItem == null)
-            {
-                return;
-            }
-
-            _filter.Category = (Category)CategoryCombo.SelectedItem;
-            _filter.SubCategory = null;
-
-            Category chosenCategory = (Category)CategoryCombo.SelectedItem;
-            SubcategoryCombo.ItemsSource = chosenCategory.SubCategories;
-            _router.NavigateTo(Routes.Overview);
-        }
-
-        private void SubcategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (SubcategoryCombo.SelectedItem == null)
-            {
-                return;
-            }
-
-            _filter.SubCategory = (SubCategory)SubcategoryCombo.SelectedItem;
-            _router.NavigateTo(Routes.Overview);
-        }
-
-        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            _filter.SearchText = ((TextBox)sender).Text;
-
-            _router.NavigateTo(Routes.Overview);
-        }
-
         private void MyArticlePageButton_Click(object sender, RoutedEventArgs e)
         {
 			_router.NavigateTo(Routes.MyArticlesPage);
         }
+
+		private void SearchBox_GotFocus(object sender, RoutedEventArgs e)
+		{
+			if (SearchBox.Text == "Søg...")
+			{
+				SearchBox.Text = string.Empty;
+				SearchBox.Foreground = new SolidColorBrush(Colors.Black);
+			}
+		}
+
+		private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
+		{
+			if (string.IsNullOrWhiteSpace(SearchBox.Text))
+			{
+				SearchBox.Text = "Søg...";
+				SearchBox.Foreground = new SolidColorBrush(Colors.Gray);
+			}
+		}
+
+		private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			if (SearchBox.Text == "Søg...")
+			{
+				return;
+			}
+			_filter.SearchText = SearchBox.Text;
+			_router.NavigateTo(Routes.Overview);
+		}
 	}
 }

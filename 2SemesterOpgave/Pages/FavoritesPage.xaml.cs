@@ -20,9 +20,9 @@ namespace _2SemesterOpgave.Pages
 	/// </summary>
 	public partial class FavoritesPage : UserControl
 	{
-		private readonly Router _router;
-		private readonly UserServices _userServices;
-		private readonly ArticleServices _articleServices;
+		Router _router;
+		UserServices _userServices;
+		ArticleServices _articleServices;
 
 		public FavoritesPage(Router router, UserServices userServices, ArticleServices articleServices)
 		{

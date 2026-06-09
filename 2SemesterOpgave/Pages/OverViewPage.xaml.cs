@@ -1,6 +1,4 @@
-﻿using _2SemesterOpgave.Models;
-using _2SemesterOpgave.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -13,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using _2SemesterOpgave.Models;
+using _2SemesterOpgave.Services;
 
 namespace _2SemesterOpgave.Pages
 {
@@ -24,68 +24,26 @@ namespace _2SemesterOpgave.Pages
     {
 
 		ArticleServices _articleServices;
+		UserServices _userServices;
 		FilterCriteria _filter;
 		Router _router;
 
-		public OverviewPage(Router router, ArticleServices articleServices, FilterCriteria filter)
+		public OverviewPage(Router router, ArticleServices articleServices, UserServices userServices, FilterCriteria filter)
 		{
 			InitializeComponent();
 			_router = router;
 			_articleServices = articleServices;
+			_userServices = userServices;
 			_filter = filter;
 
-			LoadArticles();
+			ArticlesItemsControl.ItemsSource = _articleServices.GetFilteredArticles(_filter);
 		}
 
-		private void LoadArticles()
+		private void ArticlePageButton_Click(object sender, RoutedEventArgs e)
 		{
-			var articles = _articleServices.GetFilteredArticles(_filter);
-			ArticlesItemsControl.ItemsSource = articles;
-		}
-
-		private void FilterChanged(object sender, EventArgs e)
-		{
-			if (ColorFilter.SelectedItem is ComboBoxItem colorItem && colorItem.Content.ToString() != "Alle")
-			{
-				_filter.Color = colorItem.Content.ToString();
-			}
-			else
-			{
-				_filter.Color = null;
-			}
-
-			if (SizeFilter.SelectedItem is ComboBoxItem sizeItem && sizeItem.Content.ToString() != "Alle")
-			{
-				_filter.Size = sizeItem.Content.ToString();
-			}
-			else
-			{
-				_filter.Size = null;
-			}
-
-			if (float.TryParse(MinPriceBox.Text, out float min))
-			{
-				_filter.MinPrice = min;
-			}
-			else 
-			{
-				_filter.MinPrice = null;
-			}
-
-			if (float.TryParse(MaxPriceBox.Text, out float max))
-			{
-				_filter.MaxPrice = max;
-			}
-			else
-			{
-				_filter.MaxPrice = null;
-			}
-
-			LoadArticles();
-		}
-
-		private void ArticleButton_Click(object sender, RoutedEventArgs e)
-		{
+			Button button = (Button)sender;
+			_userServices.UserProfile.UpdateUserProfileView(_articleServices.SelectedArticle.ItemProfile);
+			_articleServices.SelectedArticle = (Article)button.DataContext;
 			_router.NavigateTo(Routes.Article);
 		}
 	}

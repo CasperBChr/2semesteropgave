@@ -87,8 +87,6 @@
 							<TextBlock Text="Udlejer:" Grid.Row="1" Grid.Column="0" Margin="10, 10" FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
 							<TextBlock x:Name="RenteeName" Grid.Row="1"  Grid.Column="1" FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
 
-							<!--<Line Grid.Row="1" Grid.Column="0"></Line>-->
-
 							<TextBlock Text="Leje pris:" Grid.Row="2" Grid.Column="0" Margin="10, 10" FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
 							<TextBlock x:Name="RentPrice" Grid.Row="2"  Grid.Column="1"  FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
 
@@ -101,10 +99,6 @@
 							<TextBlock Text="Total: " Grid.Row="5" Grid.Column="0" Margin="10, 10" FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
 							<TextBlock x:Name="TotalPrice" Grid.Row="5"  Grid.Column="1"  FontSize="16" VerticalAlignment="Center" FontWeight="Bold"/>
 
-
-							<!--<TextBlock x:Name="TotalTextBlock" FontSize="16" xml:space="preserve"/>-->
-							<!--<TextBlock x:Name="TotalTextBlock" FontSize="16" xml:space="preserve"/>-->
-							<!--<TextBlock x:Name="TotalTextBlock"  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  FontSize="16" xml:space="preserve"/>-->
 						</Grid>
 					</Border>
 

@@ -37,8 +37,6 @@ namespace _2SemesterOpgave.Utils.Messages
 				Alignment = HorizontalAlignment.Left;
 				Background = Brushes.LightBlue;
 			}
-			//Alignment = isOwn ? HorizontalAlignment.Right : HorizontalAlignment.Left;
-			//Background = isOwn ? Brushes.HotPink : Brushes.LightBlue;
 		}
 	}
 }

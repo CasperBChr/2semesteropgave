@@ -34,11 +34,9 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Row="0" HorizontalAlignment="Center">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <!--<Grid.ColumnDefinitions>
-                </Grid.ColumnDefinitions>-->
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
 				<StackPanel Orientation="Horizontal">
                     <TextBlock Text="Rediger " FontSize="35"/>
 					<TextBlock Text="{Binding Title}" FontSize="35"/>
@@ -124,8 +122,7 @@
                         <ColumnDefinition Width="170" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Farve: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
-                    <!--<TextBox x:Name="EditColorTextBox" FontSize="15" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>-->
+					<TextBlock Text="Farve: " FontSize="15" Grid.Row="0" Grid.Column="0"/>
 					<ComboBox x:Name="EditColorComboBox" FontSize="15" DisplayMemberPath="Name" Grid.Row="0" Grid.Column="1" Margin="0,0,20,0"/>
 				</Grid>
 

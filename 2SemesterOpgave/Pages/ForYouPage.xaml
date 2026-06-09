@@ -8,9 +8,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <DataTemplate x:Key="ArticleTemplate">
-            <!--<Border BorderBrush="Gray" BorderThickness="1" Width="250" Margin="10" CornerRadius="5" Cursor="Hand" >-->
-            <Border x:Name="CardBorder" Margin="10" Cursor="Hand" CornerRadius="10" Background="White" BorderBrush="#E6E6E6" BorderThickness="1" SnapsToDevicePixels="True">
+		<DataTemplate x:Key="ArticleTemplate">
+			<Border x:Name="CardBorder" Margin="10" Cursor="Hand" CornerRadius="10" Background="White" BorderBrush="#E6E6E6" BorderThickness="1" SnapsToDevicePixels="True">
                 <Button x:Name="ForYouArticlePageButton" Click="ForYouArticlePageButton_Click" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -28,9 +27,8 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <!--<RowDefinition Height="auto"/>-->
-                            </Grid.RowDefinitions>
+								<RowDefinition Height="auto"/>
+							</Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
@@ -38,9 +36,8 @@
                             <TextBlock Text="{Binding Description}" Grid.Row="1" TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding Brand.Name}" Grid.Row="2" FontWeight="Bold" FontSize="12"/>
                             <TextBlock Text="{Binding Size.Name}" Grid.Row="3" FontWeight="Bold" FontSize="12"/>
-                            <TextBlock Text="{Binding Category.Name}" Grid.Row="4" FontWeight="Bold" FontSize="12"/>
-                            <!--<TextBlock Text="{Binding Color}" Grid.Row="5" FontWeight="Bold" FontSize="12"/>-->
-                            <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0">
+							<TextBlock Text="{Binding Category.Name}" Grid.Row="4" FontWeight="Bold" FontSize="12"/>
+							<StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0">
                                 <TextBlock  FontWeight="Bold" Text="Dagspris: "/>
                                 <TextBlock Text="{Binding DailyPrice, StringFormat={}{0:F2} kr, ConverterCulture=da-DK}" />
                             </StackPanel>

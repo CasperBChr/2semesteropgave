@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using _2SemesterOpgave.Data;
-using _2SemesterOpgave.Models;
+﻿using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories;
 using _2SemesterOpgave.Repositories.DTO;
 
@@ -12,7 +8,6 @@ namespace _2SemesterOpgave.Services
 	{
 
 		BrandRepository _brandRepository;
-
 		Dictionary<int, Brand>? _cache;
 		
 		public BrandServices(BrandRepository brandRepository) 
@@ -30,7 +25,7 @@ namespace _2SemesterOpgave.Services
 				_cache[dto.Id] = MapBrand(dto);
 			}
 		}
-
+		
 		public Brand? GetById(int id)
 		{
 			if (_cache == null)

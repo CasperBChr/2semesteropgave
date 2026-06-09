@@ -14,23 +14,29 @@ namespace _2SemesterOpgave.Pages
         public ObservableCollection<Review> ReviewsAboutMe { get; private set; }
         public ObservableCollection<Review> ReviewsByMe { get; private set; }
 
-        private readonly ReviewServices _reviewServices;
+        ReviewServices _reviewServices;
+        UserServices _userServices;
+        Router _router;
 
-        public ReviewsPage(ReviewServices reviewServices, UserServices userServices)
+        public ReviewsPage(Router router, ReviewServices reviewServices, UserServices userServices)
         {
             InitializeComponent();
-
+            _router = router;
             _reviewServices = reviewServices;
-            CurrentUser = userServices?.CurrentUser ?? new User();
-			TargetUser = userServices?.TargetUser ?? new User();
+            _userServices = userServices;
+            CurrentUser = userServices.CurrentUser;
+			TargetUser = userServices.TargetUser;
+
+            if(CurrentUser == TargetUser)
+            {
+				SaveReviewButton.IsEnabled = false;
+			}
 
             ReviewsAboutMe = new ObservableCollection<Review>();
             ReviewsByMe = new ObservableCollection<Review>();
 
             LoadReviews();
             DataContext = this;
-
-            FillTargetReviewFields();
         }
 
         private void LoadReviews()
@@ -50,58 +56,34 @@ namespace _2SemesterOpgave.Pages
             }
         }
 
-        private void FillTargetReviewFields()
-        {
-            if (_reviewServices.TargetRevieweeId.HasValue)
-            {
-                RevieweeIdTextBox.Text = _reviewServices.TargetRevieweeId.Value.ToString();
-            }
-
-            if (_reviewServices.TargetRentalId.HasValue)
-            {
-                RentalIdTextBox.Text = _reviewServices.TargetRentalId.Value.ToString();
-            }
-        }
-
         private void CreateReviewButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!int.TryParse(RevieweeIdTextBox.Text, out int revieweeId))
-            {
-                MessageBox.Show("Reviewee ID skal være et tal.");
-                return;
-            }
 
-            if (revieweeId == CurrentUser.Id)
+            if (TargetUser.Id == CurrentUser.Id)
             {
                 MessageBox.Show("Du kan ikke vurdere dig selv.");
                 return;
             }
 
-            if (!int.TryParse(RatingTextBox.Text, out int rating) || rating < 1 || rating > 5)
-            {
-                MessageBox.Show("Rating skal være mellem 1 og 5.");
-                return;
-            }
+			if (RatingComboBox.SelectedItem == null)
+			{
+				MessageBox.Show("Vælg en rating.");
+				return;
+			}
 
-            int? rentalId = null;
+			int rating = int.Parse(((ComboBoxItem)RatingComboBox.SelectedItem).Content.ToString());
 
-            if (!string.IsNullOrWhiteSpace(RentalIdTextBox.Text))
+			int? rentalId = null;
+
+            if(_reviewServices.TargetRentalId != null) 
             {
-                if (int.TryParse(RentalIdTextBox.Text, out int parsedRentalId))
-                {
-                    rentalId = parsedRentalId;
-                }
-                else
-                {
-                    MessageBox.Show("Rental ID skal være et tal.");
-                    return;
-                }
-            }
+                rentalId = _reviewServices.TargetRentalId;
+			}
 
             Review newReview = new Review
             {
                 ReviewerId = CurrentUser.Id,
-                RevieweeId = revieweeId,
+                RevieweeId = TargetUser.Id,
                 Rating = rating,
                 Comment = CommentTextBox.Text ?? string.Empty,
                 RentalId = rentalId,
@@ -113,12 +95,28 @@ namespace _2SemesterOpgave.Pages
 
             LoadReviews();
 
-            RevieweeIdTextBox.Text = string.Empty;
-            RentalIdTextBox.Text = string.Empty;
-            RatingTextBox.Text = string.Empty;
-            CommentTextBox.Text = string.Empty;
+			RatingComboBox.SelectedItem = null;
+			CommentTextBox.Text = string.Empty;
 
             MessageBox.Show("Anmeldelsen er gemt.");
         }
-    }
+
+		private void ReviewerButton_Click(object sender, RoutedEventArgs e)
+		{
+			Button button = (Button)sender;
+			Review review = (Review)button.DataContext;
+
+			_userServices.TargetUser = review.Reviewer;
+			_router.NavigateTo(Routes.UserProfile);
+		}
+
+		private void RevieweeButton_Click(object sender, RoutedEventArgs e)
+		{
+			Button button = (Button)sender;
+			Review review = (Review)button.DataContext;
+
+			_userServices.TargetUser = review.Reviewee;
+			_router.NavigateTo(Routes.UserProfile);
+		}
+	}
 }

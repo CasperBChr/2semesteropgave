@@ -38,29 +38,6 @@ namespace _2SemesterOpgave.Repositories
 				return brands;
 		}
 
-		public BrandDTO? GetById(int idValue)
-		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
-				command.CommandText = "SELECT * FROM Brands WHERE id = @id";
-
-				var param = command.CreateParameter();
-				param.ParameterName = "@id";
-				param.Value = idValue;
-				command.Parameters.Add(param);
-
-				using DbDataReader reader = command.ExecuteReader();
-
-				if (reader.Read())
-				{
-					return CreateDTO(reader);
-				}
-
-				return null;
-
-		}
-
-
 		BrandDTO CreateDTO(DbDataReader reader)
 		{
 			int id = reader.GetOrdinal("id");

@@ -2,7 +2,6 @@
 using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories.DTO;
-using _2SemesterOpgave.Repositories.Interfaces;
 using _2SemesterOpgave.Services;
 using Microsoft.Data.Sqlite;
 using System;
@@ -54,8 +53,8 @@ namespace _2SemesterOpgave.Repositories
 
 				command.CommandText = @"
 					UPDATE Articles SET
-						name = @name, description = @description, category_id = @categoryId, subcategory_id = @subcategoryId, brand_id = @brandId, color_id = @colorId, size_id = @sizeId, daily_price = @dailyPrice, original_price = @originalPrice, is_rented = @isRented 
-						WHERE id = @ArticleId;";
+					name = @name, description = @description, category_id = @categoryId, subcategory_id = @subcategoryId, brand_id = @brandId, color_id = @colorId, size_id = @sizeId, daily_price = @dailyPrice, original_price = @originalPrice, is_rented = @isRented 
+					WHERE id = @ArticleId;";
 
 				DbParameter articleParam = command.CreateParameter();
 				articleParam.ParameterName = "@ArticleId";
@@ -295,48 +294,12 @@ namespace _2SemesterOpgave.Repositories
 
 			StringBuilder sql = new StringBuilder("SELECT * FROM Articles WHERE 1=1");
 
-				//if (filter.Category != null)
-				//{
-				//	sql.Append(" AND category_id = @categoryId");
-				//	DbParameter parameter = command.CreateParameter();
-				//	parameter.ParameterName = "@categoryId";
-				//	parameter.Value = filter.Category.Id;
-				//	command.Parameters.Add(parameter);
-				//}
-
-				//if (filter.SubCategory != null)
-				//{
-				//	sql.Append(" AND subcategory_id = @subId");
-				//	DbParameter parameter = command.CreateParameter();
-				//	parameter.ParameterName = "@subId";
-				//	parameter.Value = filter.SubCategory.Id;
-				//	command.Parameters.Add(parameter);
-				//}
-
 				if (!string.IsNullOrWhiteSpace(filter.SearchText))
 				{
 					sql.Append(" AND (name LIKE @search OR description LIKE @search)");
 					DbParameter parameter = command.CreateParameter();
 					parameter.ParameterName = "@search";
 					parameter.Value = $"%{filter.SearchText}%";
-					command.Parameters.Add(parameter);
-				}
-
-				if (filter.MinPrice.HasValue)
-				{
-					sql.Append(" AND daily_price >= @minPrice");
-					DbParameter parameter = command.CreateParameter();
-					parameter.ParameterName = "@minPrice";
-					parameter.Value = filter.MinPrice.Value;
-					command.Parameters.Add(parameter);
-				}
-
-				if (filter.MaxPrice.HasValue)
-				{
-					sql.Append(" AND daily_price <= @maxPrice");
-					DbParameter parameter = command.CreateParameter();
-					parameter.ParameterName = "@maxPrice";
-					parameter.Value = filter.MaxPrice.Value;
 					command.Parameters.Add(parameter);
 				}
 
@@ -353,13 +316,11 @@ namespace _2SemesterOpgave.Repositories
 
 		}
 
-        //Metode til at oprette en ArticleDTO
         public void CreateArticle(Article article, User owner)
         {
 			using SqliteConnection connection = _db.CreateConnection();
 			using DbCommand command = connection.CreateCommand();
 
-			//command.CommandText = "INSERT INTO Articles (name, description, category_id, subcategory_id, brand_id, color_id, size_id, daily_price, original_price, is_rented) VALUES (@name, @description, @categoryId, @subcategoryId, @brandId, @colorId, @sizeId, @dailyPrice, @originalPrice, @isRented)";
 			command.CommandText = "INSERT INTO Articles (name, description, category_id, subcategory_id, brand_id, color_id, size_id, daily_price, original_price, is_rented, owner_id) VALUES (@name, @description, @categoryId, @subcategoryId, @brandId, @colorId, @sizeId, @dailyPrice, @originalPrice, @isRented, @ownerId)";
 
 			DbParameter nameParam = command.CreateParameter();
@@ -443,7 +404,6 @@ namespace _2SemesterOpgave.Repositories
 
 			int brand = reader.GetOrdinal("brand_id");
 
-			//int collection = reader.GetOrdinal("collection_id");
 			int color = reader.GetOrdinal("color_id");
 			int size = reader.GetOrdinal("size_id");
 			int owner = reader.GetOrdinal("owner_id");
@@ -452,8 +412,6 @@ namespace _2SemesterOpgave.Repositories
 			int original = reader.GetOrdinal("original_price");
 
 			int rented = reader.GetOrdinal("is_rented");
-			//int smoked = reader.GetOrdinal("is_smoked");
-			//int animal = reader.GetOrdinal("is_animal");
 			int clean = reader.GetOrdinal("is_clean");
 
 			int created = reader.GetOrdinal("created_at");
@@ -488,11 +446,6 @@ namespace _2SemesterOpgave.Repositories
 				dto.BrandId = reader.GetInt32(brand);
 			}
 
-			//if (!reader.IsDBNull(collection))
-			//{
-			//	dto.CollectionId = reader.GetInt32(collection);
-			//}
-
 			if (!reader.IsDBNull(color))
 			{
 				dto.ColorId = reader.GetInt32(color);
@@ -524,8 +477,7 @@ namespace _2SemesterOpgave.Repositories
 			}
 
 			dto.IsRented = reader.GetInt32(rented) != 0;
-			//dto.IsSmoked = reader.GetInt32(smoked) != 0;
-			//dto.IsAnimal = reader.GetInt32(animal) != 0;
+
 			dto.IsClean = reader.GetInt32(clean) != 0;
 
 			if (!reader.IsDBNull(owner))

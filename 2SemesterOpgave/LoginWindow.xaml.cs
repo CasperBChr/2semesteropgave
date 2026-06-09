@@ -37,25 +37,13 @@ namespace _2SemesterOpgave
 
 			GridInputBorder.Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 20, 20, 20));
 			GridInputBorder.CornerRadius = new CornerRadius(10);
-			//GridInputBorder.BorderBrush = new SolidColorBrush(Colors.Transparent);
 			GridInputBorder.BorderThickness = new Thickness(0);
 
-			//_loginPage = new LoginPage(authServices);
 			LoginPageContentControl.Content = new LoginPage(_authServices, OnLoginSuccess);
-			//_loginPage.LoginSucceeded += OnLoginSuccess;
-
-			//LoginPageContentControl.Content = _loginPage;
-
-
 		}
 
 		private void ShowCreateAccountButton_Click(object sender, RoutedEventArgs e)
 		{
-			//if (_loginPage != null)
-			//{
-			//	_loginPage.LoginSucceeded -= OnLoginSuccess;
-			//	_loginPage = null;
-			//}
 			LoginPageContentControl.Content = new CreateAccountPage(_userServices);
 			ShowCreateAccountButton.Visibility = Visibility.Collapsed;
 			ShowLoginAccountButton.Visibility = Visibility.Visible;
@@ -63,16 +51,6 @@ namespace _2SemesterOpgave
 
 		private void ShowLoginAccountButton_Click(object sender, RoutedEventArgs e)
 		{
-			//if (_loginPage != null)
-			//{
-			//	_loginPage.LoginSucceeded -= OnLoginSuccess;
-			//}
-			//_loginPage = new LoginPage(_authServices);
-			//_loginPage.LoginSucceeded += OnLoginSuccess;
-
-			//LoginPageContentControl.Content = new LoginPage(_authServices, OnLoginSuccess);
-			//LoginPageContentControl.Content = _loginPage;
-
 			_loginPage = new LoginPage(_authServices, OnLoginSuccess);
 			LoginPageContentControl.Content = _loginPage;
 
@@ -83,13 +61,10 @@ namespace _2SemesterOpgave
 
 		public void OnLoginSuccess(User user)
 		{
-			LoggedInUser = user; // gem brugeren
-			DialogResult = true; // luk vinduet
+			// Gem brugeren
+			LoggedInUser = user;
+			// result sættes til true, så vi kan tjekke vinduets resultat bagefter
+			DialogResult = true;
 		}
-		//private void OnLoginSuccess(User user)
-		//{
-		//	MessageBox.Show($"OnLoginSuccess fired for: {user.Username}"); // ADD THIS
-		//	DialogResult = true;
-		//}
 	}
 }

@@ -23,6 +23,9 @@
     <Compile Update="Pages\EditArticlePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\EmbeddedMessagePage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\ExplorePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -38,9 +41,6 @@
     <Compile Update="Pages\LoginPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\MessagePage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Pages\MessagesPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -53,19 +53,10 @@
     <Compile Update="Pages\MyOrdersPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\NewsPage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Pages\NotificationsPage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Pages\OverviewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\RentPage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Pages\SupportPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\UserPage.xaml.cs">

@@ -4,7 +4,6 @@ using System.Text;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories;
 using _2SemesterOpgave.Repositories.DTO;
-using _2SemesterOpgave.Services.Interfaces;
 using _2SemesterOpgave.Utils;
 
 namespace _2SemesterOpgave.Services
@@ -16,32 +15,12 @@ namespace _2SemesterOpgave.Services
 		UserServices _userServices;
 		public User? CurrentUser => _session.CurrentUser;
 		
-		
 		public AuthServices(UserRepository userRepository, UserServices userServices, SessionContext session)
 		{
 			_userRepository = userRepository;
 			_userServices = userServices;
 			_session = session;
 		}
-
-		/// <summary>
-		/// Attempts login and sets session if successful.
-		/// </summary>
-		//public bool Login(string username, string password)
-		//{
-		//	var dto = _userRepository.GetUserByUsername(username);
-
-		//	if (dto == null)
-		//		return false;
-
-		//	if (dto.Password != password)
-		//		return false;
-
-		//	var user = Map(dto);
-
-		//	_session.CurrentUser = user;
-		//	return true;
-		//}
 
 		public bool Login(string username, string password)
 		{
@@ -75,11 +54,10 @@ namespace _2SemesterOpgave.Services
 				PhoneNumber = dto.PhoneNumber,
 				Description = dto.Description,
 				IsVerified = dto.IsVerified,
-				RatingScore = dto.RatingScore,
 				CreatedAt = dto.CreatedAt,
 				UpdatedAt = dto.UpdatedAt,
-				FollowersCount = dto.FollowersCount,
-				FollowingCount = dto.FollowingCount
+				FollowersCount = _userRepository.GetUserFollowerCount(dto.Id),
+				FollowingCount = _userRepository.GetUserFollowingCount(dto.Id)
 			};
 		}
 	}

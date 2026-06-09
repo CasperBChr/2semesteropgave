@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace _2SemesterOpgave.Models
+﻿namespace _2SemesterOpgave.Models
 {
 	public class Color
 	{

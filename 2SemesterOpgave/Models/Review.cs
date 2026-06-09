@@ -1,5 +1,3 @@
-using System;
-
 namespace _2SemesterOpgave.Models
 {
     public class Review
@@ -10,19 +8,24 @@ namespace _2SemesterOpgave.Models
         public DateTime CreatedAt { get; set; }
         public int? RentalId { get; set; }
 
-        public int ReviewerId { get; set; }
-        public int RevieweeId { get; set; }
+		private int _reviewerId;
+		private int _revieweeId;
 
-        // Bruges til visning i UI'et
-        public string ReviewerUsername { get; set; } = string.Empty;
-        public string RevieweeUsername { get; set; } = string.Empty;
+		public User Reviewer { get; set; }
+		public User Reviewee { get; set; }
 
-        public Review()
-        {
-            Comment = string.Empty;
-            ReviewerUsername = string.Empty;
-            RevieweeUsername = string.Empty;
-            CreatedAt = DateTime.Now;
-        }
+		public int ReviewerId
+		{
+			get => Reviewer?.Id ?? _reviewerId;
+			set => _reviewerId = value;
+		}
+
+		public int RevieweeId
+		{
+			get => Reviewee?.Id ?? _revieweeId;
+			set => _revieweeId = value;
+		}
+		public string ReviewerUsername => Reviewer?.Username ?? string.Empty;
+		public string RevieweeUsername => Reviewee?.Username ?? string.Empty;
     }
 }

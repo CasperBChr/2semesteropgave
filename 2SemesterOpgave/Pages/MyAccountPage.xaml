@@ -8,24 +8,21 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
-            <StackPanel Margin="24">
-                <!-- Header -->
-                <Border Background="White" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="12" Padding="20">
+			<StackPanel Margin="24">
+				<Border Background="White" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="12" Padding="20">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel>
-                            <TextBlock Text="MIN KONTO" Foreground="#3B5BFF" FontWeight="SemiBold" />
-                            <TextBlock Text="Indstillinger" FontSize="28" FontWeight="SemiBold" Margin="0,4,0,0" />
-                        </StackPanel>
-
-                    </Grid>
+						<StackPanel>
+							<TextBlock Text="MIN KONTO" Foreground="#3B5BFF" FontWeight="SemiBold" />
+							<TextBlock Text="Indstillinger" FontSize="28" FontWeight="SemiBold" Margin="0,4,0,0" />
+						</StackPanel>
+					</Grid>
                 </Border>
 
-                <!-- Content -->
                 <Border Background="White" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,16,0,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -35,66 +32,55 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0" Orientation="Vertical">
-                            <Border Width="220" Height="220" CornerRadius="110" ClipToBounds="True" Background="#FFEFEFEF">
-                                <Image Source="{Binding ProfilePicture}" Stretch="UniformToFill" />
-                            </Border>
+							<Border Width="220" Height="220" CornerRadius="110" ClipToBounds="True" Background="#FFEFEFEF">
+							</Border>
 
-                            <TextBlock Text="{Binding Username}" FontSize="20" FontWeight="SemiBold" Margin="0,12,0,4" />
-                            <TextBlock Text="{Binding FirstName}" />
-                            <TextBlock Text="{Binding LastName}" Margin="0,0,0,8" />
+							<TextBlock Text="{Binding CurrentUser.Username}" FontSize="20" FontWeight="SemiBold" Margin="0, 5" />
+							<TextBlock Text="{Binding CurrentUser.FirstName}" FontSize="14"  Margin="0, 5"  />
+							<TextBlock Text="{Binding CurrentUser.LastName}" FontSize="14" />
 
-                            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                                <TextBlock Text="★" Foreground="Gold" FontSize="16" Margin="0,0,6,0" />
-                                <TextBlock Text="Rating:" FontWeight="SemiBold" />
-                                <TextBlock Text="{Binding RatingScore, StringFormat={}{0:0.0}}" Margin="6,0,0,0" />
+                            <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+								<TextBlock Text="Rating:" FontWeight="SemiBold" VerticalAlignment="Center" />
+								<TextBlock Text="{Binding UserRating, StringFormat={}{0:0.0}}" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                <TextBlock Text="★" Foreground="Gold" FontSize="16" Margin="10,0,0, 0" VerticalAlignment="Center" />
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
                                 <TextBlock Text="Følgere:" FontWeight="SemiBold" />
-                                <TextBlock Text="{Binding FollowersCount}" Margin="6,0,0,0" />
+								<TextBlock Text="{Binding CurrentUser.FollowersCount}" Margin="6,0,0,0" />
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
                                 <TextBlock Text="Følger:" FontWeight="SemiBold" />
-                                <TextBlock Text="{Binding FollowingCount}" Margin="6,0,0,0" />
+								<TextBlock Text="{Binding CurrentUser.FollowingCount}" Margin="6,0,0,0" />
                             </StackPanel>
                         </StackPanel>
 
                         <StackPanel Grid.Column="2" Orientation="Vertical">
                             <TextBlock Text="Brugernavn" FontWeight="SemiBold" />
-                            <TextBox Text="{Binding Username}" Margin="0,4,0,12" />
+							<TextBox Text="{Binding CurrentUser.Username}" Margin="0,4,0,12" />
 
                             <TextBlock Text="Fornavn" FontWeight="SemiBold" />
-                            <TextBox Text="{Binding FirstName}" Margin="0,4,0,12" />
+							<TextBox Text="{Binding CurrentUser.FirstName}" Margin="0,4,0,12" />
 
                             <TextBlock Text="Efternavn" FontWeight="SemiBold" />
-                            <TextBox Text="{Binding LastName}" Margin="0,4,0,12" />
+							<TextBox Text="{Binding CurrentUser.LastName}" Margin="0,4,0,12" />
 
                             <TextBlock Text="Email" FontWeight="SemiBold" />
-                            <TextBox Text="{Binding Email}" Margin="0,4,0,12" />
+							<TextBox Text="{Binding CurrentUser.Email}" Margin="0,4,0,12" />
 
                             <TextBlock Text="Telefon" FontWeight="SemiBold" />
-                            <TextBox Text="{Binding PhoneNumber}" Margin="0,4,0,12" />
+							<TextBox Text="{Binding CurrentUser.PhoneNumber}" Margin="0,4,0,12" />
 
                             <TextBlock Text="By" FontWeight="SemiBold" />
-                            <TextBox Text="{Binding City}" Margin="0,4,0,12" />
+							<TextBox Text="{Binding CurrentUser.City}" Margin="0,4,0,12" />
 
                             <TextBlock Text="Beskrivelse" FontWeight="SemiBold" />
-                            <TextBox Text="{Binding Description}" Margin="0,4,0,12" Height="80" TextWrapping="Wrap" AcceptsReturn="True" />
+							<TextBox Text="{Binding CurrentUser.Description}" Margin="0,4,0,12" Height="80" TextWrapping="Wrap" AcceptsReturn="True" />
 
                             <StackPanel Orientation="Horizontal">
-                                <Button Content="Gem"
-                                        Width="120"
-                                        Height="32"
-                                        HorizontalAlignment="Left"
-                                        Click="SaveButton_Click" />
-
-                                                            <Button Content="Se anmeldelser"
-                                        Width="140"
-                                        Height="32"
-                                        Margin="8,0,0,0"
-                                        HorizontalAlignment="Left"
-                                        Click="ReviewsButton_Click" />
+								<Button Content="Gem" Width="120" Cursor="Hand" Background="Lime" Height="32" HorizontalAlignment="Left" Click="SaveButton_Click" />
+								<Button Content="Se anmeldelser" Cursor="Hand" Width="140" Background="Gold" Height="32" Margin="50,0,0,0" HorizontalAlignment="Left" Click="ReviewsButton_Click" />
                             </StackPanel>
                         </StackPanel>
                     </Grid>

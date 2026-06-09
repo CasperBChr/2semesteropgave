@@ -1,6 +1,5 @@
 ﻿using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Services;
-using _2SemesterOpgave.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;

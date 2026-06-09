@@ -4,12 +4,11 @@ using System.Data.Common;
 using System.Text;
 using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
-using _2SemesterOpgave.Repositories.Interfaces;
 using Microsoft.Data.Sqlite;
 
 namespace _2SemesterOpgave.Repositories
 {
-	public class CategoryRepository : ICategoryRepository
+	public class CategoryRepository
 	{
 		Database _db;	
 
@@ -31,11 +30,6 @@ namespace _2SemesterOpgave.Repositories
 			{
 				int categoryId = reader.GetInt32(reader.GetOrdinal("CategoryId"));
 
-				//if (!categories.ContainsKey(categoryId))
-				//{
-				//	categories[categoryId] = new Category(reader.GetString(reader.GetOrdinal("CategoryName")));
-				//}
-
 				if (!categories.ContainsKey(categoryId))
 				{
 					categories[categoryId] = new Category
@@ -51,11 +45,6 @@ namespace _2SemesterOpgave.Repositories
 					Name = reader.GetString(reader.GetOrdinal("SubName")),
 					Category = categories[categoryId]
 				});
-
-				//if (!reader.IsDBNull(reader.GetOrdinal("SubId")))
-				//{
-				//	categories[categoryId].SubCategories.Add(new SubCategory(reader.GetString(reader.GetOrdinal("SubName")), categories[categoryId]));
-				//}
 			}
 			return categories.Values;
 		}

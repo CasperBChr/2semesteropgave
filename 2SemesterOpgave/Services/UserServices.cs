@@ -4,8 +4,6 @@ using _2SemesterOpgave.Data;
 using _2SemesterOpgave.Models;
 using _2SemesterOpgave.Repositories;
 using _2SemesterOpgave.Repositories.DTO;
-using _2SemesterOpgave.Repositories.Interfaces;
-using _2SemesterOpgave.Services.Interfaces;
 using _2SemesterOpgave.Utils;
 
 namespace _2SemesterOpgave.Services
@@ -31,27 +29,40 @@ namespace _2SemesterOpgave.Services
 			LoadCache();
 
 			ObservableCollection<User> users = new ObservableCollection<User>(_cache.Values);
-			CurrentUser = users[0];
 
 			Conversations = new ObservableCollection<Conversation>();
 
-			if (users.Count >= 2)
-			{
-				Conversations.Add(new Conversation(new List<User> { users[0], users[1] }));
-
-				FakeConversation = new FakeConversation();
-				FakeConversation.ContinueConversationBot(Conversations[0], Conversations[0].Participants[1]);
-
-				AddFollower(users[0], users[1]);
-				AddFollower(users[1], users[0]);
-
-				Conversations[0].Messages.Add(new Message("Suuup", Conversations[0], Conversations[0].Participants[1], DateTime.Now));
-				Conversations[0].Messages.Add(new Message("Heeeeeeeeeey", Conversations[0], Conversations[0].Participants[0], DateTime.Now));
-			}
-			else
+			FakeConversation = new FakeConversation();
+			if (users.Count < 2)
 			{
 				throw new Exception("Skal bruge mindst 2 users i DB");
 			}
+		}
+
+		public void StartFakeBots(ConversationServices conversationServices)
+		{
+			List<User> allUsers = new List<User>(_cache.Values);
+			FakeConversation.StartFakeBots(allUsers, CurrentUser, conversationServices);
+
+			FakeConversation.OnNewMessage += (conversation) =>
+			{
+				lock (FakeConversation)
+				{
+					bool exists = false;
+					for (int i = 0; i < Conversations.Count; i++)
+					{
+						if (Conversations[i].Id == conversation.Id)
+						{
+							exists = true;
+							break;
+						}
+					}
+					if (!exists)
+					{
+						Conversations.Add(conversation);
+					}
+				}
+			};
 		}
 
 		void LoadCache()
@@ -60,6 +71,11 @@ namespace _2SemesterOpgave.Services
 			{
 				_cache[dto.Id] = Map(dto);
 			}
+		}
+
+		public bool IsFollowing(User follower, User following)
+		{
+			return _userRepository.IsFollowing(follower.Id, following.Id);
 		}
 
 		public User? GetById(int id)
@@ -74,8 +90,14 @@ namespace _2SemesterOpgave.Services
 
 		public void AddFollower(User follower, User following)
 		{
-			if (follower.Id == following.Id) return;
-			if (_userRepository.IsFollowing(follower.Id, following.Id)) return;
+			if (follower.Id == following.Id)
+			{
+				return;
+			}
+			if (_userRepository.IsFollowing(follower.Id, following.Id))
+			{
+				return;
+			}
 			_userRepository.AddFollower(follower, following);
 		}
 
@@ -87,7 +109,10 @@ namespace _2SemesterOpgave.Services
 		public User? GetUserById(int id)
 		{
 			UserDTO? dto = _userRepository.GetUserByID(id);
-			if (dto == null) return null;
+			if (dto == null)
+			{
+				return null;
+			}
 			return Map(dto);
 		}
 
@@ -113,17 +138,9 @@ namespace _2SemesterOpgave.Services
 				throw new Exception("Username already exists");
 			}
 
-			//_userRepository.CreateUser(user);
 			int newId = _userRepository.CreateUser(user);
 			user.Id = newId;
 		}
-
-		//public void CreateUser(User user)
-		//{
-		//	if (string.IsNullOrWhiteSpace(user.Email))
-		//		throw new Exception("Email is required");
-		//	_userRepository.CreateUser(user);
-		//}
 
 		public void UpdateUser(User user)
 		{
@@ -162,11 +179,10 @@ namespace _2SemesterOpgave.Services
 				PhoneNumber = dto.PhoneNumber,
 				Description = dto.Description,
 				IsVerified = dto.IsVerified,
-				RatingScore = dto.RatingScore,
 				CreatedAt = dto.CreatedAt,
 				UpdatedAt = dto.UpdatedAt,
-				FollowersCount = dto.FollowersCount,
-				FollowingCount = dto.FollowingCount
+				FollowersCount = _userRepository.GetUserFollowerCount(dto.Id),
+				FollowingCount = _userRepository.GetUserFollowingCount(dto.Id)
 			};
 		}
 	}

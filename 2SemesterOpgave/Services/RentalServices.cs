@@ -108,14 +108,12 @@ namespace _2SemesterOpgave.Services
 			User? renter = _userServices.GetById(dto.RenterId);
 			User? rentee = _userServices.GetById(dto.RenteeId);
 
-			// Henter artikel via alle artikler – du kan optimere med GetById når det er implementeret
 			Article? article = new List<Article>(_articleServices.GetAllArticles()).FirstOrDefault(article => article.Id == dto.ArticleId);
 
 			ShippingOption? shipping = dto.ShippingOptionId.HasValue ? _shippingOptionServices.GetById(dto.ShippingOptionId.Value) : null;
 
 			InsuranceOption? insurance = dto.InsuranceOptionId.HasValue ? _insuranceOptionServices.GetById(dto.InsuranceOptionId.Value) : null;
 
-			// Springer over hvis nødvendige relationer mangler
 			if (renter == null || rentee == null || article == null) return null;
 
 			if (!DateOnly.TryParseExact(dto.StartDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly startDate))

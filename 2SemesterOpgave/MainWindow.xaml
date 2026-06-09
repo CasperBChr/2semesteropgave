@@ -130,27 +130,17 @@
             </Button>
 
 
-            <Grid Grid.Column="1" Margin="10" MaxWidth="500">
+            <Grid Grid.Column="1" Margin="10" MaxWidth="500" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <!--<RowDefinition Height="*"/>-->
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0">
-                    <TextBox Background="LightGray" BorderThickness="0" Padding="10,5" VerticalContentAlignment="Center" Foreground="#333" FontSize="13" Text="Søg..." />
-                </StackPanel>
-
-                <Grid Grid.Row="1" Margin="0,10,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" MinWidth="100"/>
-                        <ColumnDefinition Width="auto" MinWidth="20"/>
-                        <ColumnDefinition Width="*" MinWidth="100"/>
-                    </Grid.ColumnDefinitions>
-                    <ComboBox x:Name="CategoryCombo" DisplayMemberPath="Name" Grid.Row="0" Grid.Column="0" Text="Kategori" SelectionChanged="CategoryCombo_SelectionChanged"/>
-
-                    <ComboBox x:Name="SubcategoryCombo" DisplayMemberPath="Name" Grid.Row="0" Grid.Column="2" Text="Underkategori" SelectionChanged="SubcategoryComboBox_SelectionChanged" />
-                </Grid>
-            </Grid>
+				<StackPanel Grid.Row="0">
+					<!--<TextBox Background="LightGray" BorderThickness="0" Padding="10,5" VerticalContentAlignment="Center" Foreground="#333" FontSize="13" Text="Søg..." />-->
+					<TextBox x:Name="SearchBox" Background="LightGray" BorderThickness="0" Padding="10,5" VerticalContentAlignment="Center" Foreground="#333" FontSize="13" Text="Søg..." GotFocus="SearchBox_GotFocus" LostFocus="SearchBox_LostFocus" TextChanged="SearchBox_TextChanged" />
+				</StackPanel>
+			</Grid>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Grid Margin="10, 5">
@@ -161,24 +151,23 @@
                         <TextBlock x:Name="MessagesAmountTextBlock" Text="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>
-                <Grid Margin="10, 5">
-                    <Button Style="{StaticResource TopBarIconButton}" Click="NotificationsButton_Click">
-                        <TextBlock Text="🔔"/>
-                    </Button>
-                    <Border Background="Red" Width="20" Height="20" CornerRadius="20" HorizontalAlignment="Right" VerticalAlignment="Top">
-                        <TextBlock x:Name="NotificationsAmountTextBlock" Text="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                </Grid>
-                <Grid Margin="10, 5">
-                    <Button Style="{StaticResource TopBarIconButton}" Click="MyArticlePageButton_Click" Margin="10,5,10,5">
-                        <TextBlock Text="+" FontSize="35"/>
+				<!--<Grid Margin="10, 5">
+					<Button Style="{StaticResource TopBarIconButton}" Click="NotificationsButton_Click">
+						<TextBlock Text="🔔"/>
+					</Button>
+					<Border Background="Red" Width="20" Height="20" CornerRadius="20" HorizontalAlignment="Right" VerticalAlignment="Top">
+						<TextBlock x:Name="NotificationsAmountTextBlock" Text="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+					</Border>
+				</Grid>-->
+				<Grid Margin="10, 5">
+                    <Button Style="{StaticResource TopBarIconButton}" Click="FavoritPageButton_Click" Margin="10,5,10,5">
+						<TextBlock Text="🤍"/>
                     </Button>
                 </Grid>
                 <Grid Margin="10, 5">
                     <Button Style="{StaticResource TopBarAccountButton}" Click="MyAccountButton_Click">
-                        <Grid>
-                            <!--<Ellipse Height="40" Width="40" Fill="LightGray"/>-->
-                            <Border BorderBrush="Black" BorderThickness="1" Height="40" Width="40" CornerRadius="20">
+						<Grid>
+							<Border BorderBrush="Black" BorderThickness="1" Height="40" Width="40" CornerRadius="20">
                                 <Image Source="/Assets/UserIconAsset.png" Width="30" Height="30" />
                             </Border>
                         </Grid>
@@ -219,13 +208,17 @@
                 <Button Style="{StaticResource VerticalMenuButton}" Content="Udforsk" Grid.Row="0" Grid.Column="0" Click="ExplorerMenuButton_Click"/>
 				<Button Style="{StaticResource VerticalMenuButton}" Content="Kategorier" Grid.Row="1" Grid.Column="0" Click="CategoriMenuButton_Click"/>
                 <Button Style="{StaticResource VerticalMenuButton}" Content="For You" Grid.Row="2" Grid.Column="0" Click="ForYouButton_Click"/>
-				<Button Style="{StaticResource VerticalMenuButton}" Content="Favoritter" Grid.Row="3" Grid.Column="0" Click="FavoritPageButton_Click"/>
-				<Line StrokeThickness="1" Stroke="Black"  Grid.Row="4" Grid.Column="0" />
-				<Button Style="{StaticResource VerticalMenuButton}" Content="Udlej" Grid.Row="5" Grid.Column="0" Click="CreateArticleButton_Click"/>
-                <Button Style="{StaticResource VerticalMenuButton}" Content="Mine ordrer" Grid.Row="6" Grid.Column="0"  Click="MyOrderButton_Click"/>
+
+				<Button Style="{StaticResource VerticalMenuButton}" Content="Udlej" Grid.Row="4" Grid.Column="0" Click="CreateArticleButton_Click"/>
+                <Button Style="{StaticResource VerticalMenuButton}" Content="Mine ordrer" Grid.Row="5" Grid.Column="0"  Click="MyOrderButton_Click"/>
+				<Button Style="{StaticResource VerticalMenuButton}" Content="Mine Artikler" Grid.Row="6" Grid.Column="0" Click="MyArticlePageButton_Click"/>
 				<Button Style="{StaticResource VerticalMenuButton}" Content="Min konto" Grid.Row="7" Grid.Column="0" Click="MyAccountButton_Click"/>
 			</Grid>
+
+
             <ContentControl Grid.Column="1" Grid.Row="0" x:Name="PageContentControl"/>
+        
+        
         </Grid>
     </Grid>
 </Window>

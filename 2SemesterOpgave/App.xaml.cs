@@ -18,7 +18,9 @@ namespace _2SemesterOpgave
 	{
 		Database _db;
 		UserRepository _userRepository;
+		ReviewRepository _reviewRepository;
 		UserServices _userServices;
+		ReviewServices _reviewServices;
 		SessionContext _session;
 		AuthServices _authService;
 
@@ -33,8 +35,10 @@ namespace _2SemesterOpgave
 				string dbpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "db.db");
 				_db = new Database($"Data Source={dbpath}");
 				_userRepository = new UserRepository(_db);
+				_reviewRepository = new ReviewRepository(_db);
 				_session = new SessionContext();
 				_userServices = new UserServices(_userRepository, _session);
+				_reviewServices = new ReviewServices(_reviewRepository, _userServices);
 				_authService = new AuthServices(_userRepository, _userServices, _session);
 
 				if( _testMode )
@@ -42,15 +46,13 @@ namespace _2SemesterOpgave
 					LoginWindow loginWindow = new LoginWindow(_authService, _userServices);
 					bool? loggedIn = loginWindow.ShowDialog();
 
-					//MessageBox.Show($"ShowDialog returned: {loggedIn}");
-
 					if (loggedIn != true)
 					{
 						Shutdown();
 						return;
 					}
 
-					MainWindow mainWindow = new MainWindow(_db, _userServices);
+					MainWindow mainWindow = new MainWindow(_db, _userServices, _reviewServices);
 					mainWindow.Show();
 
 					ShutdownMode = ShutdownMode.OnLastWindowClose;
@@ -61,14 +63,12 @@ namespace _2SemesterOpgave
 					List<User> users = new List<User>(_userServices.GetAllUsers());
 					_session.CurrentUser = users[0];
 					_userServices.CurrentUser = users[0];
-					//_authService.CurrentUser = users[0];
-					MainWindow mainWindow = new MainWindow(_db, _userServices);
+					MainWindow mainWindow = new MainWindow(_db, _userServices, _reviewServices);
 					mainWindow.Show();
 				}
 			}
 			catch (Exception ex)
 			{
-				//MessageBox.Show($"Fejl ved opstart:\n\n{ex.Message}", "Fejl");
 				//Debug.WriteLine($"MainWindow fejl:\n\n{ex.Message}\n\n{ex.StackTrace}", "Fejl");
 				//MessageBox.Show($"MainWindow fejl:\n\n{ex.Message}\n\n{ex.StackTrace}", "Fejl");
 				Shutdown();

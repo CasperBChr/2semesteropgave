@@ -15,9 +15,8 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <Grid>
-        <!--<ListBox x:Name="ListBoxTest" DisplayMemberPath="Title" d:ItemsSource="{d:SampleData ItemCount=5}"/>-->
-        <ItemsControl x:Name="CategoriesItemsControl" ItemTemplate="{StaticResource CategoryTemplate}" Margin="10">
+	<Grid>
+		<ItemsControl x:Name="CategoriesItemsControl" ItemTemplate="{StaticResource CategoryTemplate}" Margin="10">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"></WrapPanel>

@@ -45,7 +45,6 @@ namespace _2SemesterOpgave.Services
 				Name = dto.Name,
 				BaseFee = dto.BaseFee,
 				DeliveryTimeDays = (byte)dto.DeliveryTimeDays
-				// DeliveryDays findes ikke i databasen, så den forbliver en tom liste
 			};
 		}
 	}
