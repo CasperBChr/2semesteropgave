@@ -17,7 +17,7 @@ using System.Windows.Shapes;
 namespace _2SemesterOpgave.Pages
 {
     /// <summary>
-    /// Interaction logic for MyArticlesPage.xaml
+    /// Kodet af Camilla. Interaction logic for MyArticlesPage.xaml
     /// </summary>
     public partial class MyArticlesPage : UserControl
     {
@@ -26,7 +26,8 @@ namespace _2SemesterOpgave.Pages
         private UserServices _userServices;
         private AuthServices _authServices;
         private User _selectedUser;
- 
+
+        //Constructor
         public MyArticlesPage(ArticleServices articleServices, CategoryServices categoryServices, Router router, UserServices userServices, AuthServices authServices)
         {
             InitializeComponent();
@@ -36,15 +37,20 @@ namespace _2SemesterOpgave.Pages
             _authServices = authServices;
             _selectedUser = _userServices.CurrentUser;
 
+            //Liste med artikler tilhørende den valgte bruger
             List<Article> articles = new List<Article>(_articleServices.GetArticlesByOwner(_selectedUser.Id));
-
+                        
             LoadArticles();
             UpdateUI();
         }
 
+        //Metode til at opdatere UI baseret på om brugeren har artikler eller ej
         private void LoadArticles()
         {
+            //Liste med artikler tilhørende den valgte bruger
             IEnumerable<Article> articles = _articleServices.GetArticlesByOwner(_selectedUser.Id);
+
+            //Liste der bruges til at binde artiklerne til UI
             List<Article> articleList = new List<Article>(articles);
             ArticlesItemsControl.ItemsSource = articleList;
         }
@@ -55,6 +61,7 @@ namespace _2SemesterOpgave.Pages
             OwnerTextBlock.Text = _selectedUser.FirstName;
         }
 
+        //Knap til at komme ind på EditPage for at redigere en artikel
         private void EditPageButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
