@@ -26,6 +26,8 @@ namespace _2SemesterOpgave.Pages
         public UserServices UserServices;
         public ArticleServices ArticleServices;
         public CategoryServices CategoryServices;
+
+		//Constructor
 		public ForYouPage(Router router, UserServices userService, ArticleServices articleService, CategoryServices categoryService)
 		{
 			InitializeComponent();
@@ -33,7 +35,9 @@ namespace _2SemesterOpgave.Pages
 			UserServices = userService;
 			ArticleServices = articleService;
 			CategoryServices = categoryService;
-			List<ItemProfile> itemProfiles = new List<ItemProfile>();
+
+            //Liste med alle artikler til brug til udregning for algoritmen
+            List<ItemProfile> itemProfiles = new List<ItemProfile>();
 			List<Article> articles = new List<Article>(ArticleServices.GetAllArticles());
 			for(int i = 0; i < articles.Count; i++)
 			{
@@ -43,14 +47,15 @@ namespace _2SemesterOpgave.Pages
 				}
 			}
 
-			List<Recommendation> recommendations = ContentBasedAlgorithm.GetRecommendations(UserServices.UserProfile, itemProfiles, 5);
+            //Liste med fem anbefalede artikler baseret på algoritmen, hvor den henter artikler via den ovenstående liste
+            List<Recommendation> recommendations = ContentBasedAlgorithm.GetRecommendations(UserServices.UserProfile, itemProfiles, 5);
 
-			List<Article> recommendedArticles = recommendations.Select(r => r.Item.Article).Where(a => a != null).ToList();
-			// Debug.WriteLine($"- {rec.Item.Name} (Match Score: {rec.Score:F2})");
-
+            //Liste med de fem anbefalede artikler der vises på ForYouPage
+            List<Article> recommendedArticles = recommendations.Select(r => r.Item.Article).Where(a => a != null).ToList();
 			ForYouArticlesItemsControl.ItemsSource = recommendedArticles;
 		}
 
+        //Knap til at komme ind på ArticlePage for at se en artikel
         private void ForYouArticlePageButton_Click(object sender, RoutedEventArgs e)
         {
 			Button button = (Button)sender;
