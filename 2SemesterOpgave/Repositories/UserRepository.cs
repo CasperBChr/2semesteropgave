@@ -20,41 +20,6 @@ namespace _2SemesterOpgave.Repositories
             _db = db;
         }
 
-        // Mapper en database-række til et User-objekt, så alle felter kommer med fra db.
-        private static User MapUser(DbDataReader reader)
-        {
-            User user = new User();
-
-            user.Id = reader.GetInt32(reader.GetOrdinal("ID"));
-            user.Username = reader["Username"]?.ToString() ?? string.Empty;
-            user.FirstName = reader["FirstName"]?.ToString() ?? string.Empty;
-            user.LastName = reader["LastName"]?.ToString() ?? string.Empty;
-            user.Email = reader["Email"]?.ToString() ?? string.Empty;
-            user.Password = reader["Password"]?.ToString() ?? string.Empty;
-            user.City = reader["City"]?.ToString() ?? string.Empty;
-            user.ProfilePicture = reader["ProfilePicture"]?.ToString() ?? string.Empty;
-            user.PhoneNumber = reader["PhoneNumber"]?.ToString() ?? string.Empty;
-            user.Description = reader["Description"]?.ToString() ?? string.Empty;
-
-            user.IsVerified = !reader.IsDBNull(reader.GetOrdinal("IsVerified")) && Convert.ToInt32(reader["IsVerified"]) == 1;
-
-            if (!reader.IsDBNull(reader.GetOrdinal("SignupTime")))
-            {
-                user.CreatedAt = Convert.ToDateTime(reader["SignupTime"]);
-            }
-
-			user.FollowersCount = reader.IsDBNull(reader.GetOrdinal("FollowersCount")) ? 0 : Convert.ToInt32(reader["FollowersCount"]);
-
-			user.FollowingCount = reader.IsDBNull(reader.GetOrdinal("FollowingCount")) ? 0 : Convert.ToInt32(reader["FollowingCount"]);
-
-
-
-
-			//user.FollowersCount = reader.IsDBNull(reader.GetOrdinal("Followers")) ? 0 : Convert.ToInt32(reader["Followers"]);
-			//         user.FollowingCount = reader.IsDBNull(reader.GetOrdinal("Following")) ? 0 : Convert.ToInt32(reader["Following"]);
-			return user;
-        }
-
 		public int CreateUser(User user)
 		{
 			using SqliteConnection connection = _db.CreateConnection();
@@ -94,10 +59,6 @@ namespace _2SemesterOpgave.Repositories
 
 			return Convert.ToInt32(command.ExecuteScalar());
 		}
-
-
-
-
 
 
 		public void DeleteUser(int id)
@@ -326,12 +287,6 @@ namespace _2SemesterOpgave.Repositories
             isVerifiedParam.ParameterName = "@IsVerified";
             command.Parameters.Add(isVerifiedParam);
 
-            //DbParameter ratingScoreParam = command.CreateParameter();
-            //ratingScoreParam.DbType = DbType.Single;
-            //ratingScoreParam.Value = user.RatingScore;
-            //ratingScoreParam.ParameterName = "@RatingScore";
-            //command.Parameters.Add(ratingScoreParam);
-
             command.ExecuteNonQuery();
         }
 
@@ -359,57 +314,6 @@ namespace _2SemesterOpgave.Repositories
 				return null;
 		}
 
-		//UserDTO CreateDTO(DbDataReader reader)
-		//{
-		//	int id = reader.GetOrdinal("ID");
-		//	int username = reader.GetOrdinal("Username");
-		//	int firstName = reader.GetOrdinal("FirstName");
-		//	int lastName = reader.GetOrdinal("LastName");
-		//	int email = reader.GetOrdinal("Email");
-		//	int password = reader.GetOrdinal("Password");
-		//	int city = reader.GetOrdinal("City");
-		//	int profile = reader.GetOrdinal("ProfilePicture");
-		//	int phone = reader.GetOrdinal("PhoneNumber");
-		//	int description = reader.GetOrdinal("Description");
-		//	int verified = reader.GetOrdinal("IsVerified");
-		//	int rating = reader.GetOrdinal("RatingScore");
-		//	int createdAt = reader.GetOrdinal("created_at");
-		//	int updatedAt = reader.GetOrdinal("updated_at");
-		//	int followers = reader.GetOrdinal("FollowersCount");
-		//	int following = reader.GetOrdinal("FollowingCount");
-
-		//	return new UserDTO
-		//	{
-		//		Id = reader.GetInt32(id),
-
-		//		Username = reader.GetString(username),
-		//		FirstName = reader.GetString(firstName),
-		//		LastName = reader.GetString(lastName),
-
-		//		Email = reader.GetString(email),
-		//		Password = reader.GetString(password),
-
-		//		City = reader.GetString(city),
-		//		ProfilePicture = reader.GetString(profile),
-		//		PhoneNumber = reader.GetString(phone),
-		//		Description = reader.GetString(description),
-
-		//		IsVerified = !reader.IsDBNull(verified) && Convert.ToInt32(reader.GetValue(verified)) == 1,
-
-		//		CreatedAt = reader.IsDBNull(createdAt)
-		//			? DateTime.MinValue
-		//			: Convert.ToDateTime(reader.GetValue(createdAt)),
-
-		//		UpdatedAt = reader.IsDBNull(updatedAt)
-		//			? DateTime.MinValue
-		//			: Convert.ToDateTime(reader.GetValue(updatedAt)),
-
-		//		FollowersCount = reader.IsDBNull(followers) ? 0 : Convert.ToInt32(reader.GetValue(followers)),
-		//		FollowingCount = reader.IsDBNull(following) ? 0 : Convert.ToInt32(reader.GetValue(following))
-		//	};
-		//}
-
-
 
 		UserDTO CreateDTO(DbDataReader reader)
 		{
@@ -424,11 +328,8 @@ namespace _2SemesterOpgave.Repositories
 			int phone = reader.GetOrdinal("PhoneNumber");
 			int description = reader.GetOrdinal("Description");
 			int verified = reader.GetOrdinal("IsVerified");
-			//int rating = reader.GetOrdinal("RatingScore");
 			int createdAt = reader.GetOrdinal("created_at");
 			int updatedAt = reader.GetOrdinal("updated_at");
-			//int followers = reader.GetOrdinal("FollowersCount");
-			//int following = reader.GetOrdinal("FollowingCount");
 
 			return new UserDTO
 			{
@@ -473,10 +374,6 @@ namespace _2SemesterOpgave.Repositories
 				IsVerified = !reader.IsDBNull(verified)
 					&& Convert.ToInt32(reader.GetValue(verified)) == 1,
 
-				//RatingScore = reader.IsDBNull(rating)
-				//	? 0
-				//	: Convert.ToSingle(reader.GetValue(rating)),
-
 				CreatedAt = reader.IsDBNull(createdAt)
 					? DateTime.MinValue
 					: Convert.ToDateTime(reader.GetValue(createdAt)),
@@ -484,14 +381,6 @@ namespace _2SemesterOpgave.Repositories
 				UpdatedAt = reader.IsDBNull(updatedAt)
 					? DateTime.MinValue
 					: Convert.ToDateTime(reader.GetValue(updatedAt)),
-
-				//FollowersCount = reader.IsDBNull(followers)
-				//	? 0
-				//	: Convert.ToInt32(reader.GetValue(followers)),
-
-				//FollowingCount = reader.IsDBNull(following)
-				//	? 0
-				//	: Convert.ToInt32(reader.GetValue(following))
 			};
 		}
 	}
