@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Text;
 using System.Xml.Linq;
@@ -23,10 +24,10 @@ namespace _2SemesterOpgave.Repositories
 		{
 			List<BrandDTO> brands = new List<BrandDTO>();
 
-				using SqliteConnection connection = _db.CreateConnection();
-				using DbCommand command = connection.CreateCommand();
+				using IDbConnection connection = _db.CreateConnection();
+				using IDbCommand command = connection.CreateCommand();
 				command.CommandText = "SELECT * FROM Brands";
-				using DbDataReader reader = command.ExecuteReader();
+				using IDataReader reader = command.ExecuteReader();
 
 				while (reader.Read())
 				{
@@ -38,7 +39,7 @@ namespace _2SemesterOpgave.Repositories
 				return brands;
 		}
 
-		BrandDTO CreateDTO(DbDataReader reader)
+		BrandDTO CreateDTO(IDataReader reader)
 		{
 			int id = reader.GetOrdinal("id");
 			int name = reader.GetOrdinal("name");

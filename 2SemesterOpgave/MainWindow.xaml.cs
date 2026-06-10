@@ -6,6 +6,7 @@ using _2SemesterOpgave.Services;
 using _2SemesterOpgave.Utils;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
+using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
@@ -60,9 +61,9 @@ namespace _2SemesterOpgave
 
 		FilterCriteria _filter = new FilterCriteria();
 
-		SqliteDatabaseFactory _db;
+		IDatabaseFactory _db;
 
-        public MainWindow(SqliteDatabaseFactory db, UserServices userServices, ReviewServices reviewServices)
+        public MainWindow(IDatabaseFactory db, UserServices userServices, ReviewServices reviewServices)
 		{
 			InitializeComponent();
 			_pageControl = PageContentControl;

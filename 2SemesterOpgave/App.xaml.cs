@@ -16,7 +16,7 @@ namespace _2SemesterOpgave
 	/// </summary>
 	public partial class App : Application
 	{
-		SqliteDatabaseFactory _db;
+		IDatabaseFactory _db;
 		UserRepository _userRepository;
 		ReviewRepository _reviewRepository;
 		UserServices _userServices;

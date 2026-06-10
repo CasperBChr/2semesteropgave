@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Text;
 using _2SemesterOpgave.Data;
@@ -21,11 +22,11 @@ namespace _2SemesterOpgave.Repositories
 		{
 			List<ShippingOptionDTO> dtos = new();
 
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = "SELECT * FROM ShippingOptions";
 
-				using DbDataReader reader = command.ExecuteReader();
+				using IDataReader reader = command.ExecuteReader();
 
 				int id = reader.GetOrdinal("id");
 				int name = reader.GetOrdinal("name");
@@ -40,7 +41,7 @@ namespace _2SemesterOpgave.Repositories
 				return dtos;
 		}
 
-		ShippingOptionDTO CreateDTO(DbDataReader reader, int id, int name, int baseFee, int deliveryTimeDays)
+		ShippingOptionDTO CreateDTO(IDataReader reader, int id, int name, int baseFee, int deliveryTimeDays)
 		{
 			return new ShippingOptionDTO
 			{

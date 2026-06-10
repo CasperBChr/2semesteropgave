@@ -22,8 +22,8 @@ namespace _2SemesterOpgave.Repositories
 
 		public int CreateUser(User user)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 
 			command.CommandText = @"
 				INSERT INTO Users
@@ -42,17 +42,17 @@ namespace _2SemesterOpgave.Repositories
 				SELECT last_insert_rowid();
 			";
 
-			DbParameter usernameParam = command.CreateParameter();
+			IDbDataParameter usernameParam = command.CreateParameter();
 			usernameParam.ParameterName = "@Username";
 			usernameParam.Value = user.Username;
 			command.Parameters.Add(usernameParam);
 
-			DbParameter emailParam = command.CreateParameter();
+			IDbDataParameter emailParam = command.CreateParameter();
 			emailParam.ParameterName = "@Email";
 			emailParam.Value = user.Email;
 			command.Parameters.Add(emailParam);
 
-			DbParameter passwordParam = command.CreateParameter();
+			IDbDataParameter passwordParam = command.CreateParameter();
 			passwordParam.ParameterName = "@Password";
 			passwordParam.Value = user.Password;
 			command.Parameters.Add(passwordParam);
@@ -63,10 +63,10 @@ namespace _2SemesterOpgave.Repositories
 
 		public void DeleteUser(int id)
         {
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = "DELETE FROM Users WHERE ID = @ID";
-            DbParameter parameter = command.CreateParameter();
+            IDbDataParameter parameter = command.CreateParameter();
             parameter.DbType = DbType.Int32;
             parameter.Value = id;
 			parameter.ParameterName = "@ID";
@@ -78,12 +78,12 @@ namespace _2SemesterOpgave.Repositories
 		{
 			List<UserDTO> users = new();
 
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 
 			command.CommandText = "SELECT * FROM Users";
 
-				using DbDataReader reader = command.ExecuteReader();
+				using IDataReader reader = command.ExecuteReader();
 
 				while (reader.Read())
 				{
@@ -96,18 +96,18 @@ namespace _2SemesterOpgave.Repositories
 
 		public UserDTO? GetUserByID(int id)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 
 			command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.ID = @ID";
 
-				DbParameter parameter = command.CreateParameter();
+				IDbDataParameter parameter = command.CreateParameter();
 				parameter.DbType = DbType.Int32;
 				parameter.Value = id;
 				parameter.ParameterName = "@ID";
 				command.Parameters.Add(parameter);
 
-				using DbDataReader reader = command.ExecuteReader();
+				using IDataReader reader = command.ExecuteReader();
 
 				if (reader.Read())
 				{
@@ -118,10 +118,10 @@ namespace _2SemesterOpgave.Repositories
 
 		public int GetUserFollowerCount(int id) 
         {
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = "SELECT COUNT(*) FROM Followers WHERE following_id = @UserId";
-                DbParameter parameter = command.CreateParameter();
+                IDbDataParameter parameter = command.CreateParameter();
                 parameter.DbType = DbType.Int32;
 				parameter.ParameterName = "UserId";
 				parameter.Value = id;
@@ -132,11 +132,11 @@ namespace _2SemesterOpgave.Repositories
 		
 		public int GetUserFollowingCount(int userId)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = "SELECT COUNT(*) FROM Followers WHERE follower_id = @UserId";
 
-			    DbParameter parameter = command.CreateParameter();
+			    IDbDataParameter parameter = command.CreateParameter();
 			    parameter.DbType = DbType.Int32;
 			    parameter.ParameterName = "@UserId";
 			    parameter.Value = userId;
@@ -150,17 +150,17 @@ namespace _2SemesterOpgave.Repositories
 
 		public void AddFollower(User follower, User following)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = @"INSERT INTO Followers (follower_id, following_id) VALUES (@FollowerId, @FollowingId)";
 
-				DbParameter followerParam = command.CreateParameter();
+				IDbDataParameter followerParam = command.CreateParameter();
 				followerParam.ParameterName = "@FollowerId";
 				followerParam.DbType = DbType.Int32;
 				followerParam.Value = follower.Id;
 				command.Parameters.Add(followerParam);
 
-				DbParameter followingParam = command.CreateParameter();
+				IDbDataParameter followingParam = command.CreateParameter();
 				followingParam.ParameterName = "@FollowingId";
 				followingParam.DbType = DbType.Int32;
 				followingParam.Value = following.Id;
@@ -171,18 +171,18 @@ namespace _2SemesterOpgave.Repositories
 
 		public void RemoveFollower(User follower, User following)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 
 			command.CommandText = "DELETE FROM Followers WHERE follower_id = @FollowerId AND following_id = @FollowingId";
 
-				DbParameter followerParam = command.CreateParameter();
+				IDbDataParameter followerParam = command.CreateParameter();
 				followerParam.ParameterName = "@FollowerId";
 				followerParam.DbType = DbType.Int32;
 				followerParam.Value = follower.Id;
 				command.Parameters.Add(followerParam);
 
-				DbParameter followingParam = command.CreateParameter();
+				IDbDataParameter followingParam = command.CreateParameter();
 				followingParam.ParameterName = "@FollowingId";
 				followingParam.DbType = DbType.Int32;
 				followingParam.Value = following.Id;
@@ -193,17 +193,17 @@ namespace _2SemesterOpgave.Repositories
 
 		public bool IsFollowing(int followerId, int followingId)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 
 			command.CommandText = "SELECT COUNT(*) FROM Followers WHERE follower_id = @FollowerId AND following_id = @FollowingId";
 
-				DbParameter followerParam = command.CreateParameter();
+				IDbDataParameter followerParam = command.CreateParameter();
 				followerParam.ParameterName = "@FollowerId";
 				followerParam.Value = followerId;
 				command.Parameters.Add(followerParam);
 
-				DbParameter followingParam = command.CreateParameter();
+				IDbDataParameter followingParam = command.CreateParameter();
 				followingParam.ParameterName = "@FollowingId";
 				followingParam.Value = followingId;
 				command.Parameters.Add(followingParam);
@@ -214,74 +214,74 @@ namespace _2SemesterOpgave.Repositories
 
 		public void UpdateUser(User user)
         {
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText =
                 "UPDATE Users SET Username = @Username, FirstName = @FirstName, LastName = @LastName, Email = @Email, Password = @Password, " +
                 "City = @City, ProfilePicture = @ProfilePicture, PhoneNumber = @PhoneNumber, Description = @Description, " +
                 "IsVerified = @IsVerified WHERE ID = @ID";
 
-            DbParameter idParam = command.CreateParameter();
+            IDbDataParameter idParam = command.CreateParameter();
             idParam.DbType = DbType.Int32;
             idParam.Value = user.Id;
 			idParam.ParameterName = "@ID";
 			command.Parameters.Add(idParam);
 
-            DbParameter usernameParam = command.CreateParameter();
+            IDbDataParameter usernameParam = command.CreateParameter();
             usernameParam.DbType = DbType.String;
             usernameParam.Value = user.Username;
 			usernameParam.ParameterName = "@Username";
 			command.Parameters.Add(usernameParam);
 
-            DbParameter firstNameParam = command.CreateParameter();
+            IDbDataParameter firstNameParam = command.CreateParameter();
             firstNameParam.DbType = DbType.String;
             firstNameParam.Value = user.FirstName;
             firstNameParam.ParameterName = "@FirstName";
             command.Parameters.Add(firstNameParam);
 
-            DbParameter lastNameParam = command.CreateParameter();
+            IDbDataParameter lastNameParam = command.CreateParameter();
             lastNameParam.DbType = DbType.String;
             lastNameParam.Value = user.LastName;
             lastNameParam.ParameterName = "@LastName";
             command.Parameters.Add(lastNameParam);
 
-            DbParameter emailParam = command.CreateParameter();
+            IDbDataParameter emailParam = command.CreateParameter();
             emailParam.DbType = DbType.String;
             emailParam.Value = user.Email;
 			emailParam.ParameterName = "@Email";
 			command.Parameters.Add(emailParam);
 
-            DbParameter passwordParam = command.CreateParameter();
+            IDbDataParameter passwordParam = command.CreateParameter();
             passwordParam.DbType = DbType.String;
             passwordParam.Value = user.Password;
 			passwordParam.ParameterName = "@Password";
 			command.Parameters.Add(passwordParam);
 
-            DbParameter cityParam = command.CreateParameter();
+            IDbDataParameter cityParam = command.CreateParameter();
             cityParam.DbType = DbType.String;
             cityParam.Value = user.City;
             cityParam.ParameterName = "@City";
             command.Parameters.Add(cityParam);
 
-            DbParameter profilePictureParam = command.CreateParameter();
+            IDbDataParameter profilePictureParam = command.CreateParameter();
             profilePictureParam.DbType = DbType.String;
             profilePictureParam.Value = user.ProfilePicture;
             profilePictureParam.ParameterName = "@ProfilePicture";
             command.Parameters.Add(profilePictureParam);
 
-            DbParameter phoneNumberParam = command.CreateParameter();
+            IDbDataParameter phoneNumberParam = command.CreateParameter();
             phoneNumberParam.DbType = DbType.String;
             phoneNumberParam.Value = user.PhoneNumber;
             phoneNumberParam.ParameterName = "@PhoneNumber";
             command.Parameters.Add(phoneNumberParam);
 
-            DbParameter descriptionParam = command.CreateParameter();
+            IDbDataParameter descriptionParam = command.CreateParameter();
             descriptionParam.DbType = DbType.String;
             descriptionParam.Value = user.Description;
             descriptionParam.ParameterName = "@Description";
             command.Parameters.Add(descriptionParam);
 
-            DbParameter isVerifiedParam = command.CreateParameter();
+            IDbDataParameter isVerifiedParam = command.CreateParameter();
             isVerifiedParam.DbType = DbType.Int32;
             isVerifiedParam.Value = user.IsVerified ? 1 : 0;
             isVerifiedParam.ParameterName = "@IsVerified";
@@ -292,19 +292,19 @@ namespace _2SemesterOpgave.Repositories
 
 		public UserDTO? GetUserByUsername(string username)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 
 			command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.Username = @Username";
 
-				DbParameter usernameParam = command.CreateParameter();
+				IDbDataParameter usernameParam = command.CreateParameter();
 				usernameParam.ParameterName = "@Username";
 				usernameParam.DbType = DbType.String;
 				usernameParam.Value = username;
 
 				command.Parameters.Add(usernameParam);
 
-				using DbDataReader reader = command.ExecuteReader();
+				using IDataReader reader = command.ExecuteReader();
 
 				if (reader.Read())
 				{
@@ -315,7 +315,7 @@ namespace _2SemesterOpgave.Repositories
 		}
 
 
-		UserDTO CreateDTO(DbDataReader reader)
+		UserDTO CreateDTO(IDataReader reader)
 		{
 			int id = reader.GetOrdinal("ID");
 			int username = reader.GetOrdinal("Username");

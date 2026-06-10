@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Text;
 using _2SemesterOpgave.Data;
@@ -20,11 +21,11 @@ namespace _2SemesterOpgave.Repositories
 
 		public IEnumerable<Category> GetAllCategories() 
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = "SELECT c.id as CategoryId, c.name as CategoryName, s.id as SubId, s.name as SubName FROM Categories c LEFT JOIN Subcategories s ON s.category_id = c.id ORDER BY c.id";
 			Dictionary<int, Category> categories = new Dictionary<int, Category>();
-			using DbDataReader reader = command.ExecuteReader();
+			using IDataReader reader = command.ExecuteReader();
 
 			while (reader.Read())
 			{

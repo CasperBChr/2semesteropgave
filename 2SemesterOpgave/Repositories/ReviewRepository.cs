@@ -21,8 +21,8 @@ namespace _2SemesterOpgave.Repositories
 
 		public IEnumerable<ReviewDTO> GetAll()
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = @"
                 SELECT id, rating, comment, created_at, rental_id, reviewer_id, reviewee_id
                 FROM Reviews
@@ -30,7 +30,7 @@ namespace _2SemesterOpgave.Repositories
 
 			List<ReviewDTO> reviews = new List<ReviewDTO>();
 
-			using DbDataReader reader = command.ExecuteReader();
+			using IDataReader reader = command.ExecuteReader();
 			while (reader.Read())
 			{
 				reviews.Add(MapDTO(reader));
@@ -41,15 +41,15 @@ namespace _2SemesterOpgave.Repositories
 
 		public IEnumerable<ReviewDTO> GetReviewsByRevieweeId(int userId)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = @"
                 SELECT id, rating, comment, created_at, rental_id, reviewer_id, reviewee_id
                 FROM Reviews
                 WHERE reviewee_id = @UserId
                 ORDER BY created_at DESC";
 
-			DbParameter parameter = command.CreateParameter();
+			IDbDataParameter parameter = command.CreateParameter();
 			parameter.DbType = DbType.Int32;
 			parameter.ParameterName = "@UserId";
 			parameter.Value = userId;
@@ -57,7 +57,7 @@ namespace _2SemesterOpgave.Repositories
 
 			List<ReviewDTO> reviews = new List<ReviewDTO>();
 
-			using DbDataReader reader = command.ExecuteReader();
+			using IDataReader reader = command.ExecuteReader();
 			while (reader.Read())
 			{
 				reviews.Add(MapDTO(reader));
@@ -68,15 +68,15 @@ namespace _2SemesterOpgave.Repositories
 
 		public IEnumerable<ReviewDTO> GetReviewsByReviewerId(int userId)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = @"
                 SELECT id, rating, comment, created_at, rental_id, reviewer_id, reviewee_id
                 FROM Reviews
                 WHERE reviewer_id = @UserId
                 ORDER BY created_at DESC";
 
-			DbParameter parameter = command.CreateParameter();
+			IDbDataParameter parameter = command.CreateParameter();
 			parameter.DbType = DbType.Int32;
 			parameter.ParameterName = "@UserId";
 			parameter.Value = userId;
@@ -84,7 +84,7 @@ namespace _2SemesterOpgave.Repositories
 
 			List<ReviewDTO> reviews = new List<ReviewDTO>();
 
-			using DbDataReader reader = command.ExecuteReader();
+			using IDataReader reader = command.ExecuteReader();
 			while (reader.Read())
 			{
 				reviews.Add(MapDTO(reader));
@@ -95,39 +95,39 @@ namespace _2SemesterOpgave.Repositories
 
 		public void CreateReview(Review review)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = @"
                 INSERT INTO Reviews 
                 (rating, comment, rental_id, reviewer_id, reviewee_id)
                 VALUES 
                 (@Rating, @Comment, @RentalId, @ReviewerId, @RevieweeId)";
 
-			DbParameter ratingParam = command.CreateParameter();
+			IDbDataParameter ratingParam = command.CreateParameter();
 			ratingParam.DbType = DbType.Int32;
 			ratingParam.ParameterName = "@Rating";
 			ratingParam.Value = review.Rating;
 			command.Parameters.Add(ratingParam);
 
-			DbParameter commentParam = command.CreateParameter();
+			IDbDataParameter commentParam = command.CreateParameter();
 			commentParam.DbType = DbType.String;
 			commentParam.ParameterName = "@Comment";
 			commentParam.Value = review.Comment;
 			command.Parameters.Add(commentParam);
 
-			DbParameter rentalParam = command.CreateParameter();
+			IDbDataParameter rentalParam = command.CreateParameter();
 			rentalParam.DbType = DbType.Int32;
 			rentalParam.ParameterName = "@RentalId";
 			rentalParam.Value = review.RentalId.HasValue ? review.RentalId : DBNull.Value;
 			command.Parameters.Add(rentalParam);
 
-			DbParameter reviewerParam = command.CreateParameter();
+			IDbDataParameter reviewerParam = command.CreateParameter();
 			reviewerParam.DbType = DbType.Int32;
 			reviewerParam.ParameterName = "@ReviewerId";
 			reviewerParam.Value = review.ReviewerId;
 			command.Parameters.Add(reviewerParam);
 
-			DbParameter revieweeParam = command.CreateParameter();
+			IDbDataParameter revieweeParam = command.CreateParameter();
 			revieweeParam.DbType = DbType.Int32;
 			revieweeParam.ParameterName = "@RevieweeId";
 			revieweeParam.Value = review.RevieweeId;
@@ -137,7 +137,7 @@ namespace _2SemesterOpgave.Repositories
 		}
 
 
-		private static ReviewDTO MapDTO(DbDataReader reader)
+		private static ReviewDTO MapDTO(IDataReader reader)
 		{
 			return new ReviewDTO
 			{

@@ -22,11 +22,11 @@ namespace _2SemesterOpgave.Repositories
 		{
 			List<RentalDTO> dtos = new List<RentalDTO>();
 
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = "SELECT * FROM Rentals";
 
-				using DbDataReader reader = command.ExecuteReader();
+				using IDataReader reader = command.ExecuteReader();
 
 				while (reader.Read())
 				{
@@ -41,17 +41,17 @@ namespace _2SemesterOpgave.Repositories
 		{
 			List<RentalDTO> dtos = new List<RentalDTO>();
 
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = "SELECT * FROM Rentals WHERE renter_id = @renterId";
 
-				DbParameter param = command.CreateParameter();
+				IDbDataParameter param = command.CreateParameter();
 				param.ParameterName = "@renterId";
 				param.DbType = DbType.Int32;
 				param.Value = renterId;
 				command.Parameters.Add(param);
 
-				using DbDataReader reader = command.ExecuteReader();
+				using IDataReader reader = command.ExecuteReader();
 
 				while (reader.Read())
 				{
@@ -65,17 +65,17 @@ namespace _2SemesterOpgave.Repositories
 		{
 			List<RentalDTO> dtos = new List<RentalDTO>();
 
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = "SELECT * FROM Rentals WHERE rentee_id = @renteeId";
 
-				DbParameter param = command.CreateParameter();
+				IDbDataParameter param = command.CreateParameter();
 				param.ParameterName = "@renteeId";
 				param.DbType = DbType.Int32;
 				param.Value = renteeId;
 				command.Parameters.Add(param);
 
-				using DbDataReader reader = command.ExecuteReader();
+				using IDataReader reader = command.ExecuteReader();
 
 				while (reader.Read())
 				{
@@ -89,8 +89,8 @@ namespace _2SemesterOpgave.Repositories
 		{
 			List<(DateOnly, DateOnly)> ranges = new();
 
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = @"
 				SELECT start_date, end_date FROM Rentals
 				WHERE article_id = @articleId
@@ -98,7 +98,7 @@ namespace _2SemesterOpgave.Repositories
 
 			AddParameter(command, "@articleId", DbType.Int32, articleId);
 
-			using DbDataReader reader = command.ExecuteReader();
+			using IDataReader reader = command.ExecuteReader();
 			while (reader.Read())
 			{
 				DateOnly start = DateOnly.ParseExact(reader.GetString(0), "yyyy-MM-dd");
@@ -110,8 +110,8 @@ namespace _2SemesterOpgave.Repositories
 
 		public void Create(RentalDTO dto)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = @"
 					INSERT INTO Rentals 
                     (start_date, end_date, total_price, is_accepted, renter_id, rentee_id, article_id, status, shipping_option_id, insurance_option_id)
@@ -143,8 +143,8 @@ namespace _2SemesterOpgave.Repositories
 
 		public void UpdateStatus(int id, string status)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = "UPDATE Rentals SET status = @status WHERE id = @id";
 
 				AddParameter(command, "@status", DbType.String, status);
@@ -155,8 +155,8 @@ namespace _2SemesterOpgave.Repositories
 
 		public void SetAccepted(int id, bool isAccepted)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = "UPDATE Rentals SET is_accepted = @isAccepted WHERE id = @id";
 
 				AddParameter(command, "@isAccepted", DbType.Int32, isAccepted ? 1 : 0);
@@ -166,16 +166,16 @@ namespace _2SemesterOpgave.Repositories
 		}
 
 		// Hjælpemetode så vi undgår at gentage parameter-oprettelse
-		void AddParameter(DbCommand command, string name, DbType type, object value)
+		void AddParameter(IDbCommand command, string name, DbType type, object value)
 		{
-			DbParameter param = command.CreateParameter();
+			IDbDataParameter param = command.CreateParameter();
 			param.ParameterName = name;
 			param.DbType = type;
 			param.Value = value;
 			command.Parameters.Add(param);
 		}
 
-		RentalDTO CreateDTO(DbDataReader reader)
+		RentalDTO CreateDTO(IDataReader reader)
 		{
 			int id = reader.GetOrdinal("id");
 			int startDate = reader.GetOrdinal("start_date");

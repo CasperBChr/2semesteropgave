@@ -27,12 +27,12 @@ namespace _2SemesterOpgave.Repositories
 		{
 			try
 			{
-				using SqliteConnection connection = _db.CreateConnection();
-				using DbCommand command = connection.CreateCommand();
+				using IDbConnection connection = _db.CreateConnection();
+				using IDbCommand command = connection.CreateCommand();
 
-				command.CommandText = @"DELETE FROM Articles WHERE id = @ArticleId;";
+				command.CommandText = "DELETE FROM Articles WHERE id = @ArticleId;";
 
-				DbParameter articleParam = command.CreateParameter();
+				IDbDataParameter articleParam = command.CreateParameter();
 				articleParam.ParameterName = "@ArticleId";
 				articleParam.Value = article.Id;
 				command.Parameters.Add(articleParam);
@@ -48,65 +48,65 @@ namespace _2SemesterOpgave.Repositories
 		public void UpdateArticle(Article article) 
 		{
 			try {
-				using SqliteConnection connection = _db.CreateConnection();
-				using DbCommand command = connection.CreateCommand();
+				using IDbConnection connection = _db.CreateConnection();
+				using IDbCommand command = connection.CreateCommand();
 
 				command.CommandText = @"
 					UPDATE Articles SET
 					name = @name, description = @description, category_id = @categoryId, subcategory_id = @subcategoryId, brand_id = @brandId, color_id = @colorId, size_id = @sizeId, daily_price = @dailyPrice, original_price = @originalPrice, is_rented = @isRented 
 					WHERE id = @ArticleId;";
 
-				DbParameter articleParam = command.CreateParameter();
+				IDbDataParameter articleParam = command.CreateParameter();
 				articleParam.ParameterName = "@ArticleId";
 				articleParam.Value = article.Id;
 				command.Parameters.Add(articleParam);
 
-				DbParameter nameParam = command.CreateParameter();
+				IDbDataParameter nameParam = command.CreateParameter();
 				nameParam.ParameterName = "@name";
 				nameParam.Value = article.Title;
 				command.Parameters.Add(nameParam);
 
-				DbParameter descriptionParam = command.CreateParameter();
+				IDbDataParameter descriptionParam = command.CreateParameter();
 				descriptionParam.ParameterName = "@description";
 				descriptionParam.Value = article.Description;
 				command.Parameters.Add(descriptionParam);
 
-				DbParameter categoryParam = command.CreateParameter();
+				IDbDataParameter categoryParam = command.CreateParameter();
 				categoryParam.ParameterName = "@categoryId";
 				categoryParam.Value = article.Category.Id;
 				command.Parameters.Add(categoryParam);
 
-				DbParameter subcategoryParam = command.CreateParameter();
+				IDbDataParameter subcategoryParam = command.CreateParameter();
 				subcategoryParam.ParameterName = "@subcategoryId";
 				subcategoryParam.Value = article.SubCategory.Id;
 				command.Parameters.Add(subcategoryParam);
 
-				DbParameter brandParam = command.CreateParameter();
+				IDbDataParameter brandParam = command.CreateParameter();
 				brandParam.ParameterName = "@brandId";
 				brandParam.Value = article.Brand.Id;
 				command.Parameters.Add(brandParam);
 
-				DbParameter colorParam = command.CreateParameter();
+				IDbDataParameter colorParam = command.CreateParameter();
 				colorParam.ParameterName = "@colorId";
 				colorParam.Value = article.Color.Id;
 				command.Parameters.Add(colorParam);
 
-				DbParameter sizeParam = command.CreateParameter();
+				IDbDataParameter sizeParam = command.CreateParameter();
 				sizeParam.ParameterName = "@sizeId";
 				sizeParam.Value = article.Size.Id;
 				command.Parameters.Add(sizeParam);
 
-				DbParameter dailyPriceParam = command.CreateParameter();
+				IDbDataParameter dailyPriceParam = command.CreateParameter();
 				dailyPriceParam.ParameterName = "@dailyPrice";
 				dailyPriceParam.Value = article.DailyPrice;
 				command.Parameters.Add(dailyPriceParam);
 
-				DbParameter originalPriceParam = command.CreateParameter();
+				IDbDataParameter originalPriceParam = command.CreateParameter();
 				originalPriceParam.ParameterName = "@originalPrice";
 				originalPriceParam.Value = article.OriginalPrice;
 				command.Parameters.Add(originalPriceParam);
 
-				DbParameter isRentedParam = command.CreateParameter();
+				IDbDataParameter isRentedParam = command.CreateParameter();
 				isRentedParam.ParameterName = "@isRented";
 				isRentedParam.Value = article.IsRented;
 				command.Parameters.Add(isRentedParam);
@@ -123,10 +123,10 @@ namespace _2SemesterOpgave.Repositories
 		{
 			List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
 
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = "SELECT * FROM Articles";
-			using DbDataReader reader = command.ExecuteReader();
+			using IDataReader reader = command.ExecuteReader();
 
 			while (reader.Read())
 			{
@@ -143,11 +143,11 @@ namespace _2SemesterOpgave.Repositories
         {
 			List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
 
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = "SELECT * FROM Articles ORDER BY created_at DESC LIMIT 10";
 			List<Article> articles = new List<Article>();
-			using DbDataReader reader = command.ExecuteReader();
+			using IDataReader reader = command.ExecuteReader();
 
 			while (reader.Read())
 			{
@@ -163,17 +163,17 @@ namespace _2SemesterOpgave.Repositories
 		{
 			List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
 
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 			command.CommandText = "SELECT * FROM Articles WHERE owner_id = @OwnerId";
 
-			DbParameter ownerParameter = command.CreateParameter();
+			IDbDataParameter ownerParameter = command.CreateParameter();
 			ownerParameter.ParameterName = "@OwnerId";
 			ownerParameter.DbType = DbType.Int32;
 			ownerParameter.Value = ownerId;
 			command.Parameters.Add(ownerParameter);
 
-			using DbDataReader reader = command.ExecuteReader();
+			using IDataReader reader = command.ExecuteReader();
 
 			while (reader.Read())
 			{
@@ -189,8 +189,8 @@ namespace _2SemesterOpgave.Repositories
 		{
 			List<ArticleDTO> articleDTOs = new();
 
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 
 			command.CommandText = @"
 				SELECT a.*
@@ -199,14 +199,14 @@ namespace _2SemesterOpgave.Repositories
 					ON uf.article_id = a.id
 				WHERE uf.user_id = @UserId";
 
-			DbParameter parameter = command.CreateParameter();
+			IDbDataParameter parameter = command.CreateParameter();
 			parameter.ParameterName = "@UserId";
 			parameter.DbType = DbType.Int32;
 			parameter.Value = userId;
 
 			command.Parameters.Add(parameter);
 
-			using DbDataReader reader = command.ExecuteReader();
+			using IDataReader reader = command.ExecuteReader();
 
 			while (reader.Read())
 			{
@@ -218,19 +218,19 @@ namespace _2SemesterOpgave.Repositories
 
 		public void AddFavorite(int userId, int articleId)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 
 			command.CommandText = @"
 				INSERT INTO UserFavorites(user_id, article_id)
 				VALUES(@UserId, @ArticleId)";
 
-			DbParameter userParam = command.CreateParameter();
+			IDbDataParameter userParam = command.CreateParameter();
 			userParam.ParameterName = "@UserId";
 			userParam.Value = userId;
 			command.Parameters.Add(userParam);
 
-			DbParameter articleParam = command.CreateParameter();
+			IDbDataParameter articleParam = command.CreateParameter();
 			articleParam.ParameterName = "@ArticleId";
 			articleParam.Value = articleId;
 			command.Parameters.Add(articleParam);
@@ -240,20 +240,20 @@ namespace _2SemesterOpgave.Repositories
 
 		public void RemoveFavorite(int userId, int articleId)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 
 			command.CommandText = @"
 				DELETE FROM UserFavorites
 				WHERE user_id = @UserId
 				AND article_id = @ArticleId";
 
-			DbParameter userParam = command.CreateParameter();
+			IDbDataParameter userParam = command.CreateParameter();
 			userParam.ParameterName = "@UserId";
 			userParam.Value = userId;
 			command.Parameters.Add(userParam);
 
-			DbParameter articleParam = command.CreateParameter();
+			IDbDataParameter articleParam = command.CreateParameter();
 			articleParam.ParameterName = "@ArticleId";
 			articleParam.Value = articleId;
 			command.Parameters.Add(articleParam);
@@ -263,8 +263,8 @@ namespace _2SemesterOpgave.Repositories
 
 		public bool IsFavorite(int userId, int articleId)
 		{
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 
 			command.CommandText = @"
 				SELECT COUNT(*)
@@ -272,12 +272,12 @@ namespace _2SemesterOpgave.Repositories
 				WHERE user_id = @UserId
 				AND article_id = @ArticleId";
 
-			DbParameter userParam = command.CreateParameter();
+			IDbDataParameter userParam = command.CreateParameter();
 			userParam.ParameterName = "@UserId";
 			userParam.Value = userId;
 			command.Parameters.Add(userParam);
 
-			DbParameter articleParam = command.CreateParameter();
+			IDbDataParameter articleParam = command.CreateParameter();
 			articleParam.ParameterName = "@ArticleId";
 			articleParam.Value = articleId;
 			command.Parameters.Add(articleParam);
@@ -289,22 +289,22 @@ namespace _2SemesterOpgave.Repositories
 		public IEnumerable<ArticleDTO> GetFilteredArticles(FilterCriteria filter)
 		{
 			List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 
 			StringBuilder sql = new StringBuilder("SELECT * FROM Articles WHERE 1=1");
 
 				if (!string.IsNullOrWhiteSpace(filter.SearchText))
 				{
 					sql.Append(" AND (name LIKE @search OR description LIKE @search)");
-					DbParameter parameter = command.CreateParameter();
+					IDbDataParameter parameter = command.CreateParameter();
 					parameter.ParameterName = "@search";
 					parameter.Value = $"%{filter.SearchText}%";
 					command.Parameters.Add(parameter);
 				}
 
 				command.CommandText = sql.ToString();
-				DbDataReader reader = command.ExecuteReader();
+				IDataReader reader = command.ExecuteReader();
 				List<Article> articles = new List<Article>();
 
 				while (reader.Read())
@@ -318,72 +318,72 @@ namespace _2SemesterOpgave.Repositories
 
         public void CreateArticle(Article article, User owner)
         {
-			using SqliteConnection connection = _db.CreateConnection();
-			using DbCommand command = connection.CreateCommand();
+			using IDbConnection connection = _db.CreateConnection();
+			using IDbCommand command = connection.CreateCommand();
 
 			command.CommandText = "INSERT INTO Articles (name, description, category_id, subcategory_id, brand_id, color_id, size_id, daily_price, original_price, is_rented, owner_id) VALUES (@name, @description, @categoryId, @subcategoryId, @brandId, @colorId, @sizeId, @dailyPrice, @originalPrice, @isRented, @ownerId)";
 
-			DbParameter nameParam = command.CreateParameter();
+			IDbDataParameter nameParam = command.CreateParameter();
             nameParam.ParameterName = "@name";
             nameParam.DbType = DbType.String;
             nameParam.Value = article.Title;
             command.Parameters.Add(nameParam);
 
-            DbParameter descriptionParam = command.CreateParameter();
+            IDbDataParameter descriptionParam = command.CreateParameter();
             descriptionParam.DbType = DbType.String;
             descriptionParam.ParameterName = "@description";
             descriptionParam.Value = article.Description;
             command.Parameters.Add(descriptionParam);
 
-            DbParameter categoryIdParam = command.CreateParameter();
+            IDbDataParameter categoryIdParam = command.CreateParameter();
             categoryIdParam.DbType = DbType.Int32;
             categoryIdParam.ParameterName = "@categoryId";
             categoryIdParam.Value = article.Category.Id;
             command.Parameters.Add(categoryIdParam);
 
-            DbParameter subcategoryIdParam = command.CreateParameter();
+            IDbDataParameter subcategoryIdParam = command.CreateParameter();
             subcategoryIdParam.DbType = DbType.Int32;
             subcategoryIdParam.ParameterName = "@subcategoryId";
             subcategoryIdParam.Value = article.SubCategory.Id;
             command.Parameters.Add(subcategoryIdParam);
 
-            DbParameter brandIdParam = command.CreateParameter();
+            IDbDataParameter brandIdParam = command.CreateParameter();
             brandIdParam.DbType = DbType.Int32;
             brandIdParam.ParameterName = "@brandId";
             brandIdParam.Value = article.Brand.Id;
             command.Parameters.Add(brandIdParam);
 
-            DbParameter colorIdParam = command.CreateParameter();
+            IDbDataParameter colorIdParam = command.CreateParameter();
             colorIdParam.DbType = DbType.Int32;
             colorIdParam.ParameterName = "@colorId";
             colorIdParam.Value = article.Color.Id;
             command.Parameters.Add(colorIdParam);
 
-            DbParameter sizeIdParam = command.CreateParameter();
+            IDbDataParameter sizeIdParam = command.CreateParameter();
             sizeIdParam.DbType = DbType.Int32;
             sizeIdParam.ParameterName = "@sizeId";
             sizeIdParam.Value = article.Size.Id;
             command.Parameters.Add(sizeIdParam);
 
-            DbParameter dailyPriceParam = command.CreateParameter();
+            IDbDataParameter dailyPriceParam = command.CreateParameter();
             dailyPriceParam.DbType = DbType.Single;
             dailyPriceParam.ParameterName = "@dailyPrice";
             dailyPriceParam.Value = article.DailyPrice;
             command.Parameters.Add(dailyPriceParam);
 
-            DbParameter originalPriceParam = command.CreateParameter();
+            IDbDataParameter originalPriceParam = command.CreateParameter();
             originalPriceParam.DbType = DbType.Single;
             originalPriceParam.ParameterName = "@originalPrice";
             originalPriceParam.Value = article.OriginalPrice;
             command.Parameters.Add(originalPriceParam);
 
-            DbParameter isRentedParam = command.CreateParameter();
+            IDbDataParameter isRentedParam = command.CreateParameter();
             isRentedParam.DbType = DbType.Int32;
             isRentedParam.ParameterName = "@isRented";
             isRentedParam.Value = article.IsRented ? 1 : 0;
             command.Parameters.Add(isRentedParam);
             
-			DbParameter ownerParam = command.CreateParameter();
+			IDbDataParameter ownerParam = command.CreateParameter();
             ownerParam.DbType = DbType.Int32;
             ownerParam.ParameterName = "@ownerId";
             ownerParam.Value = owner.Id;
@@ -393,7 +393,7 @@ namespace _2SemesterOpgave.Repositories
         }
 
 
-        ArticleDTO CreateDTO(DbDataReader reader)
+        ArticleDTO CreateDTO(IDataReader reader)
 		{
 			int id = reader.GetOrdinal("id");
 			int name = reader.GetOrdinal("name");

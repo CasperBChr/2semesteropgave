@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using System.Data;
+using Microsoft.Data.Sqlite;
 
 namespace _2SemesterOpgave.Data
 {
@@ -6,7 +7,8 @@ namespace _2SemesterOpgave.Data
 	/// Factory Pattern brugt til at oprette database connection, på en ensrettet måde
 	/// </summary>
 	/// <author>Martin</author>
-    public class SqliteDatabaseFactory : IDatabaseFactory // Klasse til at håndtere databaseforbindelsen ved hjælp af SqliteConnection og interfacen IDatabaseFactory, ioverenstemmelse med Factory Pattern
+	// Klasse til at håndtere databaseforbindelsen ved hjælp af IDbConnection og interfacen IDatabaseFactory, ioverenstemmelse med Factory Pattern
+    public class SqliteDatabaseFactory : IDatabaseFactory 
 	{
 		readonly string _connectionString;
 
@@ -15,9 +17,9 @@ namespace _2SemesterOpgave.Data
 			_connectionString = connectionString;
 		}
 
-		public SqliteConnection CreateConnection()
+		public IDbConnection CreateConnection()
 		{
-			SqliteConnection connection = new SqliteConnection(_connectionString);
+			IDbConnection connection = new SqliteConnection(_connectionString);
 			connection.Open();
 			return connection;
 		}
