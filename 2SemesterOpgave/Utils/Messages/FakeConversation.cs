@@ -45,7 +45,9 @@ namespace _2SemesterOpgave.Utils
 			for (int i = 0; i < users.Count; i++)
 			{
 				if (users[i].Id != exclude.Id)
+				{
 					pool.Add(users[i]);
+				}
 			}
 
 			List<User> result = new List<User>();
@@ -56,11 +58,6 @@ namespace _2SemesterOpgave.Utils
 				pool.RemoveAt(index);
 			}
 			return result;
-		}
-
-		public Conversation CreateFakeConversation(User targetUser, User botUser) 
-		{
-			return new Conversation(new List<User>() { targetUser, botUser });
 		}
 
 		void RunFakeConversations(Conversation conversation, User botUser, ConversationServices conversationServices, int intervalMs)

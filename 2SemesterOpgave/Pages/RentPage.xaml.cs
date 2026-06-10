@@ -111,12 +111,14 @@ namespace _2SemesterOpgave.Pages
 
 			_rentalServices.CreateRental(rental);
 
-			_router.NavigateTo(Routes.MyOrders);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.MyOrders));
+			//_router.NavigateTo(Routes.MyOrders);
 		}
 
 		private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-			_router.NavigateTo(Routes.Explore);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Explore));
+			//_router.NavigateTo(Routes.Explore);
         }
 
 

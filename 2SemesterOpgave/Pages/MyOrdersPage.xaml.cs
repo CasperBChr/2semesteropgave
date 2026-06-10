@@ -14,7 +14,7 @@ namespace _2SemesterOpgave.Pages
         public ObservableCollection<Rental> Rentals { get; private set; }
         public ObservableCollection<Rental> RentedOut { get; private set; }
 
-        private readonly Router? _router;
+        private readonly Router _router;
         RentalServices _rentalServices;
         private readonly ReviewServices? _reviewServices;
         UserServices _userServices;
@@ -39,21 +39,6 @@ namespace _2SemesterOpgave.Pages
             RentedOut = _rentalServices.GetByRentee(CurrentUser);
 		}
 
-        //private void ReviewButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = (Button)sender;
-        //    Rental rental = (Rental)button.DataContext;
-
-        //    if (rental.Rentee == null)
-        //    {
-        //        MessageBox.Show("Kan ikke finde brugeren, der skal vurderes.");
-        //        return;
-        //    }
-
-        //    _reviewServices?.SetReviewTarget(rental.Rentee);
-        //    _router?.NavigateTo(Routes.Reviews);
-        //}
-
 		private void ReviewButton_Click(object sender, RoutedEventArgs e)
 		{
 			Button button = (Button)sender;
@@ -66,16 +51,9 @@ namespace _2SemesterOpgave.Pages
 			}
 
 			_userServices.TargetUser = rental.Rentee;
-			_router?.NavigateTo(Routes.Reviews);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Reviews));
+			//_router?.NavigateTo(Routes.Reviews);
 		}
-
-		//private void ArticlePageButton_Click(object sender, RoutedEventArgs e)
-		//{
-		//          Button button = (Button)sender;
-		//          Article article = (Article)button.DataContext;
-		//          _articleServices.SelectedArticle = article;
-		//          _router.NavigateTo(Routes.Article);
-		//}
 
 		private void ArticlePageButton_Click(object sender, RoutedEventArgs e)
 		{
@@ -89,7 +67,8 @@ namespace _2SemesterOpgave.Pages
 			}
 
 			_articleServices.SelectedArticle = rental.Article;
-			_router?.NavigateTo(Routes.Article);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Article));
+			//_router?.NavigateTo(Routes.Article);
 		}
 	}
 }

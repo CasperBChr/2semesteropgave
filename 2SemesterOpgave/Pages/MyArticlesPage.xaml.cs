@@ -66,8 +66,8 @@ namespace _2SemesterOpgave.Pages
         {
             Button button = (Button)sender;
             _articleServices.SelectedArticle = (Article)button.DataContext;
-            _userServices.UserProfile.UpdateUserProfileView(_articleServices.SelectedArticle.ItemProfile);
-            _router.NavigateTo(Routes.EditArticlePage);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.EditArticlePage));
+			//_router.NavigateTo(Routes.EditArticlePage);
         }
     }
 }

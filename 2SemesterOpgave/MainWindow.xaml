@@ -120,6 +120,7 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" MinWidth="200"/>
+                <ColumnDefinition Width="Auto" MinWidth="100"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" MinWidth="200"/>
             </Grid.ColumnDefinitions>
@@ -129,8 +130,12 @@
                 <Image Source="/Assets/Asset_1.png" Height="50" Width="83" />
             </Button>
 
+			<StackPanel Grid.Column="1" VerticalAlignment="Center">
+				<Button x:Name="BackButton"  Content="Tilbage" Padding="20, 10" Margin="20, 0" Cursor="Hand" HorizontalAlignment="Left" Click="BackButton_Click" />
+			</StackPanel>
 
-            <Grid Grid.Column="1" Margin="10" MaxWidth="500" VerticalAlignment="Center">
+
+			<Grid Grid.Column="2" Margin="10" MaxWidth="500" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <!--<RowDefinition Height="*"/>-->
@@ -142,7 +147,7 @@
 				</StackPanel>
 			</Grid>
 
-            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Grid Margin="10, 5">
                     <Button Style="{StaticResource TopBarIconButton}" Click="MessagesButton_Click">
                         <TextBlock Text="💬"/>

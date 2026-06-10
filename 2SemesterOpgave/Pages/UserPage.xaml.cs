@@ -54,7 +54,8 @@ namespace _2SemesterOpgave.Pages
             }
 
             _reviewServices.SetReviewTarget(_userServices.TargetUser);
-            _router.NavigateTo(Routes.Reviews);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Reviews));
+			//_router.NavigateTo(Routes.Reviews);
         }
 
 		private void UpdateFollowButton()
@@ -108,7 +109,8 @@ namespace _2SemesterOpgave.Pages
         {
             Button button = (Button)sender; // (Button) er typecasting, det fortæller kompileren at "sender" er en Button
             _articleServices.SelectedArticle = (Article)button.DataContext; // Her sætter vi den valgte artikel i ArticleServices, så den kan bruges på ArticlePage
-            _router.NavigateTo(Routes.Article); // Navigerer til ArticlePage ved at kalde NavigateTo på Router med den relevante rute
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Article)); // Navigerer til ArticlePage ved at kalde NavigateTo gennem Command Pattern NavigateCommand der indeholder Router med den relevante rute
+			//_router.NavigateTo(Routes.Article); // Navigerer til ArticlePage ved at kalde NavigateTo på Router med den relevante rute
         }
     }
 }

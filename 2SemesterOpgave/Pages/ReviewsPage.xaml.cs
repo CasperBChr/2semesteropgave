@@ -107,7 +107,8 @@ namespace _2SemesterOpgave.Pages
 			Review review = (Review)button.DataContext;
 
 			_userServices.TargetUser = review.Reviewer;
-			_router.NavigateTo(Routes.UserProfile);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.UserProfile));
+			//_router.NavigateTo(Routes.UserProfile);
 		}
 
 		private void RevieweeButton_Click(object sender, RoutedEventArgs e)
@@ -116,7 +117,8 @@ namespace _2SemesterOpgave.Pages
 			Review review = (Review)button.DataContext;
 
 			_userServices.TargetUser = review.Reviewee;
-			_router.NavigateTo(Routes.UserProfile);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.UserProfile));
+			//_router.NavigateTo(Routes.UserProfile);
 		}
 	}
 }

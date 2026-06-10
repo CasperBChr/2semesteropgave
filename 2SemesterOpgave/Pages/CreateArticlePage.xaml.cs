@@ -151,14 +151,15 @@ namespace _2SemesterOpgave.Pages
             article.Brand = brand;
 
             _articleServices.CreateArticle(article, _userServices.CurrentUser);
-
-            _router.NavigateTo(Routes.Home);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Home));
+			//_router.NavigateTo(Routes.Home);
         }
 
         private void DismissButton_Click(object sender, RoutedEventArgs e)
         {
-            //Gemmer ikke den oprettede artikel og navigerer tilbage til oversigten
-            _router.NavigateTo(Routes.Home);
+			//Gemmer ikke den oprettede artikel og navigerer tilbage til oversigten
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Home));
+			//_router.NavigateTo(Routes.Home);
         }
 
 		private void CategoryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)

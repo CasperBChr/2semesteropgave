@@ -40,7 +40,8 @@ namespace _2SemesterOpgave.Pages
             Button button = (Button)sender;
             Category selectedCategory = (Category)button.DataContext;
             _router.SetSelectedCategory(selectedCategory);
-            _router.NavigateTo(Routes.ArticleSortByCategory);                
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.ArticleSortByCategory));
+			//_router.NavigateTo(Routes.ArticleSortByCategory);                
             
         }
     }

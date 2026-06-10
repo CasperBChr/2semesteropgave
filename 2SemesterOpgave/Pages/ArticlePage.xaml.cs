@@ -71,12 +71,14 @@ namespace _2SemesterOpgave.Pages
 			Conversation conversation = _conversationServices.GetOrCreateConversation(currentUser, owner);
 			_conversationServices.CurrentConversation = conversation;
 
-			_router.NavigateTo(Routes.Messages);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Messages));
+			//_router.NavigateTo(Routes.Messages);
 		}
         //Metode der navigerer til udlejnings siden for artiklen
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _router.NavigateTo(Routes.Rent);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Rent));
+			//_router.NavigateTo(Routes.Rent);
         }
 
 		private void OwnerProfileButton_Click(object sender, RoutedEventArgs e)
@@ -84,7 +86,8 @@ namespace _2SemesterOpgave.Pages
             Button button = (Button)sender;
             Article article = (Article)button.DataContext;
 			_userServices.TargetUser = article.Owner;
-			_router.NavigateTo(Routes.UserProfile);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.UserProfile));
+			//_router.NavigateTo(Routes.UserProfile);
 		}
 
 		private void FavoriteButton_Click(object sender, RoutedEventArgs e)

@@ -22,7 +22,7 @@ namespace _2SemesterOpgave.Pages
 	/// </summary>
     public partial class ForYouPage : UserControl
     {
-        public Router Router;
+        Router _router;
         public UserServices UserServices;
         public ArticleServices ArticleServices;
         public CategoryServices CategoryServices;
@@ -31,7 +31,7 @@ namespace _2SemesterOpgave.Pages
 		public ForYouPage(Router router, UserServices userService, ArticleServices articleService, CategoryServices categoryService)
 		{
 			InitializeComponent();
-			Router = router;
+			_router = router;
 			UserServices = userService;
 			ArticleServices = articleService;
 			CategoryServices = categoryService;
@@ -61,7 +61,8 @@ namespace _2SemesterOpgave.Pages
 			Button button = (Button)sender;
             ArticleServices.SelectedArticle = (Article)button.DataContext;
 			UserServices.UserProfile.UpdateUserProfileView(ArticleServices.SelectedArticle.ItemProfile);
-			Router.NavigateTo(Routes.Article);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Article));
+			//Router.NavigateTo(Routes.Article);
         }
     }
 }

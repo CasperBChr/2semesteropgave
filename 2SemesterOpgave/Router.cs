@@ -29,6 +29,10 @@ namespace _2SemesterOpgave
         AuthServices _authServices;
         ConversationServices _conversationServices;
         UnreadBadgeServices _unreadBadgeService;
+
+        // Liste af Commands (Command Pattern) så vi kan huske tidligere navigationer og gå tilbage
+		Stack<ICommand> _history = new Stack<ICommand>();
+
 		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, RentalServices rentalServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices, SizeServices sizeServices, BrandServices brandServices, FilterCriteria filterCriteria, ColorServices colorServices, ReviewServices reviewServices, AuthServices authServices, ConversationServices conversationServices, UnreadBadgeServices unreadBadgeServices)
         {
             _currentPage = Routes.Home;
@@ -52,7 +56,22 @@ namespace _2SemesterOpgave
 			_rentals = _rentalServices.GetAll();
         }
 
-        public void SetFilter(FilterCriteria filter)
+		public void ExecuteAndRecord(ICommand command)
+		{
+			_history.Push(command);
+			command.Execute();
+		}
+
+		public void GoBack()
+		{
+			if (_history.Count > 1)
+			{
+				_history.Pop();
+				_history.Peek().Execute();
+			}
+		}
+
+		public void SetFilter(FilterCriteria filter)
         {
             _currentFilter = filter;
         }

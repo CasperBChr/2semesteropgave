@@ -106,7 +106,9 @@ namespace _2SemesterOpgave
 
 			_unreadBadgeService.UnreadCountChanged += OnUnreadCountChanged;
 			_unreadBadgeService.Refresh();
-			_router.NavigateTo(Routes.Home);
+
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Home));
+			//_router.NavigateTo(Routes.Home);
 		}
 
 		private void OnUnreadCountChanged(int count)
@@ -171,51 +173,61 @@ namespace _2SemesterOpgave
 
         private void HomeMenuButton_Click(object sender, RoutedEventArgs e)
 		{
-			_router.NavigateTo(Routes.Home);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Home));
+			//_router.NavigateTo(Routes.Home);
 		}
 
 		private void MyOrderButton_Click(object sender, RoutedEventArgs e)
 		{
-			_router.NavigateTo(Routes.MyOrders);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.MyOrders));
+			//_router.NavigateTo(Routes.MyOrders);
 		}
 
 		private void ExplorerMenuButton_Click(object sender, RoutedEventArgs e)
 		{
-			_router.NavigateTo(Routes.Explore);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Explore));
+			//_router.NavigateTo(Routes.Explore);
 		}
 
 		private void CategoriMenuButton_Click(object sender, RoutedEventArgs e)
 		{
-			_router.NavigateTo(Routes.Categories);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Categories));
+			//_router.NavigateTo(Routes.Categories);
 		}
 
 		private void FavoritPageButton_Click(object sender, RoutedEventArgs e)
 		{
-			_router.NavigateTo(Routes.Favorites);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Favorites));
+			//_router.NavigateTo(Routes.Favorites);
 		}
 
 		private void MyAccountButton_Click(object sender, RoutedEventArgs e)
 		{
 			_userServices.TargetUser = _userServices.CurrentUser;
-			_router.NavigateTo(Routes.MyAccount);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.MyAccount));
+			//_router.NavigateTo(Routes.MyAccount);
 		}
 
 		private void MessagesButton_Click(object sender, RoutedEventArgs e)
 		{
-			_router.NavigateTo(Routes.Messages);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Messages));
+			//	_router.NavigateTo(Routes.Messages);
 		}
 
 		private void CreateArticleButton_Click(object sender, RoutedEventArgs e)
 		{
-			_router.NavigateTo(Routes.CreateArticle);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.CreateArticle));
+			//_router.NavigateTo(Routes.CreateArticle);
 		}
 		private void ForYouButton_Click(object sender, RoutedEventArgs e)
 		{
-			_router.NavigateTo(Routes.ForYou);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.ForYou));
+			//_router.NavigateTo(Routes.ForYou);
 		}
         private void MyArticlePageButton_Click(object sender, RoutedEventArgs e)
         {
-			_router.NavigateTo(Routes.MyArticlesPage);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.MyArticlesPage));
+			//_router.NavigateTo(Routes.MyArticlesPage);
         }
 
 		private void SearchBox_GotFocus(object sender, RoutedEventArgs e)
@@ -243,7 +255,13 @@ namespace _2SemesterOpgave
 				return;
 			}
 			_filter.SearchText = SearchBox.Text;
-			_router.NavigateTo(Routes.Overview);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Overview));
+			//_router.NavigateTo(Routes.Overview);
+		}
+
+		private void BackButton_Click(object sender, RoutedEventArgs e)
+		{
+			_router.GoBack();
 		}
 	}
 }

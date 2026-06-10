@@ -57,7 +57,8 @@ namespace _2SemesterOpgave.Pages
 				_userServices.UserProfile.UpdateUserProfileView(article.ItemProfile);
 			}
 
-			_router.NavigateTo(Routes.Article);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Article));
+			//_router.NavigateTo(Routes.Article);
 		}
 	}
 }

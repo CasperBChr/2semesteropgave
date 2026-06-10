@@ -159,40 +159,11 @@ namespace _2SemesterOpgave.Pages
 
 			MessageBox.Show("TRIED TO SAVE");
         }
-   //     private void EditSaveButton_Click(object sender, RoutedEventArgs e)
-   //     {
-            
-
-
-   //         CurrentArticle.Title = EditTitleTextBox.Text;
-   //         CurrentArticle.Description = EditDescriptionTextBox.Text;
-
-   //         float dailyPrice = 0.0f;
-   //         bool isConverted = float.TryParse(EditPriceTextBox.Text, out dailyPrice);
-   //         if(isConverted)
-   //         {
-   //             CurrentArticle.DailyPrice = dailyPrice;
-   //         }
-   //         else 
-   //         {
-   //             MessageBox.Show("Venligst kun brug tal");
-   //             return;
-   //         }
-			//CurrentArticle.Category = (Category)EditCategoryCombobox.SelectedItem;
-			//CurrentArticle.SubCategory = (SubCategory)EditSubcategoryCombobox.SelectedItem;
-			//CurrentArticle.Color = (Models.Color)EditColorComboBox.SelectedItem;
-			//CurrentArticle.Size = (Models.Size)EditSizeComboBox.SelectedItem;
-			//CurrentArticle.Brand = (Brand)EditBrandComboBox.SelectedItem;
-
-   //         _articleServices.UpdateArticle(CurrentArticle);
-
-
-			//MessageBox.Show("TRIED TO SAVE");
-   //     }
 
         private void EditDismissButton_Click(object sender, RoutedEventArgs e)
         {
-            _router.NavigateTo(Routes.MyArticlesPage);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.MyArticlesPage));
+			//_router.NavigateTo(Routes.MyArticlesPage);
 		}
 
 		private void CategoryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -214,8 +185,8 @@ namespace _2SemesterOpgave.Pages
 			if(window.DialogResult == true) 
 			{
 				_articleServices.DeleteArticle(CurrentArticle);
-				MessageBox.Show($"DELETING {CurrentArticle.Title}");
-				_router.NavigateTo(Routes.MyArticlesPage);
+				_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.MyArticlesPage));
+				//_router.NavigateTo(Routes.MyArticlesPage);
 			}
 		}
 	}

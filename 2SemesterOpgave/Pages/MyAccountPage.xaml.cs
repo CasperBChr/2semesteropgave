@@ -13,7 +13,7 @@ namespace _2SemesterOpgave.Pages
         public float UserRating { get; private set; }
 
         UserServices? _userServices;
-        Router? _router;
+        Router _router;
 
         public MyAccountPage(Router router, UserServices userServices, ReviewServices reviewServices)
         {
@@ -52,7 +52,8 @@ namespace _2SemesterOpgave.Pages
 
         private void ReviewsButton_Click(object sender, RoutedEventArgs e)
         {
-            _router?.NavigateTo(Routes.Reviews);
+			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Reviews));
+			//_router?.NavigateTo(Routes.Reviews);
         }
     }
 }
