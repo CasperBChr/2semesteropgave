@@ -13,9 +13,9 @@ namespace _2SemesterOpgave.Repositories
 {
     public class UserRepository
     {
-        Database _db;
+		IDatabaseFactory _db;
 
-        public UserRepository(Database db)
+        public UserRepository(IDatabaseFactory db)
         { 
             _db = db;
         }

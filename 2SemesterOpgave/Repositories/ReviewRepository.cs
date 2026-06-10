@@ -12,9 +12,9 @@ namespace _2SemesterOpgave.Repositories
 {
     public class ReviewRepository
     {
-        Database _db;
+		IDatabaseFactory _db;
 
-        public ReviewRepository(Database db)
+        public ReviewRepository(IDatabaseFactory db)
         {
             _db = db;
         }

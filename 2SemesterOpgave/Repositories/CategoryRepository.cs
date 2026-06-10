@@ -10,10 +10,10 @@ namespace _2SemesterOpgave.Repositories
 {
 	public class CategoryRepository
 	{
-		Database _db;	
+		IDatabaseFactory _db;	
 
 
-		public CategoryRepository(Database db)
+		public CategoryRepository(IDatabaseFactory db)
 		{
 			_db = db;
 		}

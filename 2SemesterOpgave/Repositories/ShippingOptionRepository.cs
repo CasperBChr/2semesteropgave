@@ -10,9 +10,9 @@ namespace _2SemesterOpgave.Repositories
 {
 	public class ShippingOptionRepository
 	{
-		Database _db;
+		IDatabaseFactory _db;
 
-		public ShippingOptionRepository(Database db)
+		public ShippingOptionRepository(IDatabaseFactory db)
 		{
 			_db = db;
 		}

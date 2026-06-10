@@ -11,9 +11,9 @@ namespace _2SemesterOpgave.Repositories
 {
 	public class RentalRepository
 	{
-		Database _db;
+		IDatabaseFactory _db;
 
-		public RentalRepository(Database db)
+		public RentalRepository(IDatabaseFactory db)
 		{
 			_db = db;
 		}

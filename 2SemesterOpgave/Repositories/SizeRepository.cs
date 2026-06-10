@@ -10,9 +10,9 @@ namespace _2SemesterOpgave.Repositories
 {
 	public class SizeRepository
 	{
-		Database _db;
+		IDatabaseFactory _db;
 
-		public SizeRepository(Database db)
+		public SizeRepository(IDatabaseFactory db)
 		{
 			_db = db;
 		}

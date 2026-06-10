@@ -10,9 +10,9 @@ namespace _2SemesterOpgave.Repositories
 {
 	public class InsuranceOptionRepository
 	{
-		Database _db;
+		IDatabaseFactory _db;
 
-		public InsuranceOptionRepository(Database db)
+		public InsuranceOptionRepository(IDatabaseFactory db)
 		{
 			_db = db;
 		}

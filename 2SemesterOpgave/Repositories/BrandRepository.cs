@@ -12,9 +12,9 @@ namespace _2SemesterOpgave.Repositories
 {
 	public class BrandRepository
 	{
-		Database _db;	
+		IDatabaseFactory _db;	
 
-		public BrandRepository(Database db)
+		public BrandRepository(IDatabaseFactory db)
 		{
 			_db = db;
 		}

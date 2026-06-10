@@ -17,8 +17,8 @@ namespace _2SemesterOpgave.Repositories
     
     public class ArticleRepository
 	{
-		Database _db;
-		public ArticleRepository(Database db)
+		IDatabaseFactory _db;
+		public ArticleRepository(IDatabaseFactory db)
 		{
 			_db = db;
 		}

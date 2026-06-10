@@ -60,9 +60,9 @@ namespace _2SemesterOpgave
 
 		FilterCriteria _filter = new FilterCriteria();
 
-		Database _db;
+		SqliteDatabaseFactory _db;
 
-        public MainWindow(Database db, UserServices userServices, ReviewServices reviewServices)
+        public MainWindow(SqliteDatabaseFactory db, UserServices userServices, ReviewServices reviewServices)
 		{
 			InitializeComponent();
 			_pageControl = PageContentControl;

@@ -11,9 +11,9 @@ namespace _2SemesterOpgave.Repositories
 {
 	public class ConversationRepository
 	{
-		Database _db;
+		IDatabaseFactory _db;
 
-		public ConversationRepository(Database db)
+		public ConversationRepository(IDatabaseFactory db)
 		{
 			_db = db;
 		}
@@ -83,7 +83,6 @@ namespace _2SemesterOpgave.Repositories
 		{
 			using SqliteConnection connection = _db.CreateConnection();
 			using DbCommand command = connection.CreateCommand();
-			// Upsert: opdater hvis rækken findes, ellers indsæt
 			command.CommandText = @"
             INSERT INTO ConversationReadStatus (user_id, conversation_id, last_read_at)
             VALUES (@UserId, @ConversationId, datetime('now'))
@@ -105,7 +104,6 @@ namespace _2SemesterOpgave.Repositories
 				command.ExecuteNonQuery();
 		}
 
-		// Returnerer antal conversations hvor den nyeste besked er nyere end last_read_at
 		public int GetUnreadConversationCount(int userId)
 		{
 			using SqliteConnection connection = _db.CreateConnection();
@@ -157,7 +155,6 @@ namespace _2SemesterOpgave.Repositories
 					});
 				}
 
-				// Hent deltagere og beskeder for hver samtale
 				foreach (ConversationDTO conv in conversations)
 				{
 					conv.ParticipantIds = GetParticipantIds(conv.Id);

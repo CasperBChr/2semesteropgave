@@ -16,7 +16,7 @@ namespace _2SemesterOpgave
 	/// </summary>
 	public partial class App : Application
 	{
-		Database _db;
+		SqliteDatabaseFactory _db;
 		UserRepository _userRepository;
 		ReviewRepository _reviewRepository;
 		UserServices _userServices;
@@ -33,7 +33,7 @@ namespace _2SemesterOpgave
 			try
 			{
 				string dbpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "db.db");
-				_db = new Database($"Data Source={dbpath}");
+				_db = new SqliteDatabaseFactory($"Data Source={dbpath}");
 				_userRepository = new UserRepository(_db);
 				_reviewRepository = new ReviewRepository(_db);
 				_session = new SessionContext();

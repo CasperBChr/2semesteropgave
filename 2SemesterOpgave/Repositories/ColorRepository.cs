@@ -10,9 +10,9 @@ namespace _2SemesterOpgave.Repositories
 {
 	public class ColorRepository
 	{
-		Database _db;
+		IDatabaseFactory _db;
 
-		public ColorRepository(Database db)
+		public ColorRepository(IDatabaseFactory db)
 		{
 			_db = db;
 		}
