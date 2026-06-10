@@ -1,7 +1,9 @@
 namespace _2SemesterOpgave.Models
 {
+    //Klasse for Review
     public class Review
     {
+        //Property for Review
         public int Id { get; set; }
         public int Rating { get; set; }
         public string Comment { get; set; } = string.Empty;

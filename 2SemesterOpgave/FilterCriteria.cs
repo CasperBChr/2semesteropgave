@@ -5,7 +5,8 @@ using _2SemesterOpgave.Models;
 
 namespace _2SemesterOpgave
 {
-	public class FilterCriteria
+    //Klasse for FilterCriteria til brug for at holde styr på valgte filterkriterier i søgefunktionen
+    public class FilterCriteria
 	{
 		public string? SearchText { get; set; }
 	}

@@ -39,15 +39,19 @@ namespace _2SemesterOpgave.Pages
 			MessagesItemsControl.ItemsSource = _viewModel.Messages;
 			_viewModel.Messages.CollectionChanged += OnMessagesCollectionChanged;
 			
+			//If sætning for at sikre der er en anden deltager
 			if(_viewModel.OtherParticipants.Count > 0)
 			{
-				ParticipantsHeader.Text = string.Join(", ", _viewModel.OtherParticipants.Select(u => u.Username));
+                //Henter den anden deltager og viser navnet i UI
+                ParticipantsHeader.Text = string.Join(", ", _viewModel.OtherParticipants.Select(u => u.Username));
 			}
 
-			Dispatcher.BeginInvoke(ScrollToBottom);
+            //Scroller til bunden når siden indlæses for at vise de nyeste beskeder
+            Dispatcher.BeginInvoke(ScrollToBottom);
 		}
 
-		void OnMessagesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        //Sørger for at opdatere UI ved ny besked ved at scrolle til bunden
+        void OnMessagesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (e.Action == NotifyCollectionChangedAction.Add) 
 			{
@@ -56,9 +60,12 @@ namespace _2SemesterOpgave.Pages
 		}
 
 		void ScrollToBottom() => MessagesScrollViewer.ScrollToEnd();
-		private void SendButton_Click(object sender, RoutedEventArgs e) => TrySendMessage();
 
-		private void MessageInputBox_KeyDown(object sender, KeyEventArgs e)
+        //Sender besked når send knappen klikkes
+        private void SendButton_Click(object sender, RoutedEventArgs e) => TrySendMessage();
+
+        //Metode hvor besked sendes når enter trykkes enter og shift ikke er holdt nede
+        private void MessageInputBox_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.Enter && Keyboard.Modifiers != ModifierKeys.Shift)
 			{
@@ -67,7 +74,8 @@ namespace _2SemesterOpgave.Pages
 			}
 		}
 
-		void TrySendMessage()
+        //Metode der håndterer selve besked afsendelsen
+        void TrySendMessage()
 		{
 			string text = MessageInputBox.Text?.Trim() ?? string.Empty;
 			if (string.IsNullOrWhiteSpace(text) || _viewModel == null) return;

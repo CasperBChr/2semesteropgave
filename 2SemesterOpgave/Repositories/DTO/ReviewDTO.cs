@@ -6,7 +6,8 @@ namespace _2SemesterOpgave.Repositories.DTO
 {
 	public class ReviewDTO
 	{
-		public int Id { get; set; }
+        //DTO property for Review
+        public int Id { get; set; }
 		public int Rating { get; set; }
 		public string Comment { get; set; } = string.Empty;
 		public DateTime CreatedAt { get; set; }

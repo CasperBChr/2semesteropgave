@@ -6,7 +6,8 @@ namespace _2SemesterOpgave.Repositories.DTO
 {
 	public class BrandDTO
 	{
-		public int Id { get; set; }
+        //DTO property for Brand
+        public int Id { get; set; }
 
 		public string Name { get; set; } = string.Empty;
 

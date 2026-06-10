@@ -36,10 +36,12 @@ namespace _2SemesterOpgave.Pages
 			_userServices = userServices;
 			_filter = filter;
 
-			ArticlesItemsControl.ItemsSource = _articleServices.GetFilteredArticles(_filter);
+            //Indlæs artikler baseret på filterkriterierne og viser dem i UI
+            ArticlesItemsControl.ItemsSource = _articleServices.GetFilteredArticles(_filter);
 		}
 
-		private void ArticlePageButton_Click(object sender, RoutedEventArgs e)
+        //Metode der håndterer klik på en artikel og navigerer til ArticlePage
+        private void ArticlePageButton_Click(object sender, RoutedEventArgs e)
 		{
 			Button button = (Button)sender;
 			_userServices.UserProfile.UpdateUserProfileView(_articleServices.SelectedArticle.ItemProfile);

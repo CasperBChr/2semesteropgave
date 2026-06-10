@@ -21,6 +21,7 @@ namespace _2SemesterOpgave.Pages
 	public partial class CreateAccountPage : UserControl
 	{
 		UserServices _userServices;
+
 		public CreateAccountPage(UserServices userServices)
 		{
 			InitializeComponent();
@@ -28,9 +29,11 @@ namespace _2SemesterOpgave.Pages
 			_userServices = userServices;
 		}
 
-		private void CreateButton_Click(object sender, RoutedEventArgs e)
+        //Knap der opretter en konto ved at kalde CreateAccount-funktionen i UserServices, og navigerer derefter til LoginPage
+        private void CreateButton_Click(object sender, RoutedEventArgs e)
 		{
-			string username = UsernameTextBox.Text.Trim();
+            //Henter input fra tekstfelterne
+            string username = UsernameTextBox.Text.Trim();
 			string email = EmailTextBox.Text.Trim();
 			string password = PasswordBox.Password;
 			string passwordAgain = PasswordAgainBox.Password;
@@ -59,28 +62,32 @@ namespace _2SemesterOpgave.Pages
 				return;
 			}
 
-			User? existingUser =
+            //Tjeker om brugernavnet eller emailen allerede er i brug
+            User? existingUser =
 				_userServices.GetAllUsers()
 					.FirstOrDefault(u =>
 						u.Username.Equals(
 							username,
 							StringComparison.OrdinalIgnoreCase));
 
-			if (existingUser != null)
+            //Hvis der allerede findes en bruger med det brugernavn eller email, vises en fejlbesked
+            if (existingUser != null)
 			{
 				MessageBox.Show("Username already exists.");
 				return;
 			}
 
-			User user = new User
+            //Opretter en ny bruger ved at kalde CreateAccount-funktionen i UserServices
+            User user = new User
 			{
 				Username = username,
 				Email = email,
 				Password = password
 			};
 
-			try
-			{
+            //Prøver at oprette brugeren, og hvis det lykkes, vises en succesbesked og tekstfelterne ryddes
+            try
+            {
 				_userServices.CreateUser(user);
 
 				MessageBox.Show(
@@ -94,7 +101,9 @@ namespace _2SemesterOpgave.Pages
 				PasswordBox.Clear();
 				PasswordAgainBox.Clear();
 			}
-			catch (Exception ex)
+
+            //Fejlbesked hvis der opstår en fejl under oprettelsen af brugeren
+            catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message);
 			}

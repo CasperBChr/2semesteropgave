@@ -35,7 +35,8 @@ namespace _2SemesterOpgave.Pages
 			LoadFavorites();
 		}
 
-		private void LoadFavorites()
+        //Metode der indlæser brugerens favorit artikler og viser dem i UI
+        private void LoadFavorites()
 		{
 			List<Article> favorites = new List<Article>(
 				_articleServices.GetAllFavoritedArticlesByUser(
@@ -44,7 +45,8 @@ namespace _2SemesterOpgave.Pages
 			FavoriteArticlesItemsControl.ItemsSource = favorites;
 		}
 
-		private void FavoriteArticlePageButton_Click(object sender, RoutedEventArgs e)
+        //Metode der håndterer klik på en favorit artikel og navigerer til ArticlePage
+        private void FavoriteArticlePageButton_Click(object sender, RoutedEventArgs e)
 		{
 			Button button = (Button)sender;
 

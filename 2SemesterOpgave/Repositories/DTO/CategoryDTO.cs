@@ -6,7 +6,8 @@ namespace _2SemesterOpgave.Repositories.DTO
 {
 	public class CategoryDTO
 	{
-		public int Id { get; set; }
+        //DTO property for Category
+        public int Id { get; set; }
 		public string Name { get; set; } = string.Empty;
 		public int? SubId { get; set; }
 		public string? SubName { get; set; }

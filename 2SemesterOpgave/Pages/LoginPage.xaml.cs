@@ -31,21 +31,22 @@ namespace _2SemesterOpgave.Pages
 			_onSuccess = onSuccess;
 		}
 
-		//private void LoginButton_Click(object sender, RoutedEventArgs e)
-		//{
-		//	bool success = _authServices.Login(UsernameTextBox.Text, PasswordBox.Password);
+        //private void LoginButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //	bool success = _authServices.Login(UsernameTextBox.Text, PasswordBox.Password);
 
-		//	if (success)
-		//	{
-		//		LoginSucceeded?.Invoke(_authServices._session.CurrentUser);
-		//	}
-		//	else
-		//	{
-		//		MessageBox.Show("Login fejlede");
-		//	}
-		//}
+        //	if (success)
+        //	{
+        //		LoginSucceeded?.Invoke(_authServices._session.CurrentUser);
+        //	}
+        //	else
+        //	{
+        //		MessageBox.Show("Login fejlede");
+        //	}
+        //}
 
-		private void LoginButton_Click(object sender, RoutedEventArgs e)
+        //Metode der håndterer login ved at tjekke brugernavn og password og kalder onSuccess action hvis login lykkedes
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
 		{
 			bool success = _authServices.Login(UsernameTextBox.Text, PasswordBox.Password);
 
