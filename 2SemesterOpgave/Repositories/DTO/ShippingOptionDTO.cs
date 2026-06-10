@@ -4,11 +4,19 @@ using System.Text;
 
 namespace _2SemesterOpgave.Repositories.DTO
 {
-	public class ShippingOptionDTO
-	{
-		public int Id { get; set; }
-		public string Name { get; set; } = string.Empty;
-		public float BaseFee { get; set; }
-		public int DeliveryTimeDays { get; set; }
-	}
+    // DTO-klasse der bruges til at transportere fragtmulighed-data fra databasen
+    public class ShippingOptionDTO
+    {
+        // Fragtmulighedens id i databasen
+        public int Id { get; set; }
+
+        // Fragtmulighedens navn
+        public string Name { get; set; } = string.Empty;
+
+        // Grundprisen for fragten
+        public float BaseFee { get; set; }
+
+        // Antal dage leveringen cirka tager
+        public int DeliveryTimeDays { get; set; }
+    }
 }

@@ -4,12 +4,22 @@ using System.Text;
 
 namespace _2SemesterOpgave.Repositories.DTO
 {
-	public class MessageDTO
-	{
-		public int Id { get; set; }
-		public string Text { get; set; } = string.Empty;
-		public DateTime CreatedAt { get; set; }
-		public int SenderId { get; set; }
-		public int ConversationId { get; set; }
-	}
+    // DTO-klasse der bruges til at transportere besked-data fra databasen
+    public class MessageDTO
+    {
+        // Beskedens id i databasen
+        public int Id { get; set; }
+
+        // Selve beskedens tekst
+        public string Text { get; set; } = string.Empty;
+
+        // Dato og tidspunkt for hvornår beskeden blev sendt/oprettet
+        public DateTime CreatedAt { get; set; }
+
+        // Id på brugeren der har sendt beskeden
+        public int SenderId { get; set; }
+
+        // Id på samtalen som beskeden hører til
+        public int ConversationId { get; set; }
+    }
 }

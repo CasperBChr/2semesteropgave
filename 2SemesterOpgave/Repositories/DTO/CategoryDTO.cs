@@ -4,11 +4,19 @@ using System.Text;
 
 namespace _2SemesterOpgave.Repositories.DTO
 {
-	public class CategoryDTO
-	{
-		public int Id { get; set; }
-		public string Name { get; set; } = string.Empty;
-		public int? SubId { get; set; }
-		public string? SubName { get; set; }
-	}
+    // DTO-klasse der bruges til at transportere kategori-data fra databasen
+    public class CategoryDTO
+    {
+        // Kategoriens id i databasen
+        public int Id { get; set; }
+
+        // Kategoriens navn
+        public string Name { get; set; } = string.Empty;
+
+        // Id på underkategori, hvis der findes en
+        public int? SubId { get; set; }
+
+        // Navn på underkategori, hvis der findes en
+        public string? SubName { get; set; }
+    }
 }

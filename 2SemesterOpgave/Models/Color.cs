@@ -1,8 +1,8 @@
 ﻿namespace _2SemesterOpgave.Models
 {
-	public class Color
-	{
-		public int Id { get; set; }
-		public string Name { get; set; } = string.Empty;
-	}
+    public class Color
+    {
+        public int Id { get; set; } // Gemmer farvens id
+        public string Name { get; set; } = string.Empty; // Gemmer farvens navn
+    }
 }

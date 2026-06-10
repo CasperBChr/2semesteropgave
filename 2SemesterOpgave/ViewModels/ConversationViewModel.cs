@@ -2,52 +2,76 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
-using _2SemesterOpgave.Models;
+using _2SemesterOpgave.Models; // Giver adgang til vores modelklasser, fx Conversation, Message og User
 
 namespace _2SemesterOpgave.ViewModels
 {
-	public class ConversationViewModel
-	{
-		public Conversation Conversation { get; }
-		public ObservableCollection<MessageViewModel> Messages { get; }
-		public ObservableCollection<User> OtherParticipants { get; }
-		User _currentUser;
+    // ViewModel der bruges til at vise en samtale i UI'et
+    public class ConversationViewModel
+    {
+        // Den samtale som ViewModel'en bygger på
+        public Conversation Conversation { get; }
+
+        // Liste med beskeder, som UI'et kan binde sig til
+        public ObservableCollection<MessageViewModel> Messages { get; }
+
+        // Liste med de andre deltagere i samtalen
+        public ObservableCollection<User> OtherParticipants { get; }
+
+        // Gemmer den nuværende bruger
+        User _currentUser;
 
 
-		public ConversationViewModel(Conversation conversation, User currentUser)
-		{
-			Conversation = conversation;
-			_currentUser = currentUser;
+        // Constructor der modtager en samtale og den nuværende bruger
+        public ConversationViewModel(Conversation conversation, User currentUser)
+        {
+            // Gemmer samtalen
+            Conversation = conversation;
 
-			Debug.WriteLine($"UI Conversation: {conversation.GetHashCode()}");
+            // Gemmer den nuværende bruger
+            _currentUser = currentUser;
 
-			OtherParticipants = new ObservableCollection<User>();
+            // Skriver samtalens hashcode i debug output
+            Debug.WriteLine($"UI Conversation: {conversation.GetHashCode()}");
 
-			for (int i = 0; i < Conversation.Participants.Count; i++)
-			{
-				if (Conversation.Participants[i].Id != _currentUser.Id)
-				{
-					OtherParticipants.Add(Conversation.Participants[i]);
-				}
-			}
+            // Opretter en tom liste til de andre deltagere
+            OtherParticipants = new ObservableCollection<User>();
 
-			Messages = new ObservableCollection<MessageViewModel>(conversation.Messages.Select(m => new MessageViewModel(m, currentUser)));	
+            // Gennemgår alle deltagere i samtalen
+            for (int i = 0; i < Conversation.Participants.Count; i++)
+            {
+                // Tjekker om deltageren ikke er den nuværende bruger
+                if (Conversation.Participants[i].Id != _currentUser.Id)
+                {
+                    // Tilføjer deltageren til listen over andre deltagere
+                    OtherParticipants.Add(Conversation.Participants[i]);
+                }
+            }
 
-			conversation.Messages.CollectionChanged += OnMessagesChanged;
-		}
+            // Opretter MessageViewModels ud fra samtalens beskeder
+            Messages = new ObservableCollection<MessageViewModel>(conversation.Messages.Select(m => new MessageViewModel(m, currentUser)));
 
-		private void OnMessagesChanged(object? sender, NotifyCollectionChangedEventArgs e)
-		{
-			if (e.NewItems == null)
-				return;
+            // Lytter efter nye beskeder i samtalen
+            conversation.Messages.CollectionChanged += OnMessagesChanged;
+        }
 
-			Application.Current.Dispatcher.Invoke(() =>
-			{
-				foreach (Message message in e.NewItems)
-				{
-					Messages.Add(new MessageViewModel(message, _currentUser));
-				}
-			});
-		}
-	}
+        // Kaldes når beskedlisten ændrer sig
+        private void OnMessagesChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            // Stopper metoden hvis der ikke er nye beskeder
+            if (e.NewItems == null)
+                return;
+
+            // Sørger for at UI-opdateringen sker på UI-tråden
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                // Gennemgår alle nye beskeder
+                foreach (Message message in e.NewItems)
+                {
+                    // Opretter en MessageViewModel og tilføjer den til UI-listen
+                    Messages.Add(new MessageViewModel(message, _currentUser));
+                }
+            });
+        }
+    }
 }

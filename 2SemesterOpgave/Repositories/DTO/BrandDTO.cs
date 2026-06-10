@@ -4,17 +4,25 @@ using System.Text;
 
 namespace _2SemesterOpgave.Repositories.DTO
 {
-	public class BrandDTO
-	{
-		public int Id { get; set; }
+    // DTO-klasse der bruges til at transportere brand-data fra databasen
+    public class BrandDTO
+    {
+        // Brandets id i databasen
+        public int Id { get; set; }
 
-		public string Name { get; set; } = string.Empty;
+        // Brandets navn
+        public string Name { get; set; } = string.Empty;
 
-		public string Description {  get; set; } = string.Empty;
+        // Brandets beskrivelse
+        public string Description { get; set; } = string.Empty;
 
-		public string? LogoPath { get; set; }
+        // Sti til brandets logo, hvis der findes et
+        public string? LogoPath { get; set; }
 
-		public DateTime CreatedAt { get; set; }
-		public DateTime UpdatedAt { get; set; }
-	}
+        // Dato og tidspunkt for hvornår brandet blev oprettet
+        public DateTime CreatedAt { get; set; }
+
+        // Dato og tidspunkt for hvornår brandet sidst blev opdateret
+        public DateTime UpdatedAt { get; set; }
+    }
 }

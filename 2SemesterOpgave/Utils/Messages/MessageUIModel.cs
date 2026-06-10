@@ -3,40 +3,66 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
-using _2SemesterOpgave.Models;
+using _2SemesterOpgave.Models; // Giver adgang til vores modelklasser, fx Message og User
 
 namespace _2SemesterOpgave.Utils.Messages
 {
-	public class MessageUIModel
-	{
-		public Message Message { get; }
+    // UI-model der bruges til at vise en besked i brugerfladen
+    public class MessageUIModel
+    {
+        // Den originale besked som UI-modellen bygger på
+        public Message Message { get; }
 
-		public HorizontalAlignment Alignment { get; set; }
-		public SolidColorBrush Background { get; set; }
+        // Bestemmer om beskeden skal stå til venstre eller højre
+        public HorizontalAlignment Alignment { get; set; }
 
-		public string Text;
-		public string Sender;
-		public DateTime Timestamp;
+        // Bestemmer baggrundsfarven på beskeden
+        public SolidColorBrush Background { get; set; }
 
-		public MessageUIModel(Message message, User currentUser)
-		{
-			Message = message;
-			Sender = Message.Sender.Username;
-			Text = Message.Text;
-			Timestamp = Message.Timestamp;
+        // Teksten der vises i beskeden
+        public string Text;
 
-			bool isOwn = message.Sender.Id == currentUser.Id;
+        // Navnet på brugeren der har sendt beskeden
+        public string Sender;
 
-			if(isOwn) 
-			{
-				Alignment = HorizontalAlignment.Right;
-				Background = Brushes.HotPink;
-			}
-			else
-			{
-				Alignment = HorizontalAlignment.Left;
-				Background = Brushes.LightBlue;
-			}
-		}
-	}
+        // Tidspunktet hvor beskeden blev sendt
+        public DateTime Timestamp;
+
+        // Constructor der modtager beskeden og den nuværende bruger
+        public MessageUIModel(Message message, User currentUser)
+        {
+            // Gemmer den originale besked
+            Message = message;
+
+            // Henter afsenderens brugernavn
+            Sender = Message.Sender.Username;
+
+            // Henter beskedens tekst
+            Text = Message.Text;
+
+            // Henter tidspunktet for beskeden
+            Timestamp = Message.Timestamp;
+
+            // Tjekker om beskeden er sendt af den nuværende bruger
+            bool isOwn = message.Sender.Id == currentUser.Id;
+
+            // Hvis beskeden er sendt af brugeren selv
+            if (isOwn)
+            {
+                // Placerer beskeden til højre
+                Alignment = HorizontalAlignment.Right;
+
+                // Giver beskeden en pink baggrund
+                Background = Brushes.HotPink;
+            }
+            else
+            {
+                // Placerer beskeden til venstre
+                Alignment = HorizontalAlignment.Left;
+
+                // Giver beskeden en lyseblå baggrund
+                Background = Brushes.LightBlue;
+            }
+        }
+    }
 }

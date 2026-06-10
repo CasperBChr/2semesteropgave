@@ -2,11 +2,15 @@
 
 namespace _2SemesterOpgave.Models
 {
+    // Modelklasse for en bruger
     public class User : INotifyPropertyChanged
-	{
+    {
+        // Brugerens id
+        public int Id { get; set; }
 
-        public int Id { get; set; } // Property: gemmer brugerens unikke ID som et heltal
-        public string Username { get; set; } // Property: gemmer brugernavnet som tekst
+        // Brugerens login-navn
+        public string Username { get; set; }
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -19,24 +23,31 @@ namespace _2SemesterOpgave.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
+        // Brugerens favoritartikler
         public List<Article> FavoriteArticles { get; set; } = new List<Article>();
 
-		public event PropertyChangedEventHandler? PropertyChanged;
+        // Bruges til at fortælle UI'et at en property er ændret
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-		private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        // Kalder PropertyChanged-eventet
+        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         private int _followersCount = 0;
-		public int FollowersCount
-		{
-			get => _followersCount;
-			set { _followersCount = value; OnPropertyChanged(nameof(FollowersCount)); }
-		}
 
-		private int _followingCount = 0;
-		public int FollowingCount
-		{
-			get => _followingCount;
-			set { _followingCount = value; OnPropertyChanged(nameof(FollowingCount)); }
-		}
+        // Antal følgere
+        public int FollowersCount
+        {
+            get => _followersCount;
+            set { _followersCount = value; OnPropertyChanged(nameof(FollowersCount)); }
+        }
+
+        private int _followingCount = 0;
+
+        // Antal brugere som brugeren følger
+        public int FollowingCount
+        {
+            get => _followingCount;
+            set { _followingCount = value; OnPropertyChanged(nameof(FollowingCount)); }
+        }
     }
 }
