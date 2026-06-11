@@ -1,53 +1,77 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using _2SemesterOpgave.Models;
-using _2SemesterOpgave.Repositories;
-using _2SemesterOpgave.Repositories.DTO;
+using _2SemesterOpgave.Models; // Giver adgang til vores modelklasser, fx Size
+using _2SemesterOpgave.Repositories; // Giver adgang til SizeRepository
+using _2SemesterOpgave.Repositories.DTO; // Giver adgang til SizeDTO
 
 namespace _2SemesterOpgave.Services
 {
-	public class SizeServices
-	{
-		SizeRepository _sizeRepository;
-		Dictionary<int, Size> _cache = new Dictionary<int, Size>();
+    // Serviceklasse der håndterer logik for størrelser
+    public class SizeServices
+    {
+        // Repository der bruges til databasekald for størrelser
+        SizeRepository _sizeRepository;
 
-		public SizeServices(SizeRepository sizeRepository)
-		{
-			_sizeRepository = sizeRepository;
+        // Dictionary der bruges som cache, så størrelser kan findes hurtigt ud fra id
+        Dictionary<int, Size> _cache = new Dictionary<int, Size>();
 
-			LoadCache();
-		}
+        // Constructor der modtager SizeRepository
+        public SizeServices(SizeRepository sizeRepository)
+        {
+            // Gemmer SizeRepository, så den kan bruges i metoderne
+            _sizeRepository = sizeRepository;
 
-		void LoadCache()
-		{
-			foreach (SizeDTO dto in _sizeRepository.GetAllSizes())
-			{
-				_cache[dto.Id] = Map(dto);
-			}
-		}
+            // Indlæser størrelser fra databasen til cache
+            LoadCache();
+        }
 
-		public List<Size> GetAllSizes()
-		{
-			return new List<Size>(_cache.Values);
-		}
+        // Henter alle størrelser fra repository og gemmer dem i cache
+        void LoadCache()
+        {
+            // Gennemgår alle SizeDTO'er fra repository
+            foreach (SizeDTO dto in _sizeRepository.GetAllSizes())
+            {
+                // Mapper DTO'en til Size og gemmer den i cache med id som nøgle
+                _cache[dto.Id] = Map(dto);
+            }
+        }
 
-		public Size? GetById(int id)
-		{
-			Size? size;
+        // Henter alle størrelser
+        public List<Size> GetAllSizes()
+        {
+            // Returnerer en ny liste med alle størrelser fra cache
+            return new List<Size>(_cache.Values);
+        }
 
-			bool found = _cache.TryGetValue(id, out size);
-			if (found) { return size; }
-			return null;
-		}
+        // Henter en størrelse ud fra id
+        public Size? GetById(int id)
+        {
+            // Variabel til den størrelse vi prøver at finde
+            Size? size;
 
-		private Size Map(SizeDTO dto)
-		{
-			return new Size
-			{
-				Id = dto.Id,
-				Name = dto.Name
-			};
-		}
-	}
+            // Prøver at finde størrelsen i cache
+            bool found = _cache.TryGetValue(id, out size);
+
+            // Returnerer størrelsen hvis den blev fundet
+            if (found) { return size; }
+
+            // Returnerer null hvis størrelsen ikke findes
+            return null;
+        }
+
+        // Mapper en SizeDTO til en Size-model
+        private Size Map(SizeDTO dto)
+        {
+            // Opretter og returnerer en Size med data fra DTO'en
+            return new Size
+            {
+                // Sætter størrelsens id
+                Id = dto.Id,
+
+                // Sætter størrelsens navn
+                Name = dto.Name
+            };
+        }
+    }
 }

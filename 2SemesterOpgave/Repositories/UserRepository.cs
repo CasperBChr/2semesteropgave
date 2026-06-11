@@ -4,28 +4,37 @@ using System.Data;
 using System.Data.Common;
 using System.Reflection.Metadata;
 using System.Text;
-using _2SemesterOpgave.Data;
-using _2SemesterOpgave.Models;
-using _2SemesterOpgave.Repositories.DTO;
-using Microsoft.Data.Sqlite;
+using _2SemesterOpgave.Data; // Giver adgang til database-factory
+using _2SemesterOpgave.Models; // Giver adgang til vores modelklasser, fx User
+using _2SemesterOpgave.Repositories.DTO; // Giver adgang til UserDTO
+using Microsoft.Data.Sqlite; // Giver adgang til SQLite
 
 namespace _2SemesterOpgave.Repositories
 {
+    // Repositoryklasse der håndterer databasekald for brugere
     public class UserRepository
     {
-		IDatabaseFactory _db;
+        // Database-factory der bruges til at oprette databaseforbindelser
+        IDatabaseFactory _db;
 
+        // Constructor der modtager database-factory
         public UserRepository(IDatabaseFactory db)
-        { 
+        {
+            // Gemmer database-factory, så den kan bruges i repository-metoderne
             _db = db;
         }
 
-		public int CreateUser(User user)
-		{
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
+        // Opretter en ny bruger i databasen og returnerer brugerens nye id
+        public int CreateUser(User user)
+        {
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
 
-			command.CommandText = @"
+            // Opretter en SQL-kommando på forbindelsen
+            using IDbCommand command = connection.CreateCommand();
+
+            // SQL der indsætter en ny bruger og henter id'et på den nye række
+            command.CommandText = @"
 				INSERT INTO Users
 				(
 					Username,
@@ -42,346 +51,505 @@ namespace _2SemesterOpgave.Repositories
 				SELECT last_insert_rowid();
 			";
 
-			IDbDataParameter usernameParam = command.CreateParameter();
-			usernameParam.ParameterName = "@Username";
-			usernameParam.Value = user.Username;
-			command.Parameters.Add(usernameParam);
+            // Opretter parameter til brugernavn
+            IDbDataParameter usernameParam = command.CreateParameter();
+            usernameParam.ParameterName = "@Username";
+            usernameParam.Value = user.Username;
+            command.Parameters.Add(usernameParam);
 
-			IDbDataParameter emailParam = command.CreateParameter();
-			emailParam.ParameterName = "@Email";
-			emailParam.Value = user.Email;
-			command.Parameters.Add(emailParam);
+            // Opretter parameter til email
+            IDbDataParameter emailParam = command.CreateParameter();
+            emailParam.ParameterName = "@Email";
+            emailParam.Value = user.Email;
+            command.Parameters.Add(emailParam);
 
-			IDbDataParameter passwordParam = command.CreateParameter();
-			passwordParam.ParameterName = "@Password";
-			passwordParam.Value = user.Password;
-			command.Parameters.Add(passwordParam);
+            // Opretter parameter til adgangskode
+            IDbDataParameter passwordParam = command.CreateParameter();
+            passwordParam.ParameterName = "@Password";
+            passwordParam.Value = user.Password;
+            command.Parameters.Add(passwordParam);
 
-			return Convert.ToInt32(command.ExecuteScalar());
-		}
+            // Kører SQL-kommandoen og returnerer id'et på den nye bruger
+            return Convert.ToInt32(command.ExecuteScalar());
+        }
 
 
-		public void DeleteUser(int id)
+        // Sletter en bruger fra databasen ud fra id
+        public void DeleteUser(int id)
         {
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
-			command.CommandText = "DELETE FROM Users WHERE ID = @ID";
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
+
+            // Opretter en SQL-kommando på forbindelsen
+            using IDbCommand command = connection.CreateCommand();
+
+            // SQL der sletter brugeren ud fra id
+            command.CommandText = "DELETE FROM Users WHERE ID = @ID";
+
+            // Opretter parameter til brugerens id
+            IDbDataParameter parameter = command.CreateParameter();
+
+            // Sætter parameterens datatype
+            parameter.DbType = DbType.Int32;
+
+            // Sætter parameterens værdi til id'et
+            parameter.Value = id;
+
+            // Sætter parameterens navn
+            parameter.ParameterName = "@ID";
+
+            // Tilføjer parameteren til kommandoen
+            command.Parameters.Add(parameter);
+
+            // Kører SQL-kommandoen
+            command.ExecuteNonQuery();
+        }
+
+        // Henter alle brugere fra databasen
+        public IEnumerable<UserDTO> GetAllUsers()
+        {
+            // Opretter en liste til UserDTO'er
+            List<UserDTO> users = new();
+
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
+
+            // Opretter en SQL-kommando på forbindelsen
+            using IDbCommand command = connection.CreateCommand();
+
+            // SQL der henter alle brugere
+            command.CommandText = "SELECT * FROM Users";
+
+            // Kører SQL-kommandoen og læser resultatet
+            using IDataReader reader = command.ExecuteReader();
+
+            // Looper igennem alle rækker i resultatet
+            while (reader.Read())
+            {
+                // Omdanner databaserækken til en UserDTO og tilføjer den til listen
+                users.Add(CreateDTO(reader));
+            }
+
+            // Returnerer listen med brugere
+            return users;
+        }
+
+
+        // Henter en bruger ud fra id
+        public UserDTO? GetUserByID(int id)
+        {
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
+
+            // Opretter en SQL-kommando på forbindelsen
+            using IDbCommand command = connection.CreateCommand();
+
+            // SQL der henter brugeren og tæller antal followers og following
+            command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.ID = @ID";
+
+            // Opretter parameter til brugerens id
             IDbDataParameter parameter = command.CreateParameter();
             parameter.DbType = DbType.Int32;
             parameter.Value = id;
-			parameter.ParameterName = "@ID";
-			command.Parameters.Add(parameter);
-            command.ExecuteNonQuery();          
+            parameter.ParameterName = "@ID";
+            command.Parameters.Add(parameter);
+
+            // Kører SQL-kommandoen og læser resultatet
+            using IDataReader reader = command.ExecuteReader();
+
+            // Tjekker om der findes en bruger
+            if (reader.Read())
+            {
+                // Omdanner databaserækken til en UserDTO og returnerer den
+                return CreateDTO(reader);
+            }
+
+            // Returnerer null hvis brugeren ikke findes
+            return null;
         }
 
-		public IEnumerable<UserDTO> GetAllUsers()
-		{
-			List<UserDTO> users = new();
-
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
-
-			command.CommandText = "SELECT * FROM Users";
-
-				using IDataReader reader = command.ExecuteReader();
-
-				while (reader.Read())
-				{
-					users.Add(CreateDTO(reader));
-				}
-
-				return users;
-		}
-
-
-		public UserDTO? GetUserByID(int id)
-		{
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
-
-			command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.ID = @ID";
-
-				IDbDataParameter parameter = command.CreateParameter();
-				parameter.DbType = DbType.Int32;
-				parameter.Value = id;
-				parameter.ParameterName = "@ID";
-				command.Parameters.Add(parameter);
-
-				using IDataReader reader = command.ExecuteReader();
-
-				if (reader.Read())
-				{
-					return CreateDTO(reader);
-				}
-				return null;
-		}
-
-		public int GetUserFollowerCount(int id) 
+        // Henter antal followers for en bruger
+        public int GetUserFollowerCount(int id)
         {
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
-			command.CommandText = "SELECT COUNT(*) FROM Followers WHERE following_id = @UserId";
-                IDbDataParameter parameter = command.CreateParameter();
-                parameter.DbType = DbType.Int32;
-				parameter.ParameterName = "UserId";
-				parameter.Value = id;
-				command.Parameters.Add(parameter);
-				int count = Convert.ToInt32(command.ExecuteScalar());
-                return count;
-		}
-		
-		public int GetUserFollowingCount(int userId)
-		{
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
-			command.CommandText = "SELECT COUNT(*) FROM Followers WHERE follower_id = @UserId";
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
 
-			    IDbDataParameter parameter = command.CreateParameter();
-			    parameter.DbType = DbType.Int32;
-			    parameter.ParameterName = "@UserId";
-			    parameter.Value = userId;
-			    command.Parameters.Add(parameter);
+            // Opretter en SQL-kommando på forbindelsen
+            using IDbCommand command = connection.CreateCommand();
 
-			    int count = Convert.ToInt32(command.ExecuteScalar());
+            // SQL der tæller hvor mange der følger brugeren
+            command.CommandText = "SELECT COUNT(*) FROM Followers WHERE following_id = @UserId";
 
-			    return count;
+            // Opretter parameter til brugerens id
+            IDbDataParameter parameter = command.CreateParameter();
+            parameter.DbType = DbType.Int32;
+            parameter.ParameterName = "UserId";
+            parameter.Value = id;
+            command.Parameters.Add(parameter);
 
-		}
+            // Kører SQL'en og konverterer resultatet til et heltal
+            int count = Convert.ToInt32(command.ExecuteScalar());
 
-		public void AddFollower(User follower, User following)
-		{
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
-			command.CommandText = @"INSERT INTO Followers (follower_id, following_id) VALUES (@FollowerId, @FollowingId)";
+            // Returnerer antal followers
+            return count;
+        }
 
-				IDbDataParameter followerParam = command.CreateParameter();
-				followerParam.ParameterName = "@FollowerId";
-				followerParam.DbType = DbType.Int32;
-				followerParam.Value = follower.Id;
-				command.Parameters.Add(followerParam);
-
-				IDbDataParameter followingParam = command.CreateParameter();
-				followingParam.ParameterName = "@FollowingId";
-				followingParam.DbType = DbType.Int32;
-				followingParam.Value = following.Id;
-				command.Parameters.Add(followingParam);
-
-				command.ExecuteNonQuery();
-		}
-
-		public void RemoveFollower(User follower, User following)
-		{
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
-
-			command.CommandText = "DELETE FROM Followers WHERE follower_id = @FollowerId AND following_id = @FollowingId";
-
-				IDbDataParameter followerParam = command.CreateParameter();
-				followerParam.ParameterName = "@FollowerId";
-				followerParam.DbType = DbType.Int32;
-				followerParam.Value = follower.Id;
-				command.Parameters.Add(followerParam);
-
-				IDbDataParameter followingParam = command.CreateParameter();
-				followingParam.ParameterName = "@FollowingId";
-				followingParam.DbType = DbType.Int32;
-				followingParam.Value = following.Id;
-				command.Parameters.Add(followingParam);
-
-				command.ExecuteNonQuery();
-		}
-
-		public bool IsFollowing(int followerId, int followingId)
-		{
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
-
-			command.CommandText = "SELECT COUNT(*) FROM Followers WHERE follower_id = @FollowerId AND following_id = @FollowingId";
-
-				IDbDataParameter followerParam = command.CreateParameter();
-				followerParam.ParameterName = "@FollowerId";
-				followerParam.Value = followerId;
-				command.Parameters.Add(followerParam);
-
-				IDbDataParameter followingParam = command.CreateParameter();
-				followingParam.ParameterName = "@FollowingId";
-				followingParam.Value = followingId;
-				command.Parameters.Add(followingParam);
-
-				int count = Convert.ToInt32(command.ExecuteScalar());
-				return count > 0;
-		}
-
-		public void UpdateUser(User user)
+        // Henter antal brugere som en bruger følger
+        public int GetUserFollowingCount(int userId)
         {
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
-			command.CommandText =
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
+
+            // Opretter en SQL-kommando på forbindelsen
+            using IDbCommand command = connection.CreateCommand();
+
+            // SQL der tæller hvor mange brugeren følger
+            command.CommandText = "SELECT COUNT(*) FROM Followers WHERE follower_id = @UserId";
+
+            // Opretter parameter til brugerens id
+            IDbDataParameter parameter = command.CreateParameter();
+            parameter.DbType = DbType.Int32;
+            parameter.ParameterName = "@UserId";
+            parameter.Value = userId;
+            command.Parameters.Add(parameter);
+
+            // Kører SQL'en og konverterer resultatet til et heltal
+            int count = Convert.ToInt32(command.ExecuteScalar());
+
+            // Returnerer antal brugere som brugeren følger
+            return count;
+        }
+
+        // Tilføjer en follower-relation mellem to brugere
+        public void AddFollower(User follower, User following)
+        {
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
+
+            // Opretter en SQL-kommando på forbindelsen
+            using IDbCommand command = connection.CreateCommand();
+
+            // SQL der indsætter relationen mellem follower og following
+            command.CommandText = @"INSERT INTO Followers (follower_id, following_id) VALUES (@FollowerId, @FollowingId)";
+
+            // Opretter parameter til brugeren der følger
+            IDbDataParameter followerParam = command.CreateParameter();
+            followerParam.ParameterName = "@FollowerId";
+            followerParam.DbType = DbType.Int32;
+            followerParam.Value = follower.Id;
+            command.Parameters.Add(followerParam);
+
+            // Opretter parameter til brugeren der bliver fulgt
+            IDbDataParameter followingParam = command.CreateParameter();
+            followingParam.ParameterName = "@FollowingId";
+            followingParam.DbType = DbType.Int32;
+            followingParam.Value = following.Id;
+            command.Parameters.Add(followingParam);
+
+            // Kører SQL-kommandoen
+            command.ExecuteNonQuery();
+        }
+
+        // Fjerner en follower-relation mellem to brugere
+        public void RemoveFollower(User follower, User following)
+        {
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
+
+            // Opretter en SQL-kommando på forbindelsen
+            using IDbCommand command = connection.CreateCommand();
+
+            // SQL der sletter relationen mellem follower og following
+            command.CommandText = "DELETE FROM Followers WHERE follower_id = @FollowerId AND following_id = @FollowingId";
+
+            // Opretter parameter til brugeren der følger
+            IDbDataParameter followerParam = command.CreateParameter();
+            followerParam.ParameterName = "@FollowerId";
+            followerParam.DbType = DbType.Int32;
+            followerParam.Value = follower.Id;
+            command.Parameters.Add(followerParam);
+
+            // Opretter parameter til brugeren der bliver fulgt
+            IDbDataParameter followingParam = command.CreateParameter();
+            followingParam.ParameterName = "@FollowingId";
+            followingParam.DbType = DbType.Int32;
+            followingParam.Value = following.Id;
+            command.Parameters.Add(followingParam);
+
+            // Kører SQL-kommandoen
+            command.ExecuteNonQuery();
+        }
+
+        // Tjekker om én bruger følger en anden bruger
+        public bool IsFollowing(int followerId, int followingId)
+        {
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
+
+            // Opretter en SQL-kommando på forbindelsen
+            using IDbCommand command = connection.CreateCommand();
+
+            // SQL der tæller om follower-relationen findes
+            command.CommandText = "SELECT COUNT(*) FROM Followers WHERE follower_id = @FollowerId AND following_id = @FollowingId";
+
+            // Opretter parameter til follower id
+            IDbDataParameter followerParam = command.CreateParameter();
+            followerParam.ParameterName = "@FollowerId";
+            followerParam.Value = followerId;
+            command.Parameters.Add(followerParam);
+
+            // Opretter parameter til following id
+            IDbDataParameter followingParam = command.CreateParameter();
+            followingParam.ParameterName = "@FollowingId";
+            followingParam.Value = followingId;
+            command.Parameters.Add(followingParam);
+
+            // Kører SQL'en og konverterer resultatet til et heltal
+            int count = Convert.ToInt32(command.ExecuteScalar());
+
+            // Returnerer true hvis relationen findes
+            return count > 0;
+        }
+
+        // Opdaterer en bruger i databasen
+        public void UpdateUser(User user)
+        {
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
+
+            // Opretter en SQL-kommando på forbindelsen
+            using IDbCommand command = connection.CreateCommand();
+
+            // SQL der opdaterer brugerens oplysninger ud fra id
+            command.CommandText =
                 "UPDATE Users SET Username = @Username, FirstName = @FirstName, LastName = @LastName, Email = @Email, Password = @Password, " +
                 "City = @City, ProfilePicture = @ProfilePicture, PhoneNumber = @PhoneNumber, Description = @Description, " +
                 "IsVerified = @IsVerified WHERE ID = @ID";
 
+            // Opretter parameter til brugerens id
             IDbDataParameter idParam = command.CreateParameter();
             idParam.DbType = DbType.Int32;
             idParam.Value = user.Id;
-			idParam.ParameterName = "@ID";
-			command.Parameters.Add(idParam);
+            idParam.ParameterName = "@ID";
+            command.Parameters.Add(idParam);
 
+            // Opretter parameter til brugernavn
             IDbDataParameter usernameParam = command.CreateParameter();
             usernameParam.DbType = DbType.String;
             usernameParam.Value = user.Username;
-			usernameParam.ParameterName = "@Username";
-			command.Parameters.Add(usernameParam);
+            usernameParam.ParameterName = "@Username";
+            command.Parameters.Add(usernameParam);
 
+            // Opretter parameter til fornavn
             IDbDataParameter firstNameParam = command.CreateParameter();
             firstNameParam.DbType = DbType.String;
             firstNameParam.Value = user.FirstName;
             firstNameParam.ParameterName = "@FirstName";
             command.Parameters.Add(firstNameParam);
 
+            // Opretter parameter til efternavn
             IDbDataParameter lastNameParam = command.CreateParameter();
             lastNameParam.DbType = DbType.String;
             lastNameParam.Value = user.LastName;
             lastNameParam.ParameterName = "@LastName";
             command.Parameters.Add(lastNameParam);
 
+            // Opretter parameter til email
             IDbDataParameter emailParam = command.CreateParameter();
             emailParam.DbType = DbType.String;
             emailParam.Value = user.Email;
-			emailParam.ParameterName = "@Email";
-			command.Parameters.Add(emailParam);
+            emailParam.ParameterName = "@Email";
+            command.Parameters.Add(emailParam);
 
+            // Opretter parameter til adgangskode
             IDbDataParameter passwordParam = command.CreateParameter();
             passwordParam.DbType = DbType.String;
             passwordParam.Value = user.Password;
-			passwordParam.ParameterName = "@Password";
-			command.Parameters.Add(passwordParam);
+            passwordParam.ParameterName = "@Password";
+            command.Parameters.Add(passwordParam);
 
+            // Opretter parameter til by
             IDbDataParameter cityParam = command.CreateParameter();
             cityParam.DbType = DbType.String;
             cityParam.Value = user.City;
             cityParam.ParameterName = "@City";
             command.Parameters.Add(cityParam);
 
+            // Opretter parameter til profilbillede
             IDbDataParameter profilePictureParam = command.CreateParameter();
             profilePictureParam.DbType = DbType.String;
             profilePictureParam.Value = user.ProfilePicture;
             profilePictureParam.ParameterName = "@ProfilePicture";
             command.Parameters.Add(profilePictureParam);
 
+            // Opretter parameter til telefonnummer
             IDbDataParameter phoneNumberParam = command.CreateParameter();
             phoneNumberParam.DbType = DbType.String;
             phoneNumberParam.Value = user.PhoneNumber;
             phoneNumberParam.ParameterName = "@PhoneNumber";
             command.Parameters.Add(phoneNumberParam);
 
+            // Opretter parameter til beskrivelse
             IDbDataParameter descriptionParam = command.CreateParameter();
             descriptionParam.DbType = DbType.String;
             descriptionParam.Value = user.Description;
             descriptionParam.ParameterName = "@Description";
             command.Parameters.Add(descriptionParam);
 
+            // Opretter parameter til om brugeren er verificeret
             IDbDataParameter isVerifiedParam = command.CreateParameter();
             isVerifiedParam.DbType = DbType.Int32;
             isVerifiedParam.Value = user.IsVerified ? 1 : 0;
             isVerifiedParam.ParameterName = "@IsVerified";
             command.Parameters.Add(isVerifiedParam);
 
+            // Kører SQL-kommandoen
             command.ExecuteNonQuery();
         }
 
-		public UserDTO? GetUserByUsername(string username)
-		{
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
+        // Henter en bruger ud fra brugernavn
+        public UserDTO? GetUserByUsername(string username)
+        {
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
 
-			command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.Username = @Username";
+            // Opretter en SQL-kommando på forbindelsen
+            using IDbCommand command = connection.CreateCommand();
 
-				IDbDataParameter usernameParam = command.CreateParameter();
-				usernameParam.ParameterName = "@Username";
-				usernameParam.DbType = DbType.String;
-				usernameParam.Value = username;
+            // SQL der henter brugeren og tæller antal followers og following
+            command.CommandText = "SELECT u.*, (SELECT COUNT(*) FROM Followers f WHERE f.following_id = u.ID) AS FollowersCount, (SELECT COUNT(*) FROM Followers f WHERE f.follower_id = u.ID) AS FollowingCount FROM Users u WHERE u.Username = @Username";
 
-				command.Parameters.Add(usernameParam);
+            // Opretter parameter til brugernavn
+            IDbDataParameter usernameParam = command.CreateParameter();
+            usernameParam.ParameterName = "@Username";
+            usernameParam.DbType = DbType.String;
+            usernameParam.Value = username;
 
-				using IDataReader reader = command.ExecuteReader();
+            // Tilføjer parameteren til kommandoen
+            command.Parameters.Add(usernameParam);
 
-				if (reader.Read())
-				{
-					return CreateDTO(reader);
-				}
+            // Kører SQL-kommandoen og læser resultatet
+            using IDataReader reader = command.ExecuteReader();
 
-				return null;
-		}
+            // Tjekker om der findes en bruger
+            if (reader.Read())
+            {
+                // Omdanner databaserækken til en UserDTO og returnerer den
+                return CreateDTO(reader);
+            }
+
+            // Returnerer null hvis brugeren ikke findes
+            return null;
+        }
 
 
-		UserDTO CreateDTO(IDataReader reader)
-		{
-			int id = reader.GetOrdinal("ID");
-			int username = reader.GetOrdinal("Username");
-			int firstName = reader.GetOrdinal("FirstName");
-			int lastName = reader.GetOrdinal("LastName");
-			int email = reader.GetOrdinal("Email");
-			int password = reader.GetOrdinal("Password");
-			int city = reader.GetOrdinal("City");
-			int profile = reader.GetOrdinal("ProfilePicture");
-			int phone = reader.GetOrdinal("PhoneNumber");
-			int description = reader.GetOrdinal("Description");
-			int verified = reader.GetOrdinal("IsVerified");
-			int createdAt = reader.GetOrdinal("created_at");
-			int updatedAt = reader.GetOrdinal("updated_at");
+        // Omdanner en databaserække til en UserDTO
+        UserDTO CreateDTO(IDataReader reader)
+        {
+            // Finder placeringen af ID-kolonnen
+            int id = reader.GetOrdinal("ID");
 
-			return new UserDTO
-			{
-				Id = reader.GetInt32(id),
+            // Finder placeringen af Username-kolonnen
+            int username = reader.GetOrdinal("Username");
 
-				Username = reader.IsDBNull(username)
-					? string.Empty
-					: reader.GetString(username),
+            // Finder placeringen af FirstName-kolonnen
+            int firstName = reader.GetOrdinal("FirstName");
 
-				FirstName = reader.IsDBNull(firstName)
-					? string.Empty
-					: reader.GetString(firstName),
+            // Finder placeringen af LastName-kolonnen
+            int lastName = reader.GetOrdinal("LastName");
 
-				LastName = reader.IsDBNull(lastName)
-					? string.Empty
-					: reader.GetString(lastName),
+            // Finder placeringen af Email-kolonnen
+            int email = reader.GetOrdinal("Email");
 
-				Email = reader.IsDBNull(email)
-					? string.Empty
-					: reader.GetString(email),
+            // Finder placeringen af Password-kolonnen
+            int password = reader.GetOrdinal("Password");
 
-				Password = reader.IsDBNull(password)
-					? string.Empty
-					: reader.GetString(password),
+            // Finder placeringen af City-kolonnen
+            int city = reader.GetOrdinal("City");
 
-				City = reader.IsDBNull(city)
-					? string.Empty
-					: reader.GetString(city),
+            // Finder placeringen af ProfilePicture-kolonnen
+            int profile = reader.GetOrdinal("ProfilePicture");
 
-				ProfilePicture = reader.IsDBNull(profile)
-					? string.Empty
-					: reader.GetString(profile),
+            // Finder placeringen af PhoneNumber-kolonnen
+            int phone = reader.GetOrdinal("PhoneNumber");
 
-				PhoneNumber = reader.IsDBNull(phone)
-					? string.Empty
-					: reader.GetString(phone),
+            // Finder placeringen af Description-kolonnen
+            int description = reader.GetOrdinal("Description");
 
-				Description = reader.IsDBNull(description)
-					? string.Empty
-					: reader.GetString(description),
+            // Finder placeringen af IsVerified-kolonnen
+            int verified = reader.GetOrdinal("IsVerified");
 
-				IsVerified = !reader.IsDBNull(verified)
-					&& Convert.ToInt32(reader.GetValue(verified)) == 1,
+            // Finder placeringen af created_at-kolonnen
+            int createdAt = reader.GetOrdinal("created_at");
 
-				CreatedAt = reader.IsDBNull(createdAt)
-					? DateTime.MinValue
-					: Convert.ToDateTime(reader.GetValue(createdAt)),
+            // Finder placeringen af updated_at-kolonnen
+            int updatedAt = reader.GetOrdinal("updated_at");
 
-				UpdatedAt = reader.IsDBNull(updatedAt)
-					? DateTime.MinValue
-					: Convert.ToDateTime(reader.GetValue(updatedAt)),
-			};
-		}
-	}
+            // Opretter og returnerer en UserDTO med data fra databasen
+            return new UserDTO
+            {
+                // Sætter brugerens id
+                Id = reader.GetInt32(id),
+
+                // Sætter brugernavn eller tom tekst hvis feltet er null
+                Username = reader.IsDBNull(username)
+                    ? string.Empty
+                    : reader.GetString(username),
+
+                // Sætter fornavn eller tom tekst hvis feltet er null
+                FirstName = reader.IsDBNull(firstName)
+                    ? string.Empty
+                    : reader.GetString(firstName),
+
+                // Sætter efternavn eller tom tekst hvis feltet er null
+                LastName = reader.IsDBNull(lastName)
+                    ? string.Empty
+                    : reader.GetString(lastName),
+
+                // Sætter email eller tom tekst hvis feltet er null
+                Email = reader.IsDBNull(email)
+                    ? string.Empty
+                    : reader.GetString(email),
+
+                // Sætter adgangskode eller tom tekst hvis feltet er null
+                Password = reader.IsDBNull(password)
+                    ? string.Empty
+                    : reader.GetString(password),
+
+                // Sætter by eller tom tekst hvis feltet er null
+                City = reader.IsDBNull(city)
+                    ? string.Empty
+                    : reader.GetString(city),
+
+                // Sætter profilbillede eller tom tekst hvis feltet er null
+                ProfilePicture = reader.IsDBNull(profile)
+                    ? string.Empty
+                    : reader.GetString(profile),
+
+                // Sætter telefonnummer eller tom tekst hvis feltet er null
+                PhoneNumber = reader.IsDBNull(phone)
+                    ? string.Empty
+                    : reader.GetString(phone),
+
+                // Sætter beskrivelse eller tom tekst hvis feltet er null
+                Description = reader.IsDBNull(description)
+                    ? string.Empty
+                    : reader.GetString(description),
+
+                // Sætter om brugeren er verificeret
+                IsVerified = !reader.IsDBNull(verified)
+                    && Convert.ToInt32(reader.GetValue(verified)) == 1,
+
+                // Sætter oprettelsesdato eller DateTime.MinValue hvis feltet er null
+                CreatedAt = reader.IsDBNull(createdAt)
+                    ? DateTime.MinValue
+                    : Convert.ToDateTime(reader.GetValue(createdAt)),
+
+                // Sætter opdateringsdato eller DateTime.MinValue hvis feltet er null
+                UpdatedAt = reader.IsDBNull(updatedAt)
+                    ? DateTime.MinValue
+                    : Convert.ToDateTime(reader.GetValue(updatedAt)),
+            };
+        }
+    }
 }

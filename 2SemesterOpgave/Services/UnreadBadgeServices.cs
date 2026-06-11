@@ -4,23 +4,36 @@ using System.Text;
 
 namespace _2SemesterOpgave.Services
 {
-	public class UnreadBadgeServices
-	{
-		ConversationServices _conversationServices;
-		UserServices _userServices;
+    // Serviceklasse der håndterer opdatering af unread badge
+    public class UnreadBadgeServices
+    {
+        // Service der bruges til at hente antal ulæste samtaler
+        ConversationServices _conversationServices;
 
-		public event Action<int>? UnreadCountChanged;
+        // Service der bruges til at hente den nuværende bruger
+        UserServices _userServices;
 
-		public UnreadBadgeServices(ConversationServices conversationServices, UserServices userServices)
-		{
-			_conversationServices = conversationServices;
-			_userServices = userServices;
-		}
+        // Event der kaldes, når antal ulæste beskeder ændrer sig
+        public event Action<int>? UnreadCountChanged;
 
-		public void Refresh()
-		{
-			int count = _conversationServices.GetUnreadConversationCount(_userServices.CurrentUser);
-			UnreadCountChanged?.Invoke(count);
-		}
-	}
+        // Constructor der modtager ConversationServices og UserServices
+        public UnreadBadgeServices(ConversationServices conversationServices, UserServices userServices)
+        {
+            // Gemmer ConversationServices, så den kan bruges i Refresh
+            _conversationServices = conversationServices;
+
+            // Gemmer UserServices, så den nuværende bruger kan hentes
+            _userServices = userServices;
+        }
+
+        // Opdaterer antal ulæste samtaler
+        public void Refresh()
+        {
+            // Henter antal ulæste samtaler for den nuværende bruger
+            int count = _conversationServices.GetUnreadConversationCount(_userServices.CurrentUser);
+
+            // Kalder eventet og sender det nye antal ulæste samtaler med
+            UnreadCountChanged?.Invoke(count);
+        }
+    }
 }

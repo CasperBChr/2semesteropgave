@@ -4,34 +4,55 @@ using System.Text;
 
 namespace _2SemesterOpgave.Repositories.DTO
 {
-	public class ArticleDTO
-	{
-        //DTO property for Article
+    // DTO-klasse der bruges til at transportere artikeldata fra databasen
+    public class ArticleDTO
+    {
+        // Artikelens id i databasen
         public int Id { get; set; }
 
-		public string Title { get; set; } = string.Empty;
-		public string Description { get; set; } = string.Empty;
+        // Artikelens titel
+        public string Title { get; set; } = string.Empty;
 
-		public float DailyPrice { get; set; }
-		public float OriginalPrice { get; set; }
+        // Artikelens beskrivelse
+        public string Description { get; set; } = string.Empty;
 
-		public int? CategoryId { get; set; }
-		public int? SubcategoryId { get; set; }
+        // Artikelens dagspris
+        public float DailyPrice { get; set; }
 
-		public int? BrandId { get; set; }
+        // Artikelens oprindelige pris
+        public float OriginalPrice { get; set; }
 
-		public int? ColorId { get; set; }
-		public int? SizeId { get; set; }
-		
-		public bool IsRented { get; set; }
-		public bool IsClean { get; set; }
+        // Id på artikelens kategori
+        public int? CategoryId { get; set; }
 
-		public int? OwnerId { get; set; }
+        // Id på artikelens underkategori
+        public int? SubcategoryId { get; set; }
 
-		public bool IsFavorite { get; set; }
+        // Id på artikelens brand/mærke
+        public int? BrandId { get; set; }
 
-		public DateTime CreatedAt { get; set; }
-		public DateTime UpdatedAt { get; set; }
+        // Id på artikelens farve
+        public int? ColorId { get; set; }
 
-	}
+        // Id på artikelens størrelse
+        public int? SizeId { get; set; }
+
+        // Fortæller om artiklen er udlejet
+        public bool IsRented { get; set; }
+
+        // Fortæller om artiklen er ren
+        public bool IsClean { get; set; }
+
+        // Id på brugeren der ejer artiklen
+        public int? OwnerId { get; set; }
+
+        // Fortæller om artiklen er markeret som favorit
+        public bool IsFavorite { get; set; }
+
+        // Dato og tidspunkt for hvornår artiklen blev oprettet
+        public DateTime CreatedAt { get; set; }
+
+        // Dato og tidspunkt for hvornår artiklen sidst blev opdateret
+        public DateTime UpdatedAt { get; set; }
+    }
 }

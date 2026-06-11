@@ -1,9 +1,9 @@
 ﻿using _2SemesterOpgave;
-using _2SemesterOpgave.Data;
-using _2SemesterOpgave.Models;
-using _2SemesterOpgave.Repositories.DTO;
-using _2SemesterOpgave.Services;
-using Microsoft.Data.Sqlite;
+using _2SemesterOpgave.Data; // Giver adgang til database-factory
+using _2SemesterOpgave.Models; // Giver adgang til vores modelklasser, fx Article og User
+using _2SemesterOpgave.Repositories.DTO; // Giver adgang til ArticleDTO
+using _2SemesterOpgave.Services; // Giver adgang til serviceklasser
+using Microsoft.Data.Sqlite; // Giver adgang til SQLite
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,481 +14,705 @@ using System.Text;
 
 namespace _2SemesterOpgave.Repositories
 {
-    
+    // Repositoryklasse der håndterer databasekald for artikler
     public class ArticleRepository
-	{
-		IDatabaseFactory _db;
-		public ArticleRepository(IDatabaseFactory db)
-		{
-			_db = db;
-		}
+    {
+        // Database-factory der bruges til at oprette databaseforbindelser
+        IDatabaseFactory _db;
 
-		public void DeleteArticle(Article article)
-		{
-			try
-			{
-				using IDbConnection connection = _db.CreateConnection();
-				using IDbCommand command = connection.CreateCommand();
+        // Constructor der modtager database-factory
+        public ArticleRepository(IDatabaseFactory db)
+        {
+            // Gemmer database-factory, så den kan bruges i repository-metoderne
+            _db = db;
+        }
 
-				command.CommandText = "DELETE FROM Articles WHERE id = @ArticleId;";
+        // Sletter en artikel fra databasen
+        public void DeleteArticle(Article article)
+        {
+            // Forsøger at slette artiklen
+            try
+            {
+                // Opretter forbindelse til databasen
+                using IDbConnection connection = _db.CreateConnection();
 
-				IDbDataParameter articleParam = command.CreateParameter();
-				articleParam.ParameterName = "@ArticleId";
-				articleParam.Value = article.Id;
-				command.Parameters.Add(articleParam);
+                // Opretter en SQL-kommando på forbindelsen
+                using IDbCommand command = connection.CreateCommand();
 
-				command.ExecuteNonQuery();
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine(ex);
-			}
-		}
+                // SQL der sletter artiklen ud fra dens id
+                command.CommandText = "DELETE FROM Articles WHERE id = @ArticleId;";
 
-		public void UpdateArticle(Article article) 
-		{
-			try {
-				using IDbConnection connection = _db.CreateConnection();
-				using IDbCommand command = connection.CreateCommand();
+                // Opretter parameter til artikelens id
+                IDbDataParameter articleParam = command.CreateParameter();
 
-				command.CommandText = @"
+                // Navnet på parameteren i SQL'en
+                articleParam.ParameterName = "@ArticleId";
+
+                // Sætter parameterens værdi til artikelens id
+                articleParam.Value = article.Id;
+
+                // Tilføjer parameteren til kommandoen
+                command.Parameters.Add(articleParam);
+
+                // Kører SQL-kommandoen
+                command.ExecuteNonQuery();
+            }
+            // Fanger fejl hvis sletning går galt
+            catch (Exception ex)
+            {
+                // Skriver fejlen i debug output
+                Debug.WriteLine(ex);
+            }
+        }
+
+        // Opdaterer en eksisterende artikel i databasen
+        public void UpdateArticle(Article article)
+        {
+            // Forsøger at opdatere artiklen
+            try
+            {
+                // Opretter forbindelse til databasen
+                using IDbConnection connection = _db.CreateConnection();
+
+                // Opretter en SQL-kommando på forbindelsen
+                using IDbCommand command = connection.CreateCommand();
+
+                // SQL der opdaterer artikelens data ud fra artikelens id
+                command.CommandText = @"
 					UPDATE Articles SET
 					name = @name, description = @description, category_id = @categoryId, subcategory_id = @subcategoryId, brand_id = @brandId, color_id = @colorId, size_id = @sizeId, daily_price = @dailyPrice, original_price = @originalPrice, is_rented = @isRented 
 					WHERE id = @ArticleId;";
 
-				IDbDataParameter articleParam = command.CreateParameter();
-				articleParam.ParameterName = "@ArticleId";
-				articleParam.Value = article.Id;
-				command.Parameters.Add(articleParam);
+                // Opretter parameter til artikelens id
+                IDbDataParameter articleParam = command.CreateParameter();
+                articleParam.ParameterName = "@ArticleId";
+                articleParam.Value = article.Id;
+                command.Parameters.Add(articleParam);
 
-				IDbDataParameter nameParam = command.CreateParameter();
-				nameParam.ParameterName = "@name";
-				nameParam.Value = article.Title;
-				command.Parameters.Add(nameParam);
+                // Opretter parameter til artikelens navn/titel
+                IDbDataParameter nameParam = command.CreateParameter();
+                nameParam.ParameterName = "@name";
+                nameParam.Value = article.Title;
+                command.Parameters.Add(nameParam);
 
-				IDbDataParameter descriptionParam = command.CreateParameter();
-				descriptionParam.ParameterName = "@description";
-				descriptionParam.Value = article.Description;
-				command.Parameters.Add(descriptionParam);
+                // Opretter parameter til artikelens beskrivelse
+                IDbDataParameter descriptionParam = command.CreateParameter();
+                descriptionParam.ParameterName = "@description";
+                descriptionParam.Value = article.Description;
+                command.Parameters.Add(descriptionParam);
 
-				IDbDataParameter categoryParam = command.CreateParameter();
-				categoryParam.ParameterName = "@categoryId";
-				categoryParam.Value = article.Category.Id;
-				command.Parameters.Add(categoryParam);
+                // Opretter parameter til kategori-id
+                IDbDataParameter categoryParam = command.CreateParameter();
+                categoryParam.ParameterName = "@categoryId";
+                categoryParam.Value = article.Category.Id;
+                command.Parameters.Add(categoryParam);
 
-				IDbDataParameter subcategoryParam = command.CreateParameter();
-				subcategoryParam.ParameterName = "@subcategoryId";
-				subcategoryParam.Value = article.SubCategory.Id;
-				command.Parameters.Add(subcategoryParam);
+                // Opretter parameter til underkategori-id
+                IDbDataParameter subcategoryParam = command.CreateParameter();
+                subcategoryParam.ParameterName = "@subcategoryId";
+                subcategoryParam.Value = article.SubCategory.Id;
+                command.Parameters.Add(subcategoryParam);
 
-				IDbDataParameter brandParam = command.CreateParameter();
-				brandParam.ParameterName = "@brandId";
-				brandParam.Value = article.Brand.Id;
-				command.Parameters.Add(brandParam);
+                // Opretter parameter til brand-id
+                IDbDataParameter brandParam = command.CreateParameter();
+                brandParam.ParameterName = "@brandId";
+                brandParam.Value = article.Brand.Id;
+                command.Parameters.Add(brandParam);
 
-				IDbDataParameter colorParam = command.CreateParameter();
-				colorParam.ParameterName = "@colorId";
-				colorParam.Value = article.Color.Id;
-				command.Parameters.Add(colorParam);
+                // Opretter parameter til farve-id
+                IDbDataParameter colorParam = command.CreateParameter();
+                colorParam.ParameterName = "@colorId";
+                colorParam.Value = article.Color.Id;
+                command.Parameters.Add(colorParam);
 
-				IDbDataParameter sizeParam = command.CreateParameter();
-				sizeParam.ParameterName = "@sizeId";
-				sizeParam.Value = article.Size.Id;
-				command.Parameters.Add(sizeParam);
+                // Opretter parameter til størrelse-id
+                IDbDataParameter sizeParam = command.CreateParameter();
+                sizeParam.ParameterName = "@sizeId";
+                sizeParam.Value = article.Size.Id;
+                command.Parameters.Add(sizeParam);
 
-				IDbDataParameter dailyPriceParam = command.CreateParameter();
-				dailyPriceParam.ParameterName = "@dailyPrice";
-				dailyPriceParam.Value = article.DailyPrice;
-				command.Parameters.Add(dailyPriceParam);
+                // Opretter parameter til dagspris
+                IDbDataParameter dailyPriceParam = command.CreateParameter();
+                dailyPriceParam.ParameterName = "@dailyPrice";
+                dailyPriceParam.Value = article.DailyPrice;
+                command.Parameters.Add(dailyPriceParam);
 
-				IDbDataParameter originalPriceParam = command.CreateParameter();
-				originalPriceParam.ParameterName = "@originalPrice";
-				originalPriceParam.Value = article.OriginalPrice;
-				command.Parameters.Add(originalPriceParam);
+                // Opretter parameter til oprindelig pris
+                IDbDataParameter originalPriceParam = command.CreateParameter();
+                originalPriceParam.ParameterName = "@originalPrice";
+                originalPriceParam.Value = article.OriginalPrice;
+                command.Parameters.Add(originalPriceParam);
 
-				IDbDataParameter isRentedParam = command.CreateParameter();
-				isRentedParam.ParameterName = "@isRented";
-				isRentedParam.Value = article.IsRented;
-				command.Parameters.Add(isRentedParam);
+                // Opretter parameter til om artiklen er udlejet
+                IDbDataParameter isRentedParam = command.CreateParameter();
+                isRentedParam.ParameterName = "@isRented";
+                isRentedParam.Value = article.IsRented;
+                command.Parameters.Add(isRentedParam);
 
-				command.ExecuteNonQuery();
-			}
-			catch(Exception ex)
-			{
-				Debug.WriteLine(ex);
-			}
-		}
-
-		public IEnumerable<ArticleDTO> GetAllArticles() 
-		{
-			List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
-
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
-			command.CommandText = "SELECT * FROM Articles";
-			using IDataReader reader = command.ExecuteReader();
-
-			while (reader.Read())
-			{
-				ArticleDTO articleDTO = CreateDTO(reader);
-				articleDTOs.Add(articleDTO);
-			}
-
-			reader.Close();
-			return articleDTOs;
-		}
-
-
-        public IEnumerable<ArticleDTO> GetNewestArticles()
-        {
-			List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
-
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
-			command.CommandText = "SELECT * FROM Articles ORDER BY created_at DESC LIMIT 10";
-			List<Article> articles = new List<Article>();
-			using IDataReader reader = command.ExecuteReader();
-
-			while (reader.Read())
-			{
-				ArticleDTO articleDTO = CreateDTO(reader);
-				articleDTOs.Add(articleDTO);
-			}
-
-			reader.Close();
-			return articleDTOs;
+                // Kører SQL-kommandoen
+                command.ExecuteNonQuery();
+            }
+            // Fanger fejl hvis opdatering går galt
+            catch (Exception ex)
+            {
+                // Skriver fejlen i debug output
+                Debug.WriteLine(ex);
+            }
         }
 
-		public IEnumerable<ArticleDTO> GetAllArticlesByOwner(int ownerId)
-		{
-			List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
+        // Henter alle artikler fra databasen
+        public IEnumerable<ArticleDTO> GetAllArticles()
+        {
+            // Opretter en liste til artikel-DTO'er
+            List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
 
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
-			command.CommandText = "SELECT * FROM Articles WHERE owner_id = @OwnerId";
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
 
-			IDbDataParameter ownerParameter = command.CreateParameter();
-			ownerParameter.ParameterName = "@OwnerId";
-			ownerParameter.DbType = DbType.Int32;
-			ownerParameter.Value = ownerId;
-			command.Parameters.Add(ownerParameter);
+            // Opretter en SQL-kommando
+            using IDbCommand command = connection.CreateCommand();
 
-			using IDataReader reader = command.ExecuteReader();
+            // SQL der henter alle artikler
+            command.CommandText = "SELECT * FROM Articles";
 
-			while (reader.Read())
-			{
-				ArticleDTO articleDTO = CreateDTO(reader);
-				articleDTOs.Add(articleDTO);
-			}
+            // Kører kommandoen og læser resultatet
+            using IDataReader reader = command.ExecuteReader();
 
-			reader.Close();
-			return articleDTOs;
-		}
+            // Looper igennem alle rækker i resultatet
+            while (reader.Read())
+            {
+                // Omdanner databaserækken til en ArticleDTO
+                ArticleDTO articleDTO = CreateDTO(reader);
 
-		public IEnumerable<ArticleDTO> GetAllFavoritedArticlesByUser(int userId)
-		{
-			List<ArticleDTO> articleDTOs = new();
+                // Tilføjer DTO'en til listen
+                articleDTOs.Add(articleDTO);
+            }
 
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
+            // Lukker readeren
+            reader.Close();
 
-			command.CommandText = @"
+            // Returnerer listen med artikler
+            return articleDTOs;
+        }
+
+
+        // Henter de nyeste artikler fra databasen
+        public IEnumerable<ArticleDTO> GetNewestArticles()
+        {
+            // Opretter en liste til artikel-DTO'er
+            List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
+
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
+
+            // Opretter en SQL-kommando
+            using IDbCommand command = connection.CreateCommand();
+
+            // SQL der henter de 10 nyeste artikler
+            command.CommandText = "SELECT * FROM Articles ORDER BY created_at DESC LIMIT 10";
+
+            // Liste til artikler, men den bruges ikke direkte her
+            List<Article> articles = new List<Article>();
+
+            // Kører kommandoen og læser resultatet
+            using IDataReader reader = command.ExecuteReader();
+
+            // Looper igennem alle rækker i resultatet
+            while (reader.Read())
+            {
+                // Omdanner databaserækken til en ArticleDTO
+                ArticleDTO articleDTO = CreateDTO(reader);
+
+                // Tilføjer DTO'en til listen
+                articleDTOs.Add(articleDTO);
+            }
+
+            // Lukker readeren
+            reader.Close();
+
+            // Returnerer listen med de nyeste artikler
+            return articleDTOs;
+        }
+
+        // Henter alle artikler der tilhører en bestemt ejer
+        public IEnumerable<ArticleDTO> GetAllArticlesByOwner(int ownerId)
+        {
+            // Opretter en liste til artikel-DTO'er
+            List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
+
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
+
+            // Opretter en SQL-kommando
+            using IDbCommand command = connection.CreateCommand();
+
+            // SQL der henter artikler ud fra owner_id
+            command.CommandText = "SELECT * FROM Articles WHERE owner_id = @OwnerId";
+
+            // Opretter parameter til ejerens id
+            IDbDataParameter ownerParameter = command.CreateParameter();
+            ownerParameter.ParameterName = "@OwnerId";
+            ownerParameter.DbType = DbType.Int32;
+            ownerParameter.Value = ownerId;
+            command.Parameters.Add(ownerParameter);
+
+            // Kører kommandoen og læser resultatet
+            using IDataReader reader = command.ExecuteReader();
+
+            // Looper igennem alle rækker i resultatet
+            while (reader.Read())
+            {
+                // Omdanner databaserækken til en ArticleDTO
+                ArticleDTO articleDTO = CreateDTO(reader);
+
+                // Tilføjer DTO'en til listen
+                articleDTOs.Add(articleDTO);
+            }
+
+            // Lukker readeren
+            reader.Close();
+
+            // Returnerer listen med ejerens artikler
+            return articleDTOs;
+        }
+
+        // Henter alle artikler som en bestemt bruger har markeret som favorit
+        public IEnumerable<ArticleDTO> GetAllFavoritedArticlesByUser(int userId)
+        {
+            // Opretter en liste til artikel-DTO'er
+            List<ArticleDTO> articleDTOs = new();
+
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
+
+            // Opretter en SQL-kommando
+            using IDbCommand command = connection.CreateCommand();
+
+            // SQL der henter artikler fra UserFavorites-tabellen
+            command.CommandText = @"
 				SELECT a.*
 				FROM Articles a
 				INNER JOIN UserFavorites uf
 					ON uf.article_id = a.id
 				WHERE uf.user_id = @UserId";
 
-			IDbDataParameter parameter = command.CreateParameter();
-			parameter.ParameterName = "@UserId";
-			parameter.DbType = DbType.Int32;
-			parameter.Value = userId;
+            // Opretter parameter til brugerens id
+            IDbDataParameter parameter = command.CreateParameter();
+            parameter.ParameterName = "@UserId";
+            parameter.DbType = DbType.Int32;
+            parameter.Value = userId;
 
-			command.Parameters.Add(parameter);
+            // Tilføjer parameteren til kommandoen
+            command.Parameters.Add(parameter);
 
-			using IDataReader reader = command.ExecuteReader();
+            // Kører kommandoen og læser resultatet
+            using IDataReader reader = command.ExecuteReader();
 
-			while (reader.Read())
-			{
-				articleDTOs.Add(CreateDTO(reader));
-			}
+            // Looper igennem alle rækker i resultatet
+            while (reader.Read())
+            {
+                // Omdanner databaserækken til en ArticleDTO og tilføjer den til listen
+                articleDTOs.Add(CreateDTO(reader));
+            }
 
-			return articleDTOs;
-		}
+            // Returnerer brugerens favoritartikler
+            return articleDTOs;
+        }
 
-		public void AddFavorite(int userId, int articleId)
-		{
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
+        // Tilføjer en artikel som favorit for en bruger
+        public void AddFavorite(int userId, int articleId)
+        {
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
 
-			command.CommandText = @"
+            // Opretter en SQL-kommando
+            using IDbCommand command = connection.CreateCommand();
+
+            // SQL der indsætter en favorit-relation mellem bruger og artikel
+            command.CommandText = @"
 				INSERT INTO UserFavorites(user_id, article_id)
 				VALUES(@UserId, @ArticleId)";
 
-			IDbDataParameter userParam = command.CreateParameter();
-			userParam.ParameterName = "@UserId";
-			userParam.Value = userId;
-			command.Parameters.Add(userParam);
+            // Opretter parameter til brugerens id
+            IDbDataParameter userParam = command.CreateParameter();
+            userParam.ParameterName = "@UserId";
+            userParam.Value = userId;
+            command.Parameters.Add(userParam);
 
-			IDbDataParameter articleParam = command.CreateParameter();
-			articleParam.ParameterName = "@ArticleId";
-			articleParam.Value = articleId;
-			command.Parameters.Add(articleParam);
+            // Opretter parameter til artikelens id
+            IDbDataParameter articleParam = command.CreateParameter();
+            articleParam.ParameterName = "@ArticleId";
+            articleParam.Value = articleId;
+            command.Parameters.Add(articleParam);
 
-			command.ExecuteNonQuery();
-		}
+            // Kører SQL-kommandoen
+            command.ExecuteNonQuery();
+        }
 
-		public void RemoveFavorite(int userId, int articleId)
-		{
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
+        // Fjerner en artikel fra en brugers favoritter
+        public void RemoveFavorite(int userId, int articleId)
+        {
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
 
-			command.CommandText = @"
+            // Opretter en SQL-kommando
+            using IDbCommand command = connection.CreateCommand();
+
+            // SQL der sletter favorit-relationen mellem bruger og artikel
+            command.CommandText = @"
 				DELETE FROM UserFavorites
 				WHERE user_id = @UserId
 				AND article_id = @ArticleId";
 
-			IDbDataParameter userParam = command.CreateParameter();
-			userParam.ParameterName = "@UserId";
-			userParam.Value = userId;
-			command.Parameters.Add(userParam);
+            // Opretter parameter til brugerens id
+            IDbDataParameter userParam = command.CreateParameter();
+            userParam.ParameterName = "@UserId";
+            userParam.Value = userId;
+            command.Parameters.Add(userParam);
 
-			IDbDataParameter articleParam = command.CreateParameter();
-			articleParam.ParameterName = "@ArticleId";
-			articleParam.Value = articleId;
-			command.Parameters.Add(articleParam);
+            // Opretter parameter til artikelens id
+            IDbDataParameter articleParam = command.CreateParameter();
+            articleParam.ParameterName = "@ArticleId";
+            articleParam.Value = articleId;
+            command.Parameters.Add(articleParam);
 
-			command.ExecuteNonQuery();
-		}
+            // Kører SQL-kommandoen
+            command.ExecuteNonQuery();
+        }
 
-		public bool IsFavorite(int userId, int articleId)
-		{
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
+        // Tjekker om en artikel er favorit for en bestemt bruger
+        public bool IsFavorite(int userId, int articleId)
+        {
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
 
-			command.CommandText = @"
+            // Opretter en SQL-kommando
+            using IDbCommand command = connection.CreateCommand();
+
+            // SQL der tæller om favoritten findes
+            command.CommandText = @"
 				SELECT COUNT(*)
 				FROM UserFavorites
 				WHERE user_id = @UserId
 				AND article_id = @ArticleId";
 
-			IDbDataParameter userParam = command.CreateParameter();
-			userParam.ParameterName = "@UserId";
-			userParam.Value = userId;
-			command.Parameters.Add(userParam);
+            // Opretter parameter til brugerens id
+            IDbDataParameter userParam = command.CreateParameter();
+            userParam.ParameterName = "@UserId";
+            userParam.Value = userId;
+            command.Parameters.Add(userParam);
 
-			IDbDataParameter articleParam = command.CreateParameter();
-			articleParam.ParameterName = "@ArticleId";
-			articleParam.Value = articleId;
-			command.Parameters.Add(articleParam);
+            // Opretter parameter til artikelens id
+            IDbDataParameter articleParam = command.CreateParameter();
+            articleParam.ParameterName = "@ArticleId";
+            articleParam.Value = articleId;
+            command.Parameters.Add(articleParam);
 
-			return Convert.ToInt32(command.ExecuteScalar()) > 0;
-		}
+            // Returnerer true hvis der findes mindst én favorit
+            return Convert.ToInt32(command.ExecuteScalar()) > 0;
+        }
 
 
-		public IEnumerable<ArticleDTO> GetFilteredArticles(FilterCriteria filter)
-		{
-			List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
+        // Henter artikler ud fra filtrering
+        public IEnumerable<ArticleDTO> GetFilteredArticles(FilterCriteria filter)
+        {
+            // Opretter en liste til artikel-DTO'er
+            List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
 
-			StringBuilder sql = new StringBuilder("SELECT * FROM Articles WHERE 1=1");
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
 
-				if (!string.IsNullOrWhiteSpace(filter.SearchText))
-				{
-					sql.Append(" AND (name LIKE @search OR description LIKE @search)");
-					IDbDataParameter parameter = command.CreateParameter();
-					parameter.ParameterName = "@search";
-					parameter.Value = $"%{filter.SearchText}%";
-					command.Parameters.Add(parameter);
-				}
+            // Opretter en SQL-kommando
+            using IDbCommand command = connection.CreateCommand();
 
-				command.CommandText = sql.ToString();
-				IDataReader reader = command.ExecuteReader();
-				List<Article> articles = new List<Article>();
+            // Starter SQL'en med en betingelse der altid er sand
+            StringBuilder sql = new StringBuilder("SELECT * FROM Articles WHERE 1=1");
 
-				while (reader.Read())
-				{
-					ArticleDTO articleDTO = CreateDTO(reader);
-					articleDTOs.Add(articleDTO);
-				}
-				return articleDTOs;
+            // Tjekker om brugeren har skrevet søgetekst
+            if (!string.IsNullOrWhiteSpace(filter.SearchText))
+            {
+                // Tilføjer søgning i navn og beskrivelse
+                sql.Append(" AND (name LIKE @search OR description LIKE @search)");
 
-		}
+                // Opretter søgeparameter
+                IDbDataParameter parameter = command.CreateParameter();
+                parameter.ParameterName = "@search";
+                parameter.Value = $"%{filter.SearchText}%";
+                command.Parameters.Add(parameter);
+            }
 
+            // Sætter den færdige SQL-tekst på kommandoen
+            command.CommandText = sql.ToString();
+
+            // Kører kommandoen og læser resultatet
+            IDataReader reader = command.ExecuteReader();
+
+            // Liste til artikler, men den bruges ikke direkte her
+            List<Article> articles = new List<Article>();
+
+            // Looper igennem søgeresultaterne
+            while (reader.Read())
+            {
+                // Omdanner databaserækken til en ArticleDTO
+                ArticleDTO articleDTO = CreateDTO(reader);
+
+                // Tilføjer DTO'en til listen
+                articleDTOs.Add(articleDTO);
+            }
+
+            // Returnerer filtrerede artikler
+            return articleDTOs;
+        }
+
+        // Opretter en ny artikel i databasen
         public void CreateArticle(Article article, User owner)
         {
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
 
-			command.CommandText = "INSERT INTO Articles (name, description, category_id, subcategory_id, brand_id, color_id, size_id, daily_price, original_price, is_rented, owner_id) VALUES (@name, @description, @categoryId, @subcategoryId, @brandId, @colorId, @sizeId, @dailyPrice, @originalPrice, @isRented, @ownerId)";
+            // Opretter en SQL-kommando
+            using IDbCommand command = connection.CreateCommand();
 
-			IDbDataParameter nameParam = command.CreateParameter();
+            // SQL der indsætter en ny artikel i databasen
+            command.CommandText = "INSERT INTO Articles (name, description, category_id, subcategory_id, brand_id, color_id, size_id, daily_price, original_price, is_rented, owner_id) VALUES (@name, @description, @categoryId, @subcategoryId, @brandId, @colorId, @sizeId, @dailyPrice, @originalPrice, @isRented, @ownerId)";
+
+            // Opretter parameter til artikelens titel/navn
+            IDbDataParameter nameParam = command.CreateParameter();
             nameParam.ParameterName = "@name";
             nameParam.DbType = DbType.String;
             nameParam.Value = article.Title;
             command.Parameters.Add(nameParam);
 
+            // Opretter parameter til artikelens beskrivelse
             IDbDataParameter descriptionParam = command.CreateParameter();
             descriptionParam.DbType = DbType.String;
             descriptionParam.ParameterName = "@description";
             descriptionParam.Value = article.Description;
             command.Parameters.Add(descriptionParam);
 
+            // Opretter parameter til kategori-id
             IDbDataParameter categoryIdParam = command.CreateParameter();
             categoryIdParam.DbType = DbType.Int32;
             categoryIdParam.ParameterName = "@categoryId";
             categoryIdParam.Value = article.Category.Id;
             command.Parameters.Add(categoryIdParam);
 
+            // Opretter parameter til underkategori-id
             IDbDataParameter subcategoryIdParam = command.CreateParameter();
             subcategoryIdParam.DbType = DbType.Int32;
             subcategoryIdParam.ParameterName = "@subcategoryId";
             subcategoryIdParam.Value = article.SubCategory.Id;
             command.Parameters.Add(subcategoryIdParam);
 
+            // Opretter parameter til brand-id
             IDbDataParameter brandIdParam = command.CreateParameter();
             brandIdParam.DbType = DbType.Int32;
             brandIdParam.ParameterName = "@brandId";
             brandIdParam.Value = article.Brand.Id;
             command.Parameters.Add(brandIdParam);
 
+            // Opretter parameter til farve-id
             IDbDataParameter colorIdParam = command.CreateParameter();
             colorIdParam.DbType = DbType.Int32;
             colorIdParam.ParameterName = "@colorId";
             colorIdParam.Value = article.Color.Id;
             command.Parameters.Add(colorIdParam);
 
+            // Opretter parameter til størrelse-id
             IDbDataParameter sizeIdParam = command.CreateParameter();
             sizeIdParam.DbType = DbType.Int32;
             sizeIdParam.ParameterName = "@sizeId";
             sizeIdParam.Value = article.Size.Id;
             command.Parameters.Add(sizeIdParam);
 
+            // Opretter parameter til dagspris
             IDbDataParameter dailyPriceParam = command.CreateParameter();
             dailyPriceParam.DbType = DbType.Single;
             dailyPriceParam.ParameterName = "@dailyPrice";
             dailyPriceParam.Value = article.DailyPrice;
             command.Parameters.Add(dailyPriceParam);
 
+            // Opretter parameter til oprindelig pris
             IDbDataParameter originalPriceParam = command.CreateParameter();
             originalPriceParam.DbType = DbType.Single;
             originalPriceParam.ParameterName = "@originalPrice";
             originalPriceParam.Value = article.OriginalPrice;
             command.Parameters.Add(originalPriceParam);
 
+            // Opretter parameter til om artiklen er udlejet
             IDbDataParameter isRentedParam = command.CreateParameter();
             isRentedParam.DbType = DbType.Int32;
             isRentedParam.ParameterName = "@isRented";
             isRentedParam.Value = article.IsRented ? 1 : 0;
             command.Parameters.Add(isRentedParam);
-            
-			IDbDataParameter ownerParam = command.CreateParameter();
+
+            // Opretter parameter til ejerens id
+            IDbDataParameter ownerParam = command.CreateParameter();
             ownerParam.DbType = DbType.Int32;
             ownerParam.ParameterName = "@ownerId";
             ownerParam.Value = owner.Id;
             command.Parameters.Add(ownerParam);
 
+            // Kører SQL-kommandoen og gemmer artiklen
             command.ExecuteNonQuery();
         }
 
 
+        // Omdanner en databaserække til en ArticleDTO
         ArticleDTO CreateDTO(IDataReader reader)
-		{
-			int id = reader.GetOrdinal("id");
-			int name = reader.GetOrdinal("name");
-			int description = reader.GetOrdinal("description");
+        {
+            // Finder placeringen af id-kolonnen
+            int id = reader.GetOrdinal("id");
 
-			int category = reader.GetOrdinal("category_id");
-			int subcategory = reader.GetOrdinal("subcategory_id");
+            // Finder placeringen af name-kolonnen
+            int name = reader.GetOrdinal("name");
 
-			int brand = reader.GetOrdinal("brand_id");
+            // Finder placeringen af description-kolonnen
+            int description = reader.GetOrdinal("description");
 
-			int color = reader.GetOrdinal("color_id");
-			int size = reader.GetOrdinal("size_id");
-			int owner = reader.GetOrdinal("owner_id");
+            // Finder placeringen af category_id-kolonnen
+            int category = reader.GetOrdinal("category_id");
 
-			int daily = reader.GetOrdinal("daily_price");
-			int original = reader.GetOrdinal("original_price");
+            // Finder placeringen af subcategory_id-kolonnen
+            int subcategory = reader.GetOrdinal("subcategory_id");
 
-			int rented = reader.GetOrdinal("is_rented");
-			int clean = reader.GetOrdinal("is_clean");
+            // Finder placeringen af brand_id-kolonnen
+            int brand = reader.GetOrdinal("brand_id");
 
-			int created = reader.GetOrdinal("created_at");
-			int updated = reader.GetOrdinal("updated_at");
+            // Finder placeringen af color_id-kolonnen
+            int color = reader.GetOrdinal("color_id");
 
-			ArticleDTO dto = new ArticleDTO();
+            // Finder placeringen af size_id-kolonnen
+            int size = reader.GetOrdinal("size_id");
 
-			dto.Id = reader.GetInt32(id);
-			dto.Title = reader.GetString(name);
+            // Finder placeringen af owner_id-kolonnen
+            int owner = reader.GetOrdinal("owner_id");
 
-			if (!reader.IsDBNull(description))
-			{
-				dto.Description = reader.GetString(description);
-			}
-			else
-			{
-				dto.Description = string.Empty;
-			}
+            // Finder placeringen af daily_price-kolonnen
+            int daily = reader.GetOrdinal("daily_price");
 
-			if (!reader.IsDBNull(category))
-			{
-				dto.CategoryId = reader.GetInt32(category);
-			}
+            // Finder placeringen af original_price-kolonnen
+            int original = reader.GetOrdinal("original_price");
 
-			if (!reader.IsDBNull(subcategory))
-			{
-				dto.SubcategoryId = reader.GetInt32(subcategory);
-			}
+            // Finder placeringen af is_rented-kolonnen
+            int rented = reader.GetOrdinal("is_rented");
 
-			if (!reader.IsDBNull(brand))
-			{
-				dto.BrandId = reader.GetInt32(brand);
-			}
+            // Finder placeringen af is_clean-kolonnen
+            int clean = reader.GetOrdinal("is_clean");
 
-			if (!reader.IsDBNull(color))
-			{
-				dto.ColorId = reader.GetInt32(color);
-			}
+            // Finder placeringen af created_at-kolonnen
+            int created = reader.GetOrdinal("created_at");
 
-			if (!reader.IsDBNull(size))
-			{
-				dto.SizeId = reader.GetInt32(size);
-			}
+            // Finder placeringen af updated_at-kolonnen
+            int updated = reader.GetOrdinal("updated_at");
 
-			if (!reader.IsDBNull(daily))
-			{
-				Debug.WriteLine($"DTO DailyPrice: {dto.DailyPrice}");
-				Debug.WriteLine($"reader DailyPrice: {reader.GetFloat(daily)}");
-				dto.DailyPrice = reader.GetFloat(daily);
-			}
-			else
-			{
-				dto.DailyPrice = 0f;
-			}
+            // Opretter et tomt ArticleDTO-objekt
+            ArticleDTO dto = new ArticleDTO();
 
-			if (!reader.IsDBNull(original))
-			{
-				dto.OriginalPrice = reader.GetFloat(original);
-			}
-			else
-			{
-				dto.OriginalPrice = 0f;
-			}
+            // Sætter artikelens id
+            dto.Id = reader.GetInt32(id);
 
-			dto.IsRented = reader.GetInt32(rented) != 0;
+            // Sætter artikelens titel/navn
+            dto.Title = reader.GetString(name);
 
-			dto.IsClean = reader.GetInt32(clean) != 0;
+            // Tjekker om description ikke er null
+            if (!reader.IsDBNull(description))
+            {
+                // Sætter artikelens beskrivelse
+                dto.Description = reader.GetString(description);
+            }
+            else
+            {
+                // Sætter beskrivelsen til tom tekst hvis feltet er null
+                dto.Description = string.Empty;
+            }
 
-			if (!reader.IsDBNull(owner))
-			{
-				dto.OwnerId = reader.GetInt32(owner);
-			}
+            // Tjekker om category_id ikke er null
+            if (!reader.IsDBNull(category))
+            {
+                // Sætter kategori-id
+                dto.CategoryId = reader.GetInt32(category);
+            }
 
-			dto.CreatedAt = DateTime.Parse(reader.GetString(created));
-			dto.UpdatedAt = DateTime.Parse(reader.GetString(updated));
+            // Tjekker om subcategory_id ikke er null
+            if (!reader.IsDBNull(subcategory))
+            {
+                // Sætter underkategori-id
+                dto.SubcategoryId = reader.GetInt32(subcategory);
+            }
 
-			return dto;
-		}
-	}
+            // Tjekker om brand_id ikke er null
+            if (!reader.IsDBNull(brand))
+            {
+                // Sætter brand-id
+                dto.BrandId = reader.GetInt32(brand);
+            }
+
+            // Tjekker om color_id ikke er null
+            if (!reader.IsDBNull(color))
+            {
+                // Sætter farve-id
+                dto.ColorId = reader.GetInt32(color);
+            }
+
+            // Tjekker om size_id ikke er null
+            if (!reader.IsDBNull(size))
+            {
+                // Sætter størrelse-id
+                dto.SizeId = reader.GetInt32(size);
+            }
+
+            // Tjekker om daily_price ikke er null
+            if (!reader.IsDBNull(daily))
+            {
+                // Skriver dagspris i debug output
+                Debug.WriteLine($"DTO DailyPrice: {dto.DailyPrice}");
+
+                // Skriver dagspris fra databasen i debug output
+                Debug.WriteLine($"reader DailyPrice: {reader.GetFloat(daily)}");
+
+                // Sætter dagsprisen
+                dto.DailyPrice = reader.GetFloat(daily);
+            }
+            else
+            {
+                // Sætter dagsprisen til 0 hvis feltet er null
+                dto.DailyPrice = 0f;
+            }
+
+            // Tjekker om original_price ikke er null
+            if (!reader.IsDBNull(original))
+            {
+                // Sætter oprindelig pris
+                dto.OriginalPrice = reader.GetFloat(original);
+            }
+            else
+            {
+                // Sætter oprindelig pris til 0 hvis feltet er null
+                dto.OriginalPrice = 0f;
+            }
+
+            // Sætter om artiklen er udlejet
+            dto.IsRented = reader.GetInt32(rented) != 0;
+
+            // Sætter om artiklen er ren
+            dto.IsClean = reader.GetInt32(clean) != 0;
+
+            // Tjekker om owner_id ikke er null
+            if (!reader.IsDBNull(owner))
+            {
+                // Sætter ejer-id
+                dto.OwnerId = reader.GetInt32(owner);
+            }
+
+            // Konverterer created_at fra tekst til DateTime
+            dto.CreatedAt = DateTime.Parse(reader.GetString(created));
+
+            // Konverterer updated_at fra tekst til DateTime
+            dto.UpdatedAt = DateTime.Parse(reader.GetString(updated));
+
+            // Returnerer den færdige DTO
+            return dto;
+        }
+    }
 }

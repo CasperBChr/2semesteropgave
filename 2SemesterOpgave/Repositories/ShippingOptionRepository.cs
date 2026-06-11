@@ -3,53 +3,84 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Text;
-using _2SemesterOpgave.Data;
-using _2SemesterOpgave.Repositories.DTO;
-using Microsoft.Data.Sqlite;
+using _2SemesterOpgave.Data; // Giver adgang til database-factory
+using _2SemesterOpgave.Repositories.DTO; // Giver adgang til ShippingOptionDTO
+using Microsoft.Data.Sqlite; // Giver adgang til SQLite
 
 namespace _2SemesterOpgave.Repositories
 {
-	public class ShippingOptionRepository
-	{
-		IDatabaseFactory _db;
+    // Repositoryklasse der håndterer databasekald for fragtmuligheder
+    public class ShippingOptionRepository
+    {
+        // Database-factory der bruges til at oprette databaseforbindelser
+        IDatabaseFactory _db;
 
-		public ShippingOptionRepository(IDatabaseFactory db)
-		{
-			_db = db;
-		}
+        // Constructor der modtager database-factory
+        public ShippingOptionRepository(IDatabaseFactory db)
+        {
+            // Gemmer database-factory, så den kan bruges i repository-metoderne
+            _db = db;
+        }
 
-		public IEnumerable<ShippingOptionDTO> GetAll()
-		{
-			List<ShippingOptionDTO> dtos = new();
+        // Henter alle fragtmuligheder fra databasen
+        public IEnumerable<ShippingOptionDTO> GetAll()
+        {
+            // Opretter en liste til ShippingOptionDTO'er
+            List<ShippingOptionDTO> dtos = new();
 
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
-			command.CommandText = "SELECT * FROM ShippingOptions";
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
 
-				using IDataReader reader = command.ExecuteReader();
+            // Opretter en SQL-kommando på forbindelsen
+            using IDbCommand command = connection.CreateCommand();
 
-				int id = reader.GetOrdinal("id");
-				int name = reader.GetOrdinal("name");
-				int baseFee = reader.GetOrdinal("base_fee");
-				int deliveryTimeDays = reader.GetOrdinal("delivery_time_days");
+            // SQL der henter alle fragtmuligheder
+            command.CommandText = "SELECT * FROM ShippingOptions";
 
-				while (reader.Read())
-				{
-					dtos.Add(CreateDTO(reader, id, name, baseFee, deliveryTimeDays));
-				}
+            // Kører SQL-kommandoen og læser resultatet
+            using IDataReader reader = command.ExecuteReader();
 
-				return dtos;
-		}
+            // Finder placeringen af id-kolonnen
+            int id = reader.GetOrdinal("id");
 
-		ShippingOptionDTO CreateDTO(IDataReader reader, int id, int name, int baseFee, int deliveryTimeDays)
-		{
-			return new ShippingOptionDTO
-			{
-				Id = reader.GetInt32(id),
-				Name = reader.GetString(name),
-				BaseFee = reader.GetFloat(baseFee),
-				DeliveryTimeDays = reader.GetInt32(deliveryTimeDays)
-			};
-		}
-	}
+            // Finder placeringen af name-kolonnen
+            int name = reader.GetOrdinal("name");
+
+            // Finder placeringen af base_fee-kolonnen
+            int baseFee = reader.GetOrdinal("base_fee");
+
+            // Finder placeringen af delivery_time_days-kolonnen
+            int deliveryTimeDays = reader.GetOrdinal("delivery_time_days");
+
+            // Looper igennem alle rækker i resultatet
+            while (reader.Read())
+            {
+                // Omdanner databaserækken til en ShippingOptionDTO og tilføjer den til listen
+                dtos.Add(CreateDTO(reader, id, name, baseFee, deliveryTimeDays));
+            }
+
+            // Returnerer listen med fragtmuligheder
+            return dtos;
+        }
+
+        // Omdanner en databaserække til en ShippingOptionDTO
+        ShippingOptionDTO CreateDTO(IDataReader reader, int id, int name, int baseFee, int deliveryTimeDays)
+        {
+            // Opretter og returnerer en ShippingOptionDTO med data fra databasen
+            return new ShippingOptionDTO
+            {
+                // Sætter fragtmulighedens id
+                Id = reader.GetInt32(id),
+
+                // Sætter fragtmulighedens navn
+                Name = reader.GetString(name),
+
+                // Sætter grundprisen for fragten
+                BaseFee = reader.GetFloat(baseFee),
+
+                // Sætter antal dage leveringen tager
+                DeliveryTimeDays = reader.GetInt32(deliveryTimeDays)
+            };
+        }
+    }
 }

@@ -3,52 +3,78 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Text;
-using _2SemesterOpgave.Data;
-using _2SemesterOpgave.Repositories.DTO;
-using Microsoft.Data.Sqlite;
+using _2SemesterOpgave.Data; // Giver adgang til database-factory
+using _2SemesterOpgave.Repositories.DTO; // Giver adgang til InsuranceOptionDTO
+using Microsoft.Data.Sqlite; // Giver adgang til SQLite
 
 namespace _2SemesterOpgave.Repositories
 {
-	public class InsuranceOptionRepository
-	{
-		IDatabaseFactory _db;
+    // Repositoryklasse der håndterer databasekald for forsikringsmuligheder
+    public class InsuranceOptionRepository
+    {
+        // Database-factory der bruges til at oprette databaseforbindelser
+        IDatabaseFactory _db;
 
-		public InsuranceOptionRepository(IDatabaseFactory db)
-		{
-			_db = db;
-		}
+        // Constructor der modtager database-factory
+        public InsuranceOptionRepository(IDatabaseFactory db)
+        {
+            // Gemmer database-factory, så den kan bruges i repository-metoderne
+            _db = db;
+        }
 
-		public IEnumerable<InsuranceOptionDTO> GetAll()
-		{
-			List<InsuranceOptionDTO> dtos = new();
+        // Henter alle forsikringsmuligheder fra databasen
+        public IEnumerable<InsuranceOptionDTO> GetAll()
+        {
+            // Opretter en liste til forsikrings-DTO'er
+            List<InsuranceOptionDTO> dtos = new();
 
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
-			command.CommandText = "SELECT * FROM InsuranceOptions";
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
 
-				using IDataReader reader = command.ExecuteReader();
+            // Opretter en SQL-kommando på forbindelsen
+            using IDbCommand command = connection.CreateCommand();
 
-				int id = reader.GetOrdinal("id");
-				int name = reader.GetOrdinal("name");
-				int baseFees = reader.GetOrdinal("base_fees");
+            // SQL der henter alle forsikringsmuligheder
+            command.CommandText = "SELECT * FROM InsuranceOptions";
 
-				while (reader.Read())
-				{
-					dtos.Add(CreateDTO(reader, id, name, baseFees));
-				}
+            // Kører SQL-kommandoen og læser resultatet
+            using IDataReader reader = command.ExecuteReader();
 
-				return dtos;
+            // Finder placeringen af id-kolonnen
+            int id = reader.GetOrdinal("id");
 
-		}
+            // Finder placeringen af name-kolonnen
+            int name = reader.GetOrdinal("name");
 
-		InsuranceOptionDTO CreateDTO(IDataReader reader, int id, int name, int baseFees)
-		{
-			return new InsuranceOptionDTO
-			{
-				Id = reader.GetInt32(id),
-				Name = reader.GetString(name),
-				BaseFees = reader.GetFloat(baseFees)
-			};
-		}
-	}
+            // Finder placeringen af base_fees-kolonnen
+            int baseFees = reader.GetOrdinal("base_fees");
+
+            // Looper igennem alle rækker i resultatet
+            while (reader.Read())
+            {
+                // Omdanner databaserækken til en InsuranceOptionDTO og tilføjer den til listen
+                dtos.Add(CreateDTO(reader, id, name, baseFees));
+            }
+
+            // Returnerer listen med forsikringsmuligheder
+            return dtos;
+        }
+
+        // Omdanner en databaserække til en InsuranceOptionDTO
+        InsuranceOptionDTO CreateDTO(IDataReader reader, int id, int name, int baseFees)
+        {
+            // Opretter og returnerer en InsuranceOptionDTO med data fra databasen
+            return new InsuranceOptionDTO
+            {
+                // Sætter forsikringsmulighedens id
+                Id = reader.GetInt32(id),
+
+                // Sætter forsikringsmulighedens navn
+                Name = reader.GetString(name),
+
+                // Sætter grundprisen for forsikringen
+                BaseFees = reader.GetFloat(baseFees)
+            };
+        }
+    }
 }

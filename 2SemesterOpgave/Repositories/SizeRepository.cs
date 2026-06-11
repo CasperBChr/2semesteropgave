@@ -3,53 +3,84 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Text;
-using _2SemesterOpgave.Data;
-using _2SemesterOpgave.Repositories.DTO;
-using Microsoft.Data.Sqlite;
+using _2SemesterOpgave.Data; // Giver adgang til database-factory
+using _2SemesterOpgave.Repositories.DTO; // Giver adgang til SizeDTO
+using Microsoft.Data.Sqlite; // Giver adgang til SQLite
 
 namespace _2SemesterOpgave.Repositories
 {
-	public class SizeRepository
-	{
-		IDatabaseFactory _db;
+    // Repositoryklasse der håndterer databasekald for størrelser
+    public class SizeRepository
+    {
+        // Database-factory der bruges til at oprette databaseforbindelser
+        IDatabaseFactory _db;
 
-		public SizeRepository(IDatabaseFactory db)
-		{
-			_db = db;
-		}
+        // Constructor der modtager database-factory
+        public SizeRepository(IDatabaseFactory db)
+        {
+            // Gemmer database-factory, så den kan bruges i repository-metoderne
+            _db = db;
+        }
 
-		public IEnumerable<SizeDTO> GetAllSizes()
-		{
-			List<SizeDTO> dtos = new();
+        // Henter alle størrelser fra databasen
+        public IEnumerable<SizeDTO> GetAllSizes()
+        {
+            // Opretter en liste til SizeDTO'er
+            List<SizeDTO> dtos = new();
 
-			using IDbConnection connection = _db.CreateConnection();
-			using IDbCommand command = connection.CreateCommand();
-			command.CommandText = "SELECT * FROM Sizes";
+            // Opretter forbindelse til databasen
+            using IDbConnection connection = _db.CreateConnection();
 
-				using IDataReader reader = command.ExecuteReader();
+            // Opretter en SQL-kommando på forbindelsen
+            using IDbCommand command = connection.CreateCommand();
 
-				int id = reader.GetOrdinal("id");
-				int name = reader.GetOrdinal("name");
-				int created = reader.GetOrdinal("created_at");
-				int updated = reader.GetOrdinal("updated_at");
+            // SQL der henter alle størrelser
+            command.CommandText = "SELECT * FROM Sizes";
 
-				while (reader.Read())
-				{
-					dtos.Add(CreateDTO(reader, id, name, created, updated));
-				}
+            // Kører SQL-kommandoen og læser resultatet
+            using IDataReader reader = command.ExecuteReader();
 
-				return dtos;
-		}
+            // Finder placeringen af id-kolonnen
+            int id = reader.GetOrdinal("id");
 
-		SizeDTO CreateDTO(IDataReader reader, int id, int name, int created, int updated)
-		{
-			return new SizeDTO
-			{
-				Id = reader.GetInt32(id),
-				Name = reader.GetString(name),
-				CreatedAt = DateTime.Parse(reader.GetString(created)),
-				UpdatedAt = DateTime.Parse(reader.GetString(updated))
-			};
-		}
-	}
+            // Finder placeringen af name-kolonnen
+            int name = reader.GetOrdinal("name");
+
+            // Finder placeringen af created_at-kolonnen
+            int created = reader.GetOrdinal("created_at");
+
+            // Finder placeringen af updated_at-kolonnen
+            int updated = reader.GetOrdinal("updated_at");
+
+            // Looper igennem alle rækker i resultatet
+            while (reader.Read())
+            {
+                // Omdanner databaserækken til en SizeDTO og tilføjer den til listen
+                dtos.Add(CreateDTO(reader, id, name, created, updated));
+            }
+
+            // Returnerer listen med størrelser
+            return dtos;
+        }
+
+        // Omdanner en databaserække til en SizeDTO
+        SizeDTO CreateDTO(IDataReader reader, int id, int name, int created, int updated)
+        {
+            // Opretter og returnerer en SizeDTO med data fra databasen
+            return new SizeDTO
+            {
+                // Sætter størrelsens id
+                Id = reader.GetInt32(id),
+
+                // Sætter størrelsens navn
+                Name = reader.GetString(name),
+
+                // Konverterer created_at fra tekst til DateTime
+                CreatedAt = DateTime.Parse(reader.GetString(created)),
+
+                // Konverterer updated_at fra tekst til DateTime
+                UpdatedAt = DateTime.Parse(reader.GetString(updated))
+            };
+        }
+    }
 }

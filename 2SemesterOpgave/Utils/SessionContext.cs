@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using _2SemesterOpgave.Models;
+using _2SemesterOpgave.Models; // Giver adgang til vores modelklasser, fx User
 
 namespace _2SemesterOpgave.Utils
 {
     //Klasse for SessionContext, som holder styr på den aktuelle bruger som er logget ind
     public class SessionContext
-	{
-		public User? CurrentUser { get; set; }
+    {
+        // Gemmer den bruger der er logget ind
+        public User? CurrentUser { get; set; }
 
-		public bool IsAuthenticated => CurrentUser != null;
+        // Returnerer true hvis der er en bruger logget ind
+        public bool IsAuthenticated => CurrentUser != null;
 
-		public void Clear()
-		{
-			CurrentUser = null;
-		}
-	}
+        // Rydder sessionen og logger brugeren ud
+        public void Clear()
+        {
+            // Fjerner den nuværende bruger
+            CurrentUser = null;
+        }
+    }
 }

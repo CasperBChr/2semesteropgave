@@ -1,51 +1,77 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using _2SemesterOpgave.Models;
-using _2SemesterOpgave.Repositories;
-using _2SemesterOpgave.Repositories.DTO;
+using _2SemesterOpgave.Models; // Giver adgang til vores modelklasser, fx ShippingOption
+using _2SemesterOpgave.Repositories; // Giver adgang til ShippingOptionRepository
+using _2SemesterOpgave.Repositories.DTO; // Giver adgang til ShippingOptionDTO
 
 namespace _2SemesterOpgave.Services
 {
-	public class ShippingOptionServices
-	{
-		ShippingOptionRepository _repository;
-		Dictionary<int, ShippingOption> _cache = new();
+    // Serviceklasse der håndterer logik for fragtmuligheder
+    public class ShippingOptionServices
+    {
+        // Repository der bruges til databasekald for fragtmuligheder
+        ShippingOptionRepository _repository;
 
-		public ShippingOptionServices(ShippingOptionRepository repository)
-		{
-			_repository = repository;
-			LoadCache();
-		}
+        // Dictionary der bruges som cache, så fragtmuligheder kan findes hurtigt ud fra id
+        Dictionary<int, ShippingOption> _cache = new();
 
-		void LoadCache()
-		{
-			foreach (ShippingOptionDTO dto in _repository.GetAll())
-			{
-				_cache[dto.Id] = Map(dto);
-			}
-		}
+        // Constructor der modtager ShippingOptionRepository
+        public ShippingOptionServices(ShippingOptionRepository repository)
+        {
+            // Gemmer repository, så det kan bruges i metoderne
+            _repository = repository;
 
-		public List<ShippingOption> GetAll()
-		{
-			return new List<ShippingOption>(_cache.Values);
-		}
+            // Indlæser fragtmuligheder fra databasen til cache
+            LoadCache();
+        }
 
-		public ShippingOption? GetById(int id)
-		{
-			_cache.TryGetValue(id, out ShippingOption? option);
-			return option;
-		}
+        // Henter alle fragtmuligheder fra repository og gemmer dem i cache
+        void LoadCache()
+        {
+            // Gennemgår alle ShippingOptionDTO'er fra repository
+            foreach (ShippingOptionDTO dto in _repository.GetAll())
+            {
+                // Mapper DTO'en til ShippingOption og gemmer den i cache med id som nøgle
+                _cache[dto.Id] = Map(dto);
+            }
+        }
 
-		ShippingOption Map(ShippingOptionDTO dto)
-		{
-			return new ShippingOption
-			{
-				Id = dto.Id,
-				Name = dto.Name,
-				BaseFee = dto.BaseFee,
-				DeliveryTimeDays = (byte)dto.DeliveryTimeDays
-			};
-		}
-	}
+        // Henter alle fragtmuligheder
+        public List<ShippingOption> GetAll()
+        {
+            // Returnerer en ny liste med alle fragtmuligheder fra cache
+            return new List<ShippingOption>(_cache.Values);
+        }
+
+        // Henter en fragtmulighed ud fra id
+        public ShippingOption? GetById(int id)
+        {
+            // Prøver at finde fragtmuligheden i cache
+            _cache.TryGetValue(id, out ShippingOption? option);
+
+            // Returnerer fragtmuligheden, eller null hvis den ikke findes
+            return option;
+        }
+
+        // Mapper en ShippingOptionDTO til en ShippingOption-model
+        ShippingOption Map(ShippingOptionDTO dto)
+        {
+            // Opretter og returnerer en ShippingOption med data fra DTO'en
+            return new ShippingOption
+            {
+                // Sætter fragtmulighedens id
+                Id = dto.Id,
+
+                // Sætter fragtmulighedens navn
+                Name = dto.Name,
+
+                // Sætter grundprisen for fragten
+                BaseFee = dto.BaseFee,
+
+                // Sætter antal dage leveringen tager
+                DeliveryTimeDays = (byte)dto.DeliveryTimeDays
+            };
+        }
+    }
 }

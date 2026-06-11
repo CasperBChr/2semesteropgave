@@ -4,12 +4,19 @@ using System.Text;
 
 namespace _2SemesterOpgave.Repositories.DTO
 {
-	public class ConversationDTO
-	{
-        //DTO property for Conversation
+    // DTO-klasse der bruges til at transportere samtale-data fra databasen
+    public class ConversationDTO
+    {
+        // Samtalens id i databasen
         public int Id { get; set; }
-		public DateTime CreatedAt { get; set; }
-		public List<int> ParticipantIds { get; set; } = new List<int>();
-		public List<MessageDTO> Messages { get; set; } = new List<MessageDTO>();
-	}
+
+        // Dato og tidspunkt for hvornår samtalen blev oprettet
+        public DateTime CreatedAt { get; set; }
+
+        // Liste med id'er på de brugere der deltager i samtalen
+        public List<int> ParticipantIds { get; set; } = new List<int>();
+
+        // Liste med beskeder der hører til samtalen
+        public List<MessageDTO> Messages { get; set; } = new List<MessageDTO>();
+    }
 }

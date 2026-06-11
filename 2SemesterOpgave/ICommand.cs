@@ -4,8 +4,10 @@ using System.Text;
 
 namespace _2SemesterOpgave
 {
-	public  interface ICommand
-	{
-		void Execute();
-	}
+    // Interface der beskriver en kommando, som kan udføres
+    public interface ICommand
+    {
+        // Metode som alle klasser der bruger ICommand skal implementere
+        void Execute();
+    }
 }
