@@ -50,21 +50,21 @@ namespace _2SemesterOpgave.Pages
             CurrentArticle = _articleServices.SelectedArticle;
             DataContext = CurrentArticle;
 
-			EditCategoryCombobox.ItemsSource = _categoryServices.GetAllCategories();
+            //Indlæser kategorier, størrelser, mærker og farver i ComboBoxes
+            EditCategoryCombobox.ItemsSource = _categoryServices.GetAllCategories();
             EditSubcategoryCombobox.ItemsSource = _categoryServices.GetAllSubCategories();
             EditSizeComboBox.ItemsSource = _sizeServices.GetAllSizes();
 			EditBrandComboBox.ItemsSource = _brandServices.GetAllBrands();
 			EditColorComboBox.ItemsSource = _colorServices.GetAllColors();
 
-
-			EditCategoryCombobox.SelectedItem = CurrentArticle.Category;
+            //Indlæser den valgte artikels data i tekstfelterne og ComboBoxes
+            EditCategoryCombobox.SelectedItem = CurrentArticle.Category;
 			EditSubcategoryCombobox.SelectedItem = CurrentArticle.SubCategory;
 			EditSizeComboBox.SelectedItem = CurrentArticle.Size;
 			EditBrandComboBox.SelectedItem = CurrentArticle.Brand;
 			EditColorComboBox.SelectedItem = CurrentArticle.Color;
 
             Debug.WriteLine($"Size: {CurrentArticle.Size.Name}");
-
 		}
 
         public void EditImageButton_Click(object sender, RoutedEventArgs e)
@@ -73,6 +73,7 @@ namespace _2SemesterOpgave.Pages
 
         }
 
+        //Gem ændringerne til artiklen og opdatere den i databasen
         private void EditSaveButton_Click(object sender, RoutedEventArgs e)
         {
 			if (!string.IsNullOrWhiteSpace(EditTitleTextBox.Text))
@@ -144,7 +145,9 @@ namespace _2SemesterOpgave.Pages
 
 			float dailyPrice = 0.0f;
 			bool dailyPriceConverted = float.TryParse(EditPriceTextBox.Text, out dailyPrice);
-			if (dailyPriceConverted)
+
+            //Validering af prisinput
+            if (dailyPriceConverted)
 			{
 				CurrentArticle.DailyPrice = dailyPrice;
 			}
@@ -154,12 +157,14 @@ namespace _2SemesterOpgave.Pages
 				return;
 			}
 
+            //Opdaterer artiklen i databasen
             _articleServices.UpdateArticle(CurrentArticle);
 
 
 			MessageBox.Show("TRIED TO SAVE");
         }
 
+        //Artiklen ændres ikke i databasen, og brugeren navigeres tilbage til ArticlePage
         private void EditDismissButton_Click(object sender, RoutedEventArgs e)
         {
 			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.MyArticlesPage));
@@ -177,7 +182,8 @@ namespace _2SemesterOpgave.Pages
 			EditSubcategoryCombobox.ItemsSource = chosenCategory.SubCategories;
 		}
 
-		private void EditDeleteButton_Click(object sender, RoutedEventArgs e)
+        //Sletter artiklen fra databasen og navigerer tilbage til ArticlePage
+        private void EditDeleteButton_Click(object sender, RoutedEventArgs e)
 		{
 			PromptDialogWindow window = new PromptDialogWindow($"Er du sikker på at du ønkser at slette artiklen '{CurrentArticle.Title}'?");
 			window.ShowDialog();

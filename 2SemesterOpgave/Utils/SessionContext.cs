@@ -5,7 +5,8 @@ using _2SemesterOpgave.Models;
 
 namespace _2SemesterOpgave.Utils
 {
-	public class SessionContext
+    //Klasse for SessionContext, som holder styr på den aktuelle bruger som er logget ind
+    public class SessionContext
 	{
 		public User? CurrentUser { get; set; }
 

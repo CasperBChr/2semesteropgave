@@ -28,7 +28,8 @@ namespace _2SemesterOpgave.Pages
 		ConversationServices _conversationServices;
 		UnreadBadgeServices _unreadBadgeService;
 
-		private List<ConversationListItemViewModel> _viewModels = new List<ConversationListItemViewModel>();
+        //ViewModel designet til at holde visningsdata for MessagesPage
+        private List<ConversationListItemViewModel> _viewModels = new List<ConversationListItemViewModel>();
 
 		public MessagesPage(Router router, UserServices userServices, ConversationServices conversationServices, UnreadBadgeServices unreadBadgeServices)
 		{
@@ -42,30 +43,33 @@ namespace _2SemesterOpgave.Pages
 			LoadConversations();
 		}
 
-		void LoadConversations()
+        //Metode der indlæser brugerens samtaler og opretter viewmodels til hver samtale
+        void LoadConversations()
 		{
 			ObservableCollection<Conversation> conversations = _conversationServices.GetConversationsForUser(_userServices.CurrentUser);
 
-			_viewModels = conversations.Select(c => new ConversationListItemViewModel(c, _userServices.CurrentUser, _conversationServices)).ToList();
+            //Opretter en viewmodel for hver samtale og tilføjer den til _viewModels listen
+            _viewModels = conversations.Select(c => new ConversationListItemViewModel(c, _userServices.CurrentUser, _conversationServices)).ToList();
 
 			ConversationListControl.ItemsSource = _viewModels;
 		}
 
-		private void ConversationButton_Click(object sender, RoutedEventArgs e)
+        //Metode der håndterer klik på en samtale og navigerer til ConversationPage
+        private void ConversationButton_Click(object sender, RoutedEventArgs e)
 		{
 			if (((Button)sender).Tag is not ConversationListItemViewModel viewModel) return;
 
-			_conversationServices.MarkConversationAsRead(viewModel.Conversation, _userServices.CurrentUser);
+            //Markér samtalen som læst ved at fjerne den fra UnreadBadgeService
+            _conversationServices.MarkConversationAsRead(viewModel.Conversation, _userServices.CurrentUser);
 			viewModel.NotifyRead();
 			_unreadBadgeService.Refresh();
-
+						
 			EmptyConversationView.Visibility = Visibility.Collapsed;
 			ConversationContent.Content = new EmbeddedMessagePage(_router, _userServices, _conversationServices, _unreadBadgeService, viewModel.Conversation);
 		}
 	}
 
-
-	public class ConversationListItemViewModel : INotifyPropertyChanged
+    public class ConversationListItemViewModel : INotifyPropertyChanged
 	{
 		public event PropertyChangedEventHandler? PropertyChanged;
 

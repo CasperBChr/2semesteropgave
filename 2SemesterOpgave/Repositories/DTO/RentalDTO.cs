@@ -6,7 +6,8 @@ namespace _2SemesterOpgave.Repositories.DTO
 {
 	public class RentalDTO
 	{
-		public int Id { get; set; }
+        //DTO property for Rental
+        public int Id { get; set; }
 
 		public string StartDate { get; set; } = string.Empty;
 		public string EndDate { get; set; } = string.Empty;

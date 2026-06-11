@@ -141,6 +141,7 @@ namespace _2SemesterOpgave.Pages
 				return;
 			}
 
+            //Kobler den indtastede data til en artikel og gemmer den i databasen
             article.Title = title;
             article.Description = description;
             article.Category = category;
@@ -162,14 +163,16 @@ namespace _2SemesterOpgave.Pages
 			//_router.NavigateTo(Routes.Home);
         }
 
-		private void CategoryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //Metode til at håndtere ændringer i underkategori-valget
+        private void CategoryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if (CreateCategoryCombobox.SelectedItem == null)
 			{
 				return;
 			}
 
-			Category chosenCategory = (Category)CreateCategoryCombobox.SelectedItem;
+            //Henter den valgte kategori og opdaterer underkategori-valgmulighederne baseret på den valgte kategori
+            Category chosenCategory = (Category)CreateCategoryCombobox.SelectedItem;
 			CreateSubcategoryCombobox.ItemsSource = chosenCategory.SubCategories;
 		}
 	}

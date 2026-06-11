@@ -28,6 +28,7 @@ namespace _2SemesterOpgave.Pages
         UserServices _userServices;
 		private bool _isFavorite;
 		ConversationServices _conversationServices;
+
 		//Constructor der tager en Router som parameter for at kunne navigere til andre sider
 
 		public ArticlePage(Router router, ArticleServices articleServices, CategoryServices categoryServices, UserServices userService, ConversationServices conversationServices)

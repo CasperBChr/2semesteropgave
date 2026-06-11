@@ -6,7 +6,8 @@ namespace _2SemesterOpgave.Repositories.DTO
 {
 	public class SizeDTO
 	{
-		public int Id { get; set; }
+        //DTO property for Size
+        public int Id { get; set; }
 		public string Name { get; set; } = string.Empty;
 
 		public DateTime CreatedAt { get; set; }

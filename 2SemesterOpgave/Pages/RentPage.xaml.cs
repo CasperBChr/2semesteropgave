@@ -52,7 +52,8 @@ namespace _2SemesterOpgave.Pages
 			LoadBookedDates();
 		}
 
-		private void ConfirmButton_Click(object sender, RoutedEventArgs e)
+        //Metoder der booker datoer for den valgte artikel
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
 		{
 			if (StartDatePicker.SelectedDate == null || EndDatePicker.SelectedDate == null)
 			{
@@ -72,7 +73,8 @@ namespace _2SemesterOpgave.Pages
 				return;
 			}
 
-			DateTime start = StartDatePicker.SelectedDate.Value;
+            //Opretter en ny lejeaftale baseret på brugerens valg
+            DateTime start = StartDatePicker.SelectedDate.Value;
 			DateTime end = EndDatePicker.SelectedDate.Value;
 
 			if (end <= start)
@@ -81,7 +83,7 @@ namespace _2SemesterOpgave.Pages
 				return;
 			}
 
-			// Dobbelttjek for konflikter
+			//Dobbelttjek for konflikter
 			for (DateTime d = start; d <= end; d = d.AddDays(1))
 			{
 				if (_bookedDates.Contains(DateOnly.FromDateTime(d)))
@@ -91,7 +93,8 @@ namespace _2SemesterOpgave.Pages
 				}
 			}
 
-			Article article = _articleServices.SelectedArticle!;
+            //Opretter lejeaftalen
+            Article article = _articleServices.SelectedArticle!;
 			int days = (int)(end - start).TotalDays + 1;
 
 			ShippingOption shippingOption = (ShippingOption)ShippingComboBox.SelectedItem;
@@ -109,20 +112,21 @@ namespace _2SemesterOpgave.Pages
 				InsuranceChoice = insuranceOption
 			};
 
-			_rentalServices.CreateRental(rental);
-
+            //Gemmer lejeaftalen
+            _rentalServices.CreateRental(rental);
 			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.MyOrders));
 			//_router.NavigateTo(Routes.MyOrders);
 		}
 
-		private void CancelButton_Click(object sender, RoutedEventArgs e)
+        //Knap der annullerer lejeprocessen og sender brugeren tilbage til ExplorePage
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
 			_router.ExecuteAndRecord(new NavigateCommand(_router, Routes.Explore));
 			//_router.NavigateTo(Routes.Explore);
         }
 
-
-		private void DatePicker_Changed(object sender, SelectionChangedEventArgs e)
+        //Metode til at håndtere lejeaftalens datoer og sikre, at de ikke overlapper med eksisterende lejeaftaler
+        private void DatePicker_Changed(object sender, SelectionChangedEventArgs e)
 		{
 			if (StartDatePicker.SelectedDate == null || EndDatePicker.SelectedDate == null)
 			{
@@ -171,14 +175,13 @@ namespace _2SemesterOpgave.Pages
 
 			UpdateTotalPreview();
 		}
-
 		private void Options_Changed(object sender, SelectionChangedEventArgs e)
 		{
 			UpdateTotalPreview();
 		}
 
-
-		private void UpdateTotalPreview()
+        //Metode der viser den samlede pris for lejeaftalen baseret på de valgte datoer, fragt- og forsikringsmuligheder
+        private void UpdateTotalPreview()
 		{
 			ShippingOption? shipping = (ShippingOption)ShippingComboBox.SelectedItem;
 			InsuranceOption? insurance = (InsuranceOption)InsuranceComboBox.SelectedItem;
@@ -220,7 +223,8 @@ namespace _2SemesterOpgave.Pages
 			TotalPrice.Text = $"{totalPrice:F2} kr.";
 		}
 
-		void LoadBookedDates()
+        //Metode der indlæser allerede bookede datoer for den valgte artikel
+        void LoadBookedDates()
 		{
 			_bookedDates = _rentalServices.GetBookedDatesForArticle(_articleServices.SelectedArticle.Id);
 

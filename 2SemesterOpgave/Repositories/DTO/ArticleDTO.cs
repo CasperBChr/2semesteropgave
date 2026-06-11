@@ -6,7 +6,8 @@ namespace _2SemesterOpgave.Repositories.DTO
 {
 	public class ArticleDTO
 	{
-		public int Id { get; set; }
+        //DTO property for Article
+        public int Id { get; set; }
 
 		public string Title { get; set; } = string.Empty;
 		public string Description { get; set; } = string.Empty;
