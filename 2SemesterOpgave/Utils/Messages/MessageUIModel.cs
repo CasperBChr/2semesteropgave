@@ -7,8 +7,11 @@ using _2SemesterOpgave.Models; // Giver adgang til vores modelklasser, fx Messag
 
 namespace _2SemesterOpgave.Utils.Messages
 {
-    // UI-model der bruges til at vise en besked i brugerfladen
-    public class MessageUIModel
+	// UI-model der bruges til at vise en besked i brugerfladen
+	/// <summary>
+	/// Kodet af Martin
+	/// </summary>
+	public class MessageUIModel
     {
         // Den originale besked som UI-modellen bygger på
         public Message Message { get; }

@@ -4,8 +4,11 @@ using System.Text;
 
 namespace _2SemesterOpgave.Repositories.DTO
 {
-    // DTO-klasse der bruges til at transportere forsikringsmulighed-data fra databasen
-    public class InsuranceOptionDTO
+	// DTO-klasse der bruges til at transportere forsikringsmulighed-data fra databasen
+	/// <summary>
+	/// Vi har alle kodet på denne
+	/// </summary>
+	public class InsuranceOptionDTO
     {
         // Forsikringsmulighedens id i databasen
         public int Id { get; set; }

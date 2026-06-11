@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 namespace _2SemesterOpgave
 {
 	/// <summary>
-	/// Interaction logic for PromptDialogWindow.xaml
+	/// Kodet af Martin
 	/// </summary>
 	public partial class PromptDialogWindow : Window
 	{

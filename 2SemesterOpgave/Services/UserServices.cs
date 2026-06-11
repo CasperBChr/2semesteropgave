@@ -8,8 +8,11 @@ using _2SemesterOpgave.Utils; // Giver adgang til SessionContext
 
 namespace _2SemesterOpgave.Services
 {
-    // Serviceklasse der håndterer logik for brugere
-    public class UserServices
+	// Serviceklasse der håndterer logik for brugere
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class UserServices
     {
         // Repository der bruges til databasekald for brugere
         UserRepository _userRepository;
@@ -128,7 +131,7 @@ namespace _2SemesterOpgave.Services
         public User? GetById(int id)
         {
             // Prøver at finde brugeren i cache og returnerer den, ellers null
-            return _cache.TryGetValue(id, out var user) ? user : null;
+            return _cache.TryGetValue(id, out User? user) ? user : null;
         }
 
         // Henter alle brugere

@@ -9,8 +9,11 @@ using Microsoft.Data.Sqlite; // Giver adgang til SQLite
 
 namespace _2SemesterOpgave.Repositories
 {
-    // Repositoryklasse der håndterer databasekald for fragtmuligheder
-    public class ShippingOptionRepository
+	// Repositoryklasse der håndterer databasekald for fragtmuligheder
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class ShippingOptionRepository
     {
         // Database-factory der bruges til at oprette databaseforbindelser
         IDatabaseFactory _db;
@@ -26,7 +29,7 @@ namespace _2SemesterOpgave.Repositories
         public IEnumerable<ShippingOptionDTO> GetAll()
         {
             // Opretter en liste til ShippingOptionDTO'er
-            List<ShippingOptionDTO> dtos = new();
+            List<ShippingOptionDTO> dtos = new List<ShippingOptionDTO>();
 
             // Opretter forbindelse til databasen
             using IDbConnection connection = _db.CreateConnection();

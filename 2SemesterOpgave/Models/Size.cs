@@ -1,6 +1,9 @@
 ﻿namespace _2SemesterOpgave.Models
 {
-    public class Size // Klasse til at repræsentere størrelsen på en artikel, som kan være relevant for både tøj og sko
+	/// <summary>
+	/// Vi har alle kodet på denne
+	/// </summary>
+	public class Size // Klasse til at repræsentere størrelsen på en artikel, som kan være relevant for både tøj og sko
     {
         // Størrelsens id
         public int Id { get; set; }

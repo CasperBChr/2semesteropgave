@@ -1,6 +1,9 @@
 ﻿namespace _2SemesterOpgave.Models
 {
-    public class SubCategory // Klasse til at repræsentere en underkategori, som tilhører en kategori
+	/// <summary>
+	/// Vi har alle kodet på denne
+	/// </summary>
+	public class SubCategory // Klasse til at repræsentere en underkategori, som tilhører en kategori
     {
         // Underkategoriens id
         public int Id { get; set; }

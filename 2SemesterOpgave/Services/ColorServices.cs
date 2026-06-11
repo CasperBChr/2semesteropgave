@@ -7,8 +7,11 @@ using _2SemesterOpgave.Repositories.DTO; // Giver adgang til ColorDTO
 
 namespace _2SemesterOpgave.Services
 {
-    // Serviceklasse der håndterer logik for farver
-    public class ColorServices
+	// Serviceklasse der håndterer logik for farver
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class ColorServices
     {
         // Repository der bruges til databasekald for farver
         ColorRepository _colorRepository;

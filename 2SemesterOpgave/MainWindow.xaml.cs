@@ -23,12 +23,12 @@ using System.Windows.Navigation;
 
 namespace _2SemesterOpgave
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+	/// <summary>
+	/// Kodet af alle
+	/// </summary>
 
-    // MainWindow er hovedvinduet i WPF-programmet
-    public partial class MainWindow : Window
+	// MainWindow er hovedvinduet i WPF-programmet
+	public partial class MainWindow : Window
     {
         // ContentControl bruges til at vise de forskellige sider i programmet
         ContentControl _pageControl;

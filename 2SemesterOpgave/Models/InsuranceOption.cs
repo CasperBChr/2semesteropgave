@@ -1,6 +1,9 @@
 ﻿namespace _2SemesterOpgave.Models
 {
-    public class InsuranceOption
+	/// <summary>
+	/// Vi har alle kodet på denne
+	/// </summary>
+	public class InsuranceOption
     {
 		public int Id { get; set; }
         public string Name { get; set; } = string.Empty; //Property: gemmer navnet på forsikringsmuligheden som tekst

@@ -7,8 +7,11 @@ using _2SemesterOpgave.Repositories.DTO; // Giver adgang til SizeDTO
 
 namespace _2SemesterOpgave.Services
 {
-    // Serviceklasse der håndterer logik for størrelser
-    public class SizeServices
+	// Serviceklasse der håndterer logik for størrelser
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class SizeServices
     {
         // Repository der bruges til databasekald for størrelser
         SizeRepository _sizeRepository;

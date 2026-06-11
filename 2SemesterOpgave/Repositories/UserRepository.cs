@@ -11,8 +11,11 @@ using Microsoft.Data.Sqlite; // Giver adgang til SQLite
 
 namespace _2SemesterOpgave.Repositories
 {
-    // Repositoryklasse der håndterer databasekald for brugere
-    public class UserRepository
+	// Repositoryklasse der håndterer databasekald for brugere
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class UserRepository
     {
         // Database-factory der bruges til at oprette databaseforbindelser
         IDatabaseFactory _db;
@@ -109,7 +112,7 @@ namespace _2SemesterOpgave.Repositories
         public IEnumerable<UserDTO> GetAllUsers()
         {
             // Opretter en liste til UserDTO'er
-            List<UserDTO> users = new();
+            List<UserDTO> users = new List<UserDTO>();
 
             // Opretter forbindelse til databasen
             using IDbConnection connection = _db.CreateConnection();

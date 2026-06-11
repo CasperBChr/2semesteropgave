@@ -2,7 +2,10 @@
 
 namespace _2SemesterOpgave.Models
 {
-    public class Conversation
+	/// <summary>
+	/// Vi har alle kodet på denne
+	/// </summary>
+	public class Conversation
     {
         public int Id { get; set; } // Gemmer samtalens id
         public DateTime CreationTime { get; set; } // Property til at gemme tidspunktet for, hvornår samtalen blev oprettet

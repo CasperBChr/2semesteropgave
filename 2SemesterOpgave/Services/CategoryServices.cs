@@ -3,8 +3,11 @@ using _2SemesterOpgave.Models; // Giver adgang til vores modelklasser, fx Catego
 
 namespace _2SemesterOpgave.Services
 {
-    // Serviceklasse der håndterer logik for kategorier og underkategorier
-    public class CategoryServices
+	// Serviceklasse der håndterer logik for kategorier og underkategorier
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class CategoryServices
     {
         // Repository der bruges til databasekald for kategorier
         CategoryRepository _categoryRepository;

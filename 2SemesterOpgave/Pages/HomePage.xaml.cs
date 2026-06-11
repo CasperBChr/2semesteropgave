@@ -15,12 +15,11 @@ using _2SemesterOpgave.Services; // Giver adgang til vores serviceklasser, fx Ar
 
 namespace _2SemesterOpgave.Pages
 {
-    /// <summary>
-    /// Interaction logic for HomePage.xaml === Kodet af Casper
-    /// </summary>
-
-    // Klassen er en WPF-side, som arver fra UserControl
-    public partial class HomePage : UserControl
+	/// <summary>
+	/// Kodet af Casper
+	/// </summary>
+	// Klassen er en WPF-side, som arver fra UserControl
+	public partial class HomePage : UserControl
     {
         // Service der håndterer artikler
         ArticleServices _articleServices;

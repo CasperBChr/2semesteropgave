@@ -8,8 +8,11 @@ using _2SemesterOpgave.Utils; // Giver adgang til SessionContext
 
 namespace _2SemesterOpgave.Services
 {
-    // Serviceklasse der håndterer login, logout og nuværende bruger
-    public class AuthServices
+	// Serviceklasse der håndterer login, logout og nuværende bruger
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class AuthServices
     {
         // Repository der bruges til databasekald for brugere
         UserRepository _userRepository;
@@ -40,7 +43,7 @@ namespace _2SemesterOpgave.Services
         public bool Login(string username, string password)
         {
             // Henter brugerens DTO ud fra brugernavn
-            var dto = _userRepository.GetUserByUsername(username);
+            UserDTO? dto = _userRepository.GetUserByUsername(username);
 
             // Returnerer false hvis brugeren ikke findes
             if (dto == null) return false;
@@ -49,7 +52,7 @@ namespace _2SemesterOpgave.Services
             if (dto.Password != password) return false;
 
             // Mapper UserDTO til en User-model
-            var user = Map(dto);
+            User user = Map(dto);
 
             // Gemmer brugeren som den nuværende bruger i sessionen
             _session.CurrentUser = user;

@@ -9,8 +9,11 @@ using Microsoft.Data.Sqlite; // Giver adgang til SQLite
 
 namespace _2SemesterOpgave.Repositories
 {
-    // Repositoryklasse der håndterer databasekald for kategorier
-    public class CategoryRepository
+	// Repositoryklasse der håndterer databasekald for kategorier
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class CategoryRepository
     {
         // Database-factory der bruges til at oprette databaseforbindelser
         IDatabaseFactory _db;

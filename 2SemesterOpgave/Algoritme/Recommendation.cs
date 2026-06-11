@@ -5,6 +5,9 @@ using System.Text;
 namespace _2SemesterOpgave.Algoritme
 {
     //Recommendation klasse til at holde styr på de anbefalede artikler og deres score, som udregnes i ContentBasedAlgorithm klassen
+	/// <summary>
+	/// Kodet af Camilla og Martin
+	/// </summary>
     public class Recommendation
 	{
 		public ItemProfile Item { get; set; }

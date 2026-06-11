@@ -9,8 +9,11 @@ using Microsoft.Data.Sqlite; // Giver adgang til SQLite
 
 namespace _2SemesterOpgave.Repositories
 {
-    // Repositoryklasse der håndterer databasekald for lejeaftaler
-    public class RentalRepository
+	// Repositoryklasse der håndterer databasekald for lejeaftaler
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class RentalRepository
     {
         // Database-factory der bruges til at oprette databaseforbindelser
         IDatabaseFactory _db;
@@ -148,11 +151,11 @@ namespace _2SemesterOpgave.Repositories
             return dtos;
         }
 
-        // Henter bookede datointervaller for en bestemt artikel
-        public IEnumerable<(DateOnly Start, DateOnly End)> GetBookedDateRangesForArticle(int articleId)
+		// Henter bookede datointervaller for en bestemt artikel - returnerer IEnumerable med tuples der indeholder to DateOnly værdier
+		public IEnumerable<(DateOnly Start, DateOnly End)> GetBookedDateRangesForArticle(int articleId)
         {
             // Opretter en liste til start- og slutdatoer
-            List<(DateOnly, DateOnly)> ranges = new();
+            List<(DateOnly, DateOnly)> ranges = new List<(DateOnly, DateOnly)>();
 
             // Opretter forbindelse til databasen
             using IDbConnection connection = _db.CreateConnection();

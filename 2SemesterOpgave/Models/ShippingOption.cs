@@ -1,6 +1,9 @@
 ﻿namespace _2SemesterOpgave.Models
 {
-    public class ShippingOption // Klasse til at repræsentere en forsendelsesmulighed, som kan være tilknyttet en artikel og indeholder information om navnet på forsendelsesmuligheden, basisgebyret, leveringstiden i dage og hvilke dage i ugen leveringen kan finde sted
+	/// <summary>
+	/// Vi har alle kodet på denne
+	/// </summary>
+	public class ShippingOption // Klasse til at repræsentere en forsendelsesmulighed, som kan være tilknyttet en artikel og indeholder information om navnet på forsendelsesmuligheden, basisgebyret, leveringstiden i dage og hvilke dage i ugen leveringen kan finde sted
     {
         // Forsendelsesmulighedens id
         public int Id { get; set; }

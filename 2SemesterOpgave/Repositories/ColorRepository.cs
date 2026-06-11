@@ -9,8 +9,11 @@ using Microsoft.Data.Sqlite; // Giver adgang til SQLite
 
 namespace _2SemesterOpgave.Repositories
 {
-    // Repositoryklasse der håndterer databasekald for farver
-    public class ColorRepository
+	// Repositoryklasse der håndterer databasekald for farver
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class ColorRepository
     {
         // Database-factory der bruges til at oprette databaseforbindelser
         IDatabaseFactory _db;

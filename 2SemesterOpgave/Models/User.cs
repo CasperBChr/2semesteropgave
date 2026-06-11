@@ -2,8 +2,11 @@
 
 namespace _2SemesterOpgave.Models
 {
-    // Modelklasse for en bruger
-    public class User : INotifyPropertyChanged
+	// Modelklasse for en bruger
+	/// <summary>
+	/// Vi har alle kodet på denne
+	/// </summary>
+	public class User : INotifyPropertyChanged
     {
         // Brugerens id
         public int Id { get; set; }

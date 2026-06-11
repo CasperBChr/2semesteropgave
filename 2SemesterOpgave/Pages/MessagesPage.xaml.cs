@@ -18,9 +18,8 @@ using _2SemesterOpgave.Services;
 namespace _2SemesterOpgave.Pages
 {
 	/// <summary>
-	/// Interaction logic for MessagesPage.xaml
+	/// Kodet af Martin
 	/// </summary>
-	/// 
 	public partial class MessagesPage : UserControl
 	{
 		Router _router;

@@ -19,7 +19,7 @@ using _2SemesterOpgave.Services;
 namespace _2SemesterOpgave
 {
 	/// <summary>
-	/// Interaction logic for LoginWindows.xaml
+	/// Kodet af Martin
 	/// </summary>
 	public partial class LoginWindow : Window
 	{

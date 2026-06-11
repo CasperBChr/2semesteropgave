@@ -16,7 +16,7 @@ using _2SemesterOpgave.Services;
 namespace _2SemesterOpgave.Pages
 {
 	/// <summary>
-	/// Interaction logic for CreateAccountPage.xaml
+	/// Kodet af Martin
 	/// </summary>
 	public partial class CreateAccountPage : UserControl
 	{

@@ -5,8 +5,11 @@ using _2SemesterOpgave.Models; // Giver adgang til vores modelklasser, fx User
 
 namespace _2SemesterOpgave.Utils
 {
-    //Klasse for SessionContext, som holder styr på den aktuelle bruger som er logget ind
-    public class SessionContext
+	//Klasse for SessionContext, som holder styr på den aktuelle bruger som er logget ind
+	/// <summary>
+	/// Kodet af os alle
+	/// </summary>
+	public class SessionContext
     {
         // Gemmer den bruger der er logget ind
         public User? CurrentUser { get; set; }

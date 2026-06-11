@@ -9,8 +9,11 @@ using Microsoft.Data.Sqlite; // Giver adgang til SQLite
 
 namespace _2SemesterOpgave.Repositories
 {
-    // Repositoryklasse der håndterer databasekald for samtaler og beskeder
-    public class ConversationRepository
+	// Repositoryklasse der håndterer databasekald for samtaler og beskeder
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class ConversationRepository
     {
         // Database-factory der bruges til at oprette databaseforbindelser
         IDatabaseFactory _db;
@@ -197,7 +200,7 @@ namespace _2SemesterOpgave.Repositories
             command.Parameters.Add(userParam);
 
             // Opretter en liste til samtaler
-            List<ConversationDTO> conversations = new();
+            List<ConversationDTO> conversations = new List<ConversationDTO>();
 
             // Kører SQL-kommandoen og læser resultatet
             using IDataReader reader = command.ExecuteReader();
@@ -357,7 +360,7 @@ namespace _2SemesterOpgave.Repositories
             command.Parameters.Add(param);
 
             // Opretter en liste til bruger-id'er
-            List<int> ids = new();
+            List<int> ids = new List<int>();
 
             // Kører SQL-kommandoen og læser resultatet
             using IDataReader reader = command.ExecuteReader();
@@ -397,7 +400,7 @@ namespace _2SemesterOpgave.Repositories
             command.Parameters.Add(param);
 
             // Opretter en liste til beskeder
-            List<MessageDTO> messages = new();
+            List<MessageDTO> messages = new List<MessageDTO>();
 
             // Kører SQL-kommandoen og læser resultatet
             using IDataReader reader = command.ExecuteReader();

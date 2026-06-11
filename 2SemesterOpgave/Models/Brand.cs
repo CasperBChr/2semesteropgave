@@ -1,6 +1,9 @@
 ﻿namespace _2SemesterOpgave.Models
 {
-    public class Brand // Klasse til at repræsentere et brand, som kan være tilknyttet en kollektion
+	/// <summary>
+	/// Vi har alle kodet på denne
+	/// </summary>
+	public class Brand // Klasse til at repræsentere et brand, som kan være tilknyttet en kollektion
     {
 		public int Id { get; set; }
         public string Name { get; set; } = string.Empty; // Property: gemmer navnet på brandet, som kan bruges til at identificere det og vise det til brugerne   

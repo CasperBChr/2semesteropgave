@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 
 namespace _2SemesterOpgave.Pages
 {
+    // Klassen er en WPF-side, som arver fra UserControl
     /// <summary>
     /// Kodet af Camilla. Interaction logic for RentPage.xaml.
     /// </summary>
 
-    // Klassen er en WPF-side, som arver fra UserControl
     public partial class RentPage : UserControl
     {
         // Router bruges til at navigere mellem sider

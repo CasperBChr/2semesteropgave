@@ -9,13 +9,11 @@ using _2SemesterOpgave.Services; // Giver adgang til vores serviceklasser, fx Us
 namespace _2SemesterOpgave.Pages
 {
 
-    /// <summary>
-    /// Interaction logic for MyOrdersPage.xaml === Kodet af Daniel
-    /// </summary>
-
-
-    // Klassen er en WPF-side, som arver fra UserControl
-    public partial class MyOrdersPage : UserControl
+	/// <summary>
+	/// Kodet af Daniel
+	/// </summary>
+	// Klassen er en WPF-side, som arver fra UserControl
+	public partial class MyOrdersPage : UserControl
     {
         //public User CurrentUser { get; private set; }
 

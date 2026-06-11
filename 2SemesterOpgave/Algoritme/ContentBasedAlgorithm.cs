@@ -6,6 +6,9 @@ using System.Text;
 namespace _2SemesterOpgave.Algoritme
 {
     //Kodet af Camilla
+    /// <summary>
+    /// Kodet af Camilla med en smule hjælp fra Martin
+    /// </summary>
     public class ContentBasedAlgorithm
     {
         //Beregner Cosine Similarity mellem brugerens præferencer og elementets profil
@@ -19,10 +22,11 @@ namespace _2SemesterOpgave.Algoritme
             double itemMagnitude = 0.0;
 
             //Beregner skalarproduktet og længderne for Cosine Similarity
-            foreach (var feature in item.Features)
+            foreach (KeyValuePair<string, double> feature in item.Features)
             {
                 string key = feature.Key;
                 double itemValue = feature.Value;
+                // Inline if statement. Hvis dictionary indeholder featurens key, så indsæt value fra key, ellers så sæt til 0.0
                 double userValue = user.Preferences.ContainsKey(key) ? user.Preferences[key] : 0.0;
 
                 //Beregner skalarproduktet
@@ -33,7 +37,7 @@ namespace _2SemesterOpgave.Algoritme
             }
 
             //Beregner længden for brugerprofilen
-            foreach (var userPref in user.Preferences)
+            foreach (KeyValuePair<string, double> userPref in user.Preferences)
             {
                 userMagnitude += Math.Pow(userPref.Value, 2);
             }

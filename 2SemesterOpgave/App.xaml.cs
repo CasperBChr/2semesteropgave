@@ -12,7 +12,7 @@ using _2SemesterOpgave.Utils;
 namespace _2SemesterOpgave
 {
 	/// <summary>
-	/// Interaction logic for App.xaml
+	/// Ændret i af Martin, for at styre login osv. inden MainWindow, samt hvis der skulle arbejdes med Builder Pattern - hvilket der ikke er blevet.
 	/// </summary>
 	public partial class App : Application
 	{

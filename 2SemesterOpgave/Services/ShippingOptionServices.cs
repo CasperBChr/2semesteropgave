@@ -7,14 +7,17 @@ using _2SemesterOpgave.Repositories.DTO; // Giver adgang til ShippingOptionDTO
 
 namespace _2SemesterOpgave.Services
 {
-    // Serviceklasse der håndterer logik for fragtmuligheder
-    public class ShippingOptionServices
+	// Serviceklasse der håndterer logik for fragtmuligheder
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class ShippingOptionServices
     {
         // Repository der bruges til databasekald for fragtmuligheder
         ShippingOptionRepository _repository;
 
         // Dictionary der bruges som cache, så fragtmuligheder kan findes hurtigt ud fra id
-        Dictionary<int, ShippingOption> _cache = new();
+        Dictionary<int, ShippingOption> _cache = new Dictionary<int, ShippingOption>();
 
         // Constructor der modtager ShippingOptionRepository
         public ShippingOptionServices(ShippingOptionRepository repository)

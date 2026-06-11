@@ -16,7 +16,7 @@ using _2SemesterOpgave.Models;
 namespace _2SemesterOpgave.Pages
 {
 	/// <summary>
-	/// Interaction logic for LoginPage.xaml
+	/// Kodet af Martin
 	/// </summary>
 	public partial class LoginPage : UserControl
 	{
@@ -30,20 +30,6 @@ namespace _2SemesterOpgave.Pages
 			_authServices = authServices;
 			_onSuccess = onSuccess;
 		}
-
-        //private void LoginButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //	bool success = _authServices.Login(UsernameTextBox.Text, PasswordBox.Password);
-
-        //	if (success)
-        //	{
-        //		LoginSucceeded?.Invoke(_authServices._session.CurrentUser);
-        //	}
-        //	else
-        //	{
-        //		MessageBox.Show("Login fejlede");
-        //	}
-        //}
 
         //Metode der håndterer login ved at tjekke brugernavn og password og kalder onSuccess action hvis login lykkedes
         private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -60,25 +46,5 @@ namespace _2SemesterOpgave.Pages
 				MessageBox.Show("Forkert brugernavn eller adgangskode.");
 			}
 		}
-
-		//private void LoginButton_Click(object sender, RoutedEventArgs e)
-		//{
-		//	bool success = _authServices.Login(UsernameTextBox.Text, PasswordBox.Password);
-
-		//	if (success)
-		//	{
-		//		User? user = _authServices.CurrentUser;
-		//		if (user == null)
-		//		{
-		//			MessageBox.Show("Login lykkedes men bruger kunne ikke hentes.");
-		//			return;
-		//		}
-		//		LoginSucceeded?.Invoke(user);
-		//	}
-		//	else
-		//	{
-		//		MessageBox.Show("Login fejlede");
-		//	}
-		//}
 	}
 }

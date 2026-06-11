@@ -16,11 +16,10 @@ using _2SemesterOpgave.Services;
 
 namespace _2SemesterOpgave.Pages
 {
-    /// <summary>
-    /// Interaction logic for OverviewPage.xaml
-    /// </summary>
-    /// 
-    public partial class OverviewPage : UserControl
+	/// <summary>
+	/// Kodet af Martin
+	/// </summary>
+	public partial class OverviewPage : UserControl
     {
 
 		ArticleServices _articleServices;

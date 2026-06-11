@@ -6,8 +6,11 @@ using _2SemesterOpgave.Models; // Giver adgang til vores modelklasser, fx Conver
 
 namespace _2SemesterOpgave.ViewModels
 {
-    // ViewModel der bruges til at vise en samtale i UI'et
-    public class ConversationViewModel
+	// ViewModel der bruges til at vise en samtale i UI'et
+	/// <summary>
+	/// Kodet af Martin
+	/// </summary>
+	public class ConversationViewModel
     {
         // Den samtale som ViewModel'en bygger på
         public Conversation Conversation { get; }

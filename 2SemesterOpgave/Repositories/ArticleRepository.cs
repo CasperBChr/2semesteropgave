@@ -14,8 +14,11 @@ using System.Text;
 
 namespace _2SemesterOpgave.Repositories
 {
-    // Repositoryklasse der håndterer databasekald for artikler
-    public class ArticleRepository
+	// Repositoryklasse der håndterer databasekald for artikler
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class ArticleRepository
     {
         // Database-factory der bruges til at oprette databaseforbindelser
         IDatabaseFactory _db;
@@ -280,7 +283,7 @@ namespace _2SemesterOpgave.Repositories
         public IEnumerable<ArticleDTO> GetAllFavoritedArticlesByUser(int userId)
         {
             // Opretter en liste til artikel-DTO'er
-            List<ArticleDTO> articleDTOs = new();
+            List<ArticleDTO> articleDTOs = new List<ArticleDTO>();
 
             // Opretter forbindelse til databasen
             using IDbConnection connection = _db.CreateConnection();

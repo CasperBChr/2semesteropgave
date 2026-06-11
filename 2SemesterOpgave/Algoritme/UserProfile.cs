@@ -5,6 +5,9 @@ using System.Text;
 
 namespace _2SemesterOpgave.Algoritme
 {
+    /// <summary>
+    /// Kodet af Camilla
+    /// </summary>
     public class UserProfile
     {
         //Kodet af Camilla
@@ -21,7 +24,7 @@ namespace _2SemesterOpgave.Algoritme
             Preferences = new Dictionary<string, double>();
 
             //Initialiserer præferencer til 0, så der ingen præference er i starten
-            foreach (var feature in allFeatures)
+            foreach (string feature in allFeatures)
             {
                 Preferences[feature] = 0.0;
             }
@@ -33,7 +36,7 @@ namespace _2SemesterOpgave.Algoritme
             {
                 return;
             }
-			foreach (var feature in viewedItem.Features)
+			foreach (KeyValuePair<string, double> feature in viewedItem.Features)
             {
                 //Opdaterer brugerens præferencer baseret på det sete element
                 if (Preferences.ContainsKey(feature.Key))

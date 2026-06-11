@@ -9,8 +9,11 @@ using _2SemesterOpgave.Repositories.DTO; // Giver adgang til ConversationDTO og 
 
 namespace _2SemesterOpgave.Services
 {
-    // Serviceklasse der håndterer logik for samtaler og beskeder
-    public class ConversationServices
+	// Serviceklasse der håndterer logik for samtaler og beskeder
+	/// <summary>
+	/// Kodet af Martin
+	/// </summary>
+	public class ConversationServices
     {
         // Repository der bruges til databasekald for samtaler og beskeder
         private readonly ConversationRepository _conversationRepository;
@@ -20,19 +23,17 @@ namespace _2SemesterOpgave.Services
 
         // Cache sikrer samme instance bruges i hele UI
         // Dictionary der gemmer samtaler, så samme samtale-objekt kan genbruges
-        private readonly Dictionary<int, Conversation> _conversationCache = new();
+        private readonly Dictionary<int, Conversation> _conversationCache = new Dictionary<int, Conversation>();
 
         // Track read state pr user + conversation
         // Dictionary der gemmer hvornår en samtale sidst blev læst
-        private readonly Dictionary<int, DateTime> _lastReadAt = new();
+        private readonly Dictionary<int, DateTime> _lastReadAt = new Dictionary<int, DateTime>();
 
         // Gemmer den nuværende samtale
         public Conversation CurrentConversation { get; set; }
 
         // Constructor der modtager repository og user service
-        public ConversationServices(
-            ConversationRepository conversationRepository,
-            UserServices userServices)
+        public ConversationServices(ConversationRepository conversationRepository, UserServices userServices)
         {
             // Gemmer ConversationRepository, så den kan bruges i metoderne
             _conversationRepository = conversationRepository;
@@ -45,12 +46,13 @@ namespace _2SemesterOpgave.Services
         public Conversation GetOrCreateConversation(User userA, User userB)
         {
             // Prøver at hente en eksisterende samtale mellem de to brugere
-            ConversationDTO? existing =
-                _conversationRepository.GetConversationBetween(userA.Id, userB.Id);
+            ConversationDTO? existing = _conversationRepository.GetConversationBetween(userA.Id, userB.Id);
 
             // Hvis samtalen findes, bliver den mappet og returneret
-            if (existing != null)
+            if (existing != null) 
+            {
                 return Map(existing);
+            }
 
             // Opretter en ny samtale og gemmer dens id
             int conversationId = _conversationRepository.CreateConversation();
@@ -62,8 +64,7 @@ namespace _2SemesterOpgave.Services
             _conversationRepository.AddParticipant(conversationId, userB.Id);
 
             // Henter den nyoprettede samtale fra databasen
-            ConversationDTO? created =
-                _conversationRepository.GetConversationById(conversationId);
+            ConversationDTO? created = _conversationRepository.GetConversationById(conversationId);
 
             // Mapper og returnerer den oprettede samtale
             return Map(created!);
@@ -74,11 +75,10 @@ namespace _2SemesterOpgave.Services
         public ObservableCollection<Conversation> GetConversationsForUser(User user)
         {
             // Henter samtale-DTO'er fra repository ud fra brugerens id
-            IEnumerable<ConversationDTO> dtos =
-                _conversationRepository.GetConversationsByUserId(user.Id);
+            IEnumerable<ConversationDTO> dtos = _conversationRepository.GetConversationsByUserId(user.Id);
 
             // Opretter en ObservableCollection, så UI kan vise samtalerne
-            ObservableCollection<Conversation> conversations = new();
+            ObservableCollection<Conversation> conversations = new ObservableCollection<Conversation>();
 
             // Gennemgår alle DTO'er
             foreach (ConversationDTO dto in dtos)
@@ -99,7 +99,7 @@ namespace _2SemesterOpgave.Services
                 return;
 
             // Opretter en MessageDTO med beskedens data
-            MessageDTO dto = new()
+            MessageDTO dto = new MessageDTO()
             {
                 // Sætter beskedens tekst
                 Text = text,
@@ -115,11 +115,7 @@ namespace _2SemesterOpgave.Services
             _conversationRepository.AddMessage(dto);
 
             // Opretter en Message-model til UI'et
-            Message message = new(
-                text,
-                conversation,
-                sender,
-                DateTime.Now);
+            Message message = new Message(text, conversation, sender, DateTime.Now);
 
             // Tilføjer beskeden til samtalens beskedliste
             conversation.Messages.Add(message);
@@ -138,19 +134,22 @@ namespace _2SemesterOpgave.Services
             foreach (Conversation conv in _userServices.Conversations)
             {
                 // Finder den seneste besked i samtalen, som ikke er sendt af brugeren selv
-                var lastOther = conv.Messages
-                    .LastOrDefault(m => m.Sender.Id != user.Id);
+                Message? lastOther = conv.Messages.LastOrDefault(m => m.Sender.Id != user.Id);
 
                 // Springer samtalen over hvis der ikke findes beskeder fra andre
                 if (lastOther == null)
+                {
                     continue;
+                }
 
                 // Henter tidspunktet for hvornår samtalen sidst blev læst
                 DateTime lastRead = GetLastReadTime(conv.Id, user);
 
                 // Tjekker om den seneste besked er nyere end sidste læsetidspunkt
                 if (lastOther.Timestamp > lastRead)
+                {
                     count++;
+                }
             }
 
             // Returnerer antal ulæste samtaler
@@ -176,7 +175,9 @@ namespace _2SemesterOpgave.Services
         {
             // Tjekker om samtalen findes i læse-cache
             if (_lastReadAt.TryGetValue(conversationId, out DateTime time))
+            {
                 return time;
+            }
 
             // Returnerer minimumsdato hvis samtalen ikke er markeret som læst
             return DateTime.MinValue;
@@ -187,20 +188,18 @@ namespace _2SemesterOpgave.Services
         {
             // Tjekker om samtalen allerede findes i cache
             if (_conversationCache.TryGetValue(dto.Id, out Conversation cached))
+            {
                 return cached;
+            }
 
             // Henter alle deltagere ud fra deres id'er
-            List<User> participants = dto.ParticipantIds
-                .Select(id => _userServices.GetById(id))
-                .Where(u => u != null)
-                .Select(u => u!)
-                .ToList();
+            List<User> participants = dto.ParticipantIds.Select(id => _userServices.GetById(id)).Where(u => u != null).Select(u => u!).ToList();
 
             // Opretter en beskedliste til samtalen
-            ObservableCollection<Message> messages = new();
+            ObservableCollection<Message> messages = new ObservableCollection<Message>();
 
             // Opretter en Conversation-model med data fra DTO'en
-            Conversation conversation = new()
+            Conversation conversation = new Conversation()
             {
                 // Sætter samtalens id
                 Id = dto.Id,
@@ -226,14 +225,12 @@ namespace _2SemesterOpgave.Services
 
                 // Springer beskeden over hvis afsenderen ikke findes
                 if (sender == null)
+                {
                     continue;
+                }
 
                 // Opretter en Message-model og tilføjer den til samtalen
-                messages.Add(new Message(
-                    m.Text,
-                    conversation,
-                    sender,
-                    m.CreatedAt));
+                messages.Add(new Message(m.Text, conversation, sender, m.CreatedAt));
             }
 
             // Gemmer samtalen i cache

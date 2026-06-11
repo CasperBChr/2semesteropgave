@@ -16,11 +16,10 @@ using _2SemesterOpgave.Repositories; // Giver adgang til repositories, fx Articl
 
 namespace _2SemesterOpgave.Pages
 {
+    // Klassen er en WPF-side, som arver fra UserControl
     /// <summary>
     /// Kodet af Camilla. Interaction logic for CreateArticlePage.xaml.
     /// </summary>
-
-    // Klassen er en WPF-side, som arver fra UserControl
     public partial class CreateArticlePage : UserControl
     {
         // Repository der håndterer artikler direkte i databasen

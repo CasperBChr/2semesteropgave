@@ -7,8 +7,11 @@ using _2SemesterOpgave.Models; // Giver adgang til vores modelklasser, fx Messag
 
 namespace _2SemesterOpgave.ViewModels
 {
-    // ViewModel der bruges til at vise en besked i UI'et
-    public class MessageViewModel
+	// ViewModel der bruges til at vise en besked i UI'et
+	/// <summary>
+	/// Kodet af Martin
+	/// </summary>
+	public class MessageViewModel
     {
         // Den originale besked som ViewModel'en bygger på
         public Message Message { get; }

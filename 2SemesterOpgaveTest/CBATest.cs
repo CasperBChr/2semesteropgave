@@ -15,8 +15,8 @@ namespace _2SemesterOpgaveTest
         [TestMethod]
 		public void GetRecommendations()
 		{
-            //Arrange
-            var recommender = new ContentBasedAlgorithm();
+			//Arrange
+			ContentBasedAlgorithm recommender = new ContentBasedAlgorithm();
 
             // Opret test-items med kendte features (f.eks. [Action, Komedie])
             ItemProfile first1 = new ItemProfile { ArticleID = 1, Name = "Kjoler", Features = new Dictionary<string, double> { { "Kjoler", 1.0 } } };

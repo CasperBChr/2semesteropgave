@@ -7,14 +7,17 @@ using _2SemesterOpgave.Repositories.DTO; // Giver adgang til InsuranceOptionDTO
 
 namespace _2SemesterOpgave.Services
 {
-    // Serviceklasse der håndterer logik for forsikringsmuligheder
-    public class InsuranceOptionServices
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	// Serviceklasse der håndterer logik for forsikringsmuligheder
+	public class InsuranceOptionServices
     {
         // Repository der bruges til databasekald for forsikringsmuligheder
         InsuranceOptionRepository _repository;
 
         // Dictionary der bruges som cache, så forsikringsmuligheder kan findes hurtigt ud fra id
-        Dictionary<int, InsuranceOption> _cache = new();
+        Dictionary<int, InsuranceOption> _cache = new Dictionary<int, InsuranceOption>();
 
         // Constructor der modtager InsuranceOptionRepository
         public InsuranceOptionServices(InsuranceOptionRepository repository)

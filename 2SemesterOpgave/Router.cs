@@ -6,8 +6,11 @@ using _2SemesterOpgave.Services; // Giver adgang til serviceklasserne
 
 namespace _2SemesterOpgave
 {
-    // Router-klassen håndterer navigation mellem sider i programmet
-    public class Router
+	// Router-klassen håndterer navigation mellem sider i programmet
+	/// <summary>
+	/// Kodet af Martin
+	/// </summary>
+	public class Router
     {
         // Gemmer hvilken side der er aktiv lige nu
         Routes _currentPage;
@@ -72,8 +75,11 @@ namespace _2SemesterOpgave
         // Liste af Commands (Command Pattern) så vi kan huske tidligere navigationer og gå tilbage
         Stack<ICommand> _history = new Stack<ICommand>();
 
-        // Constructor der modtager alle services og data, som routeren skal bruge
-        public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, RentalServices rentalServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices, SizeServices sizeServices, BrandServices brandServices, FilterCriteria filterCriteria, ColorServices colorServices, ReviewServices reviewServices, AuthServices authServices, ConversationServices conversationServices, UnreadBadgeServices unreadBadgeServices)
+		// Constructor der modtager alle services og data, som routeren skal bruge
+		/// <summary>
+		/// Kodet af Martin
+		/// </summary>
+		public Router(ContentControl pageControl, ObservableCollection<Article> articles, CategoryServices categoryServices, ArticleServices articleServices, UserServices userServices, RentalServices rentalServices, ShippingOptionServices shippingOptionServices, InsuranceOptionServices insuranceOptionServices, SizeServices sizeServices, BrandServices brandServices, FilterCriteria filterCriteria, ColorServices colorServices, ReviewServices reviewServices, AuthServices authServices, ConversationServices conversationServices, UnreadBadgeServices unreadBadgeServices)
         {
             // Sætter startsiden til Home
             _currentPage = Routes.Home;
@@ -130,8 +136,11 @@ namespace _2SemesterOpgave
             _rentals = _rentalServices.GetAll();
         }
 
-        // Udfører en kommando og gemmer den i historikken
-        public void ExecuteAndRecord(ICommand command)
+		// Udfører en kommando og gemmer den i historikken
+		/// <summary>
+		/// Kodet af Martin
+		/// </summary>
+		public void ExecuteAndRecord(ICommand command)
         {
             // Gemmer kommandoen i historikken
             _history.Push(command);
@@ -140,8 +149,11 @@ namespace _2SemesterOpgave
             command.Execute();
         }
 
-        // Går tilbage til forrige side
-        public void GoBack()
+		// Går tilbage til forrige side
+		/// <summary>
+		/// Kodet af Martin
+		/// </summary>
+		public void GoBack()
         {
             // Tjekker om der er mere end én side i historikken
             if (_history.Count > 1)
@@ -168,8 +180,11 @@ namespace _2SemesterOpgave
             _selectedCategory = category;
         }
 
-        // Navigerer til en bestemt side ud fra route
-        public void NavigateTo(Routes route)
+		// Navigerer til en bestemt side ud fra route
+		/// <summary>
+		/// Kodet af Martin
+		/// </summary>
+		public void NavigateTo(Routes route)
         {
             // Tjekker hvilken route der skal navigeres til
             switch (route)
@@ -330,8 +345,11 @@ namespace _2SemesterOpgave
         }
     }
 
-    // Enum der indeholder alle sider/routes i programmet
-    public enum Routes
+	// Enum der indeholder alle sider/routes i programmet
+	/// <summary>
+	/// Kodet af Martin
+	/// </summary>
+	public enum Routes
     {
         // Forsiden
         Home = 0,

@@ -11,8 +11,11 @@ using Microsoft.VisualBasic;
 
 namespace _2SemesterOpgave.Utils
 {
-    // Klasse der simulerer fake samtaler med bot-brugere
-    public class FakeConversation
+	// Klasse der simulerer fake samtaler med bot-brugere
+	/// <summary>
+	/// Kodet af Martin
+	/// </summary>
+	public class FakeConversation
     {
         // Bruges til at stoppe bot-trådene, når programmet lukker ned
         bool _isShuttingDown = false;
@@ -21,7 +24,7 @@ namespace _2SemesterOpgave.Utils
         static readonly object _lock = new object();
 
         // Event der kaldes, når der kommer en ny besked
-        public event Action<Conversation> OnNewMessage;
+        public event Action<Conversation>? OnNewMessage;
 
         // Starter fake bots for tilfældige brugere
         public void StartFakeBots(List<User> botUsers, User currentUser, ConversationServices conversationServices)

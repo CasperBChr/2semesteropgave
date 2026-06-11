@@ -16,7 +16,7 @@ using _2SemesterOpgave.Services;
 namespace _2SemesterOpgave.Pages
 {
 	/// <summary>
-	/// Interaction logic for FavoritesPage.xaml
+	/// Kodet af Martin
 	/// </summary>
 	public partial class FavoritesPage : UserControl
 	{
@@ -38,9 +38,7 @@ namespace _2SemesterOpgave.Pages
         //Metode der indlæser brugerens favorit artikler og viser dem i UI
         private void LoadFavorites()
 		{
-			List<Article> favorites = new List<Article>(
-				_articleServices.GetAllFavoritedArticlesByUser(
-					_userServices.CurrentUser.Id));
+			List<Article> favorites = new List<Article>(_articleServices.GetAllFavoritedArticlesByUser(_userServices.CurrentUser.Id));
 
 			FavoriteArticlesItemsControl.ItemsSource = favorites;
 		}

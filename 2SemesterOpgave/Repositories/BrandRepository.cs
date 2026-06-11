@@ -11,8 +11,11 @@ using Microsoft.Data.Sqlite; // Giver adgang til SQLite
 
 namespace _2SemesterOpgave.Repositories
 {
-    // Repositoryklasse der håndterer databasekald for brands
-    public class BrandRepository
+	// Repositoryklasse der håndterer databasekald for brands
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class BrandRepository
     {
         // Database-factory der bruges til at oprette databaseforbindelser
         IDatabaseFactory _db;

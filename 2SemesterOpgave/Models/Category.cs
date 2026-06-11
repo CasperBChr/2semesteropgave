@@ -1,6 +1,9 @@
 ﻿namespace _2SemesterOpgave.Models
 {
-    public class Category // Klasse til at repræsentere en kategori, som kan indeholde flere underkategorier
+	/// <summary>
+	/// Vi har alle kodet på denne
+	/// </summary>
+	public class Category // Klasse til at repræsentere en kategori, som kan indeholde flere underkategorier
     {
         public int Id { get; set; }
         public string Name { get; set; } // Property: gemmer navnet på kategorien som tekst

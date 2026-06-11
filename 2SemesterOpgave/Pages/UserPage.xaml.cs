@@ -14,13 +14,11 @@ using _2SemesterOpgave.Services; // Giver adgang til vores serviceklasser, fx Us
 namespace _2SemesterOpgave.Pages
 {
 
-    /// <summary>
-    /// Interaction logic for UserPage.xaml === Kodet af Casper
-    /// </summary>
-
-
-    // Klassen er en WPF-side, som arver fra UserControl
-    public partial class UserPage : UserControl
+	/// <summary>
+	/// Kodet af Casper
+	/// </summary>
+	// Klassen er en WPF-side, som arver fra UserControl
+	public partial class UserPage : UserControl
     {
         // Service der håndterer brugerdata
         UserServices _userServices;

@@ -4,8 +4,11 @@ using System.Text;
 
 namespace _2SemesterOpgave.Services
 {
-    // Serviceklasse der håndterer opdatering af unread badge
-    public class UnreadBadgeServices
+	// Serviceklasse der håndterer opdatering af unread badge
+	/// <summary>
+	/// Kodet af Martin
+	/// </summary>
+	public class UnreadBadgeServices
     {
         // Service der bruges til at hente antal ulæste samtaler
         ConversationServices _conversationServices;

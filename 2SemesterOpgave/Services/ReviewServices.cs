@@ -10,7 +10,10 @@ using _2SemesterOpgave.Repositories.DTO; // Giver adgang til ReviewDTO, som brug
 
 namespace _2SemesterOpgave.Services
 {
-    public class ReviewServices // Serviceklasse der håndterer logik omkring anmeldelser/reviews
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class ReviewServices // Serviceklasse der håndterer logik omkring anmeldelser/reviews
     {
         ReviewRepository _reviewRepository; // Repository der bruges til at hente og gemme reviews i databasen
         UserServices _userServices; // Service der bruges til at hente brugere ud fra deres id

@@ -5,6 +5,7 @@ namespace _2SemesterOpgave.Data
 {
     /// <summary>
     /// Factory Pattern brugt til at oprette database connection, på en ensrettet måde
+    /// Kodet af Martin
     /// </summary>
     /// <author>Martin</author>
     // Klasse til at håndtere databaseforbindelsen ved hjælp af IDbConnection og interfacen IDatabaseFactory, ioverenstemmelse med Factory Pattern

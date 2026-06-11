@@ -9,8 +9,11 @@ using _2SemesterOpgave.Repositories.DTO; // Giver adgang til RentalDTO
 
 namespace _2SemesterOpgave.Services
 {
-    // Serviceklasse der håndterer logik for lejeaftaler
-    public class RentalServices
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	// Serviceklasse der håndterer logik for lejeaftaler
+	public class RentalServices
     {
         // Repository der bruges til databasekald for lejeaftaler
         RentalRepository _rentalRepository;
@@ -141,7 +144,7 @@ namespace _2SemesterOpgave.Services
         ObservableCollection<Rental> MapMany(IEnumerable<RentalDTO> dtos)
         {
             // Opretter en ObservableCollection, så UI kan vise lejeaftalerne
-            ObservableCollection<Rental> rentals = new();
+            ObservableCollection<Rental> rentals = new ObservableCollection<Rental>();
 
             // Gennemgår alle DTO'er
             foreach (RentalDTO dto in dtos)
@@ -165,7 +168,7 @@ namespace _2SemesterOpgave.Services
         public HashSet<DateOnly> GetBookedDatesForArticle(int articleId)
         {
             // HashSet bruges så samme dato kun gemmes én gang
-            HashSet<DateOnly> booked = new();
+            HashSet<DateOnly> booked = new HashSet<DateOnly>();
 
             // Gennemgår alle bookede datointervaller for artiklen
             foreach (var (start, end) in _rentalRepository.GetBookedDateRangesForArticle(articleId))

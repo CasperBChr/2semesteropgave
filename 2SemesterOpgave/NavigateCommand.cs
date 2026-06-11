@@ -4,8 +4,11 @@ using System.Text;
 
 namespace _2SemesterOpgave
 {
-    // Kommando der bruges til at navigere til en bestemt side
-    public class NavigateCommand : ICommand
+	// Kommando der bruges til at navigere til en bestemt side
+	/// <summary>
+	/// Kodet af Martin
+	/// </summary>
+	public class NavigateCommand : ICommand
     {
         // Routeren der står for selve navigationen
         readonly Router _router;

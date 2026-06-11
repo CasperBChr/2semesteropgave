@@ -5,6 +5,9 @@ using System.Text;
 
 namespace _2SemesterOpgave.Algoritme
 {
+    /// <summary>
+    /// Kodet af Camilla
+    /// </summary>
     //Kodet af Camilla
     public class ItemProfile
     {

@@ -15,13 +15,11 @@ using Microsoft.Data.Sqlite;
 namespace _2SemesterOpgave.Repositories
 {
 
-    /// <summary>
-    /// Interaction logic for ReviewRepository.xaml === Kodet af Daniel
-    /// </summary>
-
-
-    // Repositoryklasse der håndterer databasekald for reviews
-    public class ReviewRepository
+	// Repositoryklasse der håndterer databasekald for reviews
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class ReviewRepository
     {
         // Bruges til at oprette forbindelse til databasen
         IDatabaseFactory _db;

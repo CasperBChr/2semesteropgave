@@ -1,5 +1,8 @@
 ﻿namespace _2SemesterOpgave.Models
 {
+	/// <summary>
+	/// Vi har alle kodet på denne
+	/// </summary>
 	public class Color
 	{
         //Property for Color

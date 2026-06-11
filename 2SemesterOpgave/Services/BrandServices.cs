@@ -4,8 +4,11 @@ using _2SemesterOpgave.Repositories.DTO; // Giver adgang til BrandDTO
 
 namespace _2SemesterOpgave.Services
 {
-    // Serviceklasse der håndterer logik for brands
-    public class BrandServices
+	// Serviceklasse der håndterer logik for brands
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class BrandServices
     {
 
         // Repository der bruges til databasekald for brands

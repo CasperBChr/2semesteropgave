@@ -9,8 +9,11 @@ using Microsoft.Data.Sqlite; // Giver adgang til SQLite
 
 namespace _2SemesterOpgave.Repositories
 {
-    // Repositoryklasse der håndterer databasekald for størrelser
-    public class SizeRepository
+	// Repositoryklasse der håndterer databasekald for størrelser
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class SizeRepository
     {
         // Database-factory der bruges til at oprette databaseforbindelser
         IDatabaseFactory _db;
@@ -26,7 +29,7 @@ namespace _2SemesterOpgave.Repositories
         public IEnumerable<SizeDTO> GetAllSizes()
         {
             // Opretter en liste til SizeDTO'er
-            List<SizeDTO> dtos = new();
+            List<SizeDTO> dtos = new List<SizeDTO>();
 
             // Opretter forbindelse til databasen
             using IDbConnection connection = _db.CreateConnection();

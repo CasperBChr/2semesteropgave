@@ -6,6 +6,9 @@ using Microsoft.Data.Sqlite;
 
 namespace _2SemesterOpgave.Data
 {
+	/// <summary>
+	/// Kodet af Martin
+	/// </summary>
 	public interface IDatabaseFactory
 	{
 		IDbConnection CreateConnection();

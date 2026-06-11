@@ -1,6 +1,9 @@
 ﻿namespace _2SemesterOpgave.Models
 {
-    public class Message // Klasse til at repræsentere en besked i en samtale, som indeholder tekst og en reference til den samtale, som beskeden tilhører
+	/// <summary>
+	/// Vi har alle kodet på denne
+	/// </summary>
+	public class Message // Klasse til at repræsentere en besked i en samtale, som indeholder tekst og en reference til den samtale, som beskeden tilhører
     {
         public string Text { get; set; } // Property: gemmer teksten i beskeden som tekst
         public Conversation Conversation { get; set; } // Property: gemmer en reference til den Conversation, som beskeden tilhører

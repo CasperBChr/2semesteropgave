@@ -1,6 +1,9 @@
 ﻿namespace _2SemesterOpgave.Models
 {
-    public class Rental // Klasse til at repræsentere en lejeaftale, som indeholder information om lejeperioden, prisen, lejeren, den lejede artikel og andre relevante detaljer
+	/// <summary>
+	/// Vi har alle kodet på denne
+	/// </summary>
+	public class Rental // Klasse til at repræsentere en lejeaftale, som indeholder information om lejeperioden, prisen, lejeren, den lejede artikel og andre relevante detaljer
     {
         public int Id { get; set; } // Gemmer lejeaftalens unikke id
         public bool IsAccepted { get; set; } // Gemmer om lejeaftalen er accepteret

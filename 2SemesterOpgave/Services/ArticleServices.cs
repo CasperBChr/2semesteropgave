@@ -11,8 +11,11 @@ using _2SemesterOpgave.Repositories.DTO; // Giver adgang til DTO-klasser, fx Art
 
 namespace _2SemesterOpgave.Services
 {
-    // Serviceklasse der håndterer logik for artikler
-    public class ArticleServices
+	// Serviceklasse der håndterer logik for artikler
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class ArticleServices
     {
         // Repository der bruges til databasekald for artikler
         ArticleRepository _articleRepository;

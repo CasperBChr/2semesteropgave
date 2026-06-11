@@ -1,7 +1,10 @@
 namespace _2SemesterOpgave.Models
 {
-    //Klasse for Review
-    public class Review
+	//Klasse for Review
+	/// <summary>
+	/// Vi har alle kodet på denne
+	/// </summary>
+	public class Review
     {
         //Property for Review
         // Reviewets id

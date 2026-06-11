@@ -18,7 +18,7 @@ using _2SemesterOpgave.ViewModels;
 namespace _2SemesterOpgave.Pages
 {
 	/// <summary>
-	/// Interaction logic for EmbeddedMessagePage.xaml
+	/// Kodet af Martin
 	/// </summary>
 	public partial class EmbeddedMessagePage : UserControl
 	{
@@ -61,9 +61,11 @@ namespace _2SemesterOpgave.Pages
 
 		void ScrollToBottom() => MessagesScrollViewer.ScrollToEnd();
 
-        //Sender besked når send knappen klikkes
-        private void SendButton_Click(object sender, RoutedEventArgs e) => TrySendMessage();
-
+		//Sender besked når send knappen klikkes
+		private void SendButton_Click(object sender, RoutedEventArgs e)
+		{
+			TrySendMessage();
+		}
         //Metode hvor besked sendes når enter trykkes enter og shift ikke er holdt nede
         private void MessageInputBox_KeyDown(object sender, KeyEventArgs e)
 		{
@@ -80,10 +82,7 @@ namespace _2SemesterOpgave.Pages
 			string text = MessageInputBox.Text?.Trim() ?? string.Empty;
 			if (string.IsNullOrWhiteSpace(text) || _viewModel == null) return;
 
-			_conversationServices.SendMessage(
-				_viewModel.Conversation,
-				_userServices.CurrentUser,
-				text);
+			_conversationServices.SendMessage(_viewModel.Conversation, _userServices.CurrentUser, text);
 
 			MessageInputBox.Clear();
 		}

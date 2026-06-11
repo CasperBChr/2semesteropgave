@@ -2,7 +2,10 @@
 
 namespace _2SemesterOpgave.Models
 {
-    public class Article // Klasse til at repræsentere en artikel, som kan lejes ud på platformen
+	/// <summary>
+	/// Vi har alle kodet på denne
+	/// </summary>
+	public class Article // Klasse til at repræsentere en artikel, som kan lejes ud på platformen
     {
         public int Id { get; set; } = 0; // Gemmer artikelens id
         public string Title { get; set; } = string.Empty; // Gemmer artikelens titel

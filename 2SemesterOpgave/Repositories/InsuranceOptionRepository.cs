@@ -9,8 +9,11 @@ using Microsoft.Data.Sqlite; // Giver adgang til SQLite
 
 namespace _2SemesterOpgave.Repositories
 {
-    // Repositoryklasse der håndterer databasekald for forsikringsmuligheder
-    public class InsuranceOptionRepository
+	// Repositoryklasse der håndterer databasekald for forsikringsmuligheder
+	/// <summary>
+	/// Kodet på af os alle
+	/// </summary>
+	public class InsuranceOptionRepository
     {
         // Database-factory der bruges til at oprette databaseforbindelser
         IDatabaseFactory _db;
@@ -26,7 +29,7 @@ namespace _2SemesterOpgave.Repositories
         public IEnumerable<InsuranceOptionDTO> GetAll()
         {
             // Opretter en liste til forsikrings-DTO'er
-            List<InsuranceOptionDTO> dtos = new();
+            List<InsuranceOptionDTO> dtos = new List<InsuranceOptionDTO>();
 
             // Opretter forbindelse til databasen
             using IDbConnection connection = _db.CreateConnection();
