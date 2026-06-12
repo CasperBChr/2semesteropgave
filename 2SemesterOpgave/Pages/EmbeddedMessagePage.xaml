@@ -9,9 +9,9 @@
 	<UserControl.Resources>
 		<DataTemplate x:Key="MessageTemplate">
 			<Grid Margin="6,3">
-				<Border HorizontalAlignment="{Binding Alignment}" Background="{Binding Background}" CornerRadius="12" Padding="10,7" MaxWidth="380">
+				<Border HorizontalAlignment="{Binding Alignment}" Background="{Binding Background}" CornerRadius="12" Padding="10" MaxWidth="400">
 					<StackPanel>
-						<TextBlock Text="{Binding SenderName}" FontSize="11" FontWeight="SemiBold" Foreground="#555" Margin="0,0,0,2">
+						<TextBlock Text="{Binding SenderName}" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,2">
 							<TextBlock.Style>
 								<Style TargetType="TextBlock">
 									<Style.Triggers>
@@ -22,8 +22,8 @@
 								</Style>
 							</TextBlock.Style>
 						</TextBlock>
-						<TextBlock Text="{Binding Text}" FontSize="13" Foreground="#222" TextWrapping="Wrap"/>
-						<TextBlock Text="{Binding Timestamp, StringFormat=HH:mm}" FontSize="10" Foreground="#888" HorizontalAlignment="Right" Margin="0,3,0,0"/>
+						<TextBlock Text="{Binding Text}" FontSize="14" Foreground="#222" TextWrapping="Wrap"/>
+						<TextBlock Text="{Binding Timestamp, StringFormat=HH:mm}" FontSize="12"  HorizontalAlignment="Right" Margin="0,5,0,0"/>
 					</StackPanel>
 				</Border>
 			</Grid>

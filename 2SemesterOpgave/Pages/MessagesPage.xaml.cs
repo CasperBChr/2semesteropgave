@@ -28,7 +28,7 @@ namespace _2SemesterOpgave.Pages
 		UnreadBadgeServices _unreadBadgeService;
 
         //ViewModel designet til at holde visningsdata for MessagesPage
-        private List<ConversationListItemViewModel> _viewModels = new List<ConversationListItemViewModel>();
+        List<ConversationListItemViewModel> _viewModels = new List<ConversationListItemViewModel>();
 
 		public MessagesPage(Router router, UserServices userServices, ConversationServices conversationServices, UnreadBadgeServices unreadBadgeServices)
 		{
@@ -90,7 +90,7 @@ namespace _2SemesterOpgave.Pages
 
 			List<User> others = conversation.Participants.Where(p => p.Id != currentUser.Id).ToList();
 
-			ParticipantNames = others.Count > 0 ? string.Join(", ", others.Select(u => u.Username)): "Du selv";
+			ParticipantNames = others.Count > 0 ? string.Join(", ", others.Select(u => u.Username)): "Dig";
 
 			DisplayInitial = others.Count > 0 && others[0].Username.Length > 0? others[0].Username[0].ToString().ToUpper(): "?";
 
@@ -101,7 +101,7 @@ namespace _2SemesterOpgave.Pages
 			};
 		}
 
-		private string GetPreview()
+		string GetPreview()
 		{
 			Message? last = Conversation.Messages.LastOrDefault();
 			if (last == null)
@@ -113,7 +113,7 @@ namespace _2SemesterOpgave.Pages
 			return $"{sender}: {text}";
 		}
 
-		private bool GetIsUnread()
+		bool GetIsUnread()
 		{
 			DateTime lastRead = _conversationServices.GetLastReadTime(Conversation.Id, _currentUser);
 			return Conversation.Messages.Any(m => m.Sender.Id != _currentUser.Id && m.Timestamp > lastRead);
