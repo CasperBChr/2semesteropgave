@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 namespace _2SemesterOpgave.Pages
 {
     /// <summary>
-    /// Kodet af Camilla. Interaction logic for ForYouPage.xaml
+    /// Kodet af Camilla
     /// </summary>
 
     // Klassen er en WPF-side, som arver fra UserControl

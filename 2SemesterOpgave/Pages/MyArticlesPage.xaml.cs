@@ -19,7 +19,7 @@ namespace _2SemesterOpgave.Pages
 
     // Klassen er en WPF-side, som arver fra UserControl
     /// <summary>
-    /// Kodet af Camilla. Interaction logic for MyArticlesPage.xaml
+    /// Kodet af Camilla
     /// </summary>
     public partial class MyArticlesPage : UserControl
     {
