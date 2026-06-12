@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 namespace _2SemesterOpgave.Pages
 {
     /// <summary>
-    /// Kode af Camilla. Interaction logic for EditArticlePage.xaml
+    /// Kode af Camilla
     /// </summary>
     public partial class EditArticlePage : UserControl
     {

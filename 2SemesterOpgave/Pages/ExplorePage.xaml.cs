@@ -17,7 +17,7 @@ using _2SemesterOpgave.Services; // Giver adgang til vores serviceklasser, fx Ar
 namespace _2SemesterOpgave.Pages
 {
     /// <summary>
-    /// Interaction logic for ExplorePage.xaml === Kodet af Casper
+    /// Kodet af Casper
     /// </summary>
 
     // Klassen er en WPF-side, som arver fra UserControl
